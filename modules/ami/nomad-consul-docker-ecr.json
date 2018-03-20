@@ -59,20 +59,39 @@
       ],
       "script": "{{template_dir}}/setup_nomad_consul.sh"
     },
-      {
-          "type": "shell",
-          "script": "setup_ecr_helper.sh"
-      },
-      {
-          "type": "shell",
-          "inline": [
-              "mkdir -p ~/.docker"
-          ]
-      },
-      {
-          "type": "file",
-          "source": "docker_config.json",
-          "destination": "$HOME/.docker/config.json"
-      }
+    {
+      "type": "shell",
+      "inline": [
+        "sudo usermod -aG docker nomad"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p ~/.docker"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "docker_config.json",
+      "destination": "$HOME/.docker/config.json"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo cp -r $HOME/.docker /home/nomad/"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+          "sudo cp -r $HOME/.docker /etc/docker",
+          "sudo chmod a+rwX /etc/docker/"
+      ]
+    },
+    {
+      "type": "shell",
+      "script": "setup_ecr_helper.sh"
+    }
   ]
 }
