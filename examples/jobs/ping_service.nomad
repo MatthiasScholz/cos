@@ -2,8 +2,7 @@
 # job>group>task>service
 # container for tasks or task-groups that nomad should run
 job "ping_service" {
-  datacenters = ["us-east-1a","us-east-1b","us-east-1c"]
-  region = "us-east-1"
+  datacenters = ["public-services"]
   type = "service"
 
   meta {

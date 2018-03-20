@@ -44,7 +44,7 @@ module "nomad_servers" {
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_iam_policies_servers" {
-  source      = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.1.0"
+  source      = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
   iam_role_id = "${module.nomad_servers.iam_role_id}"
 }
 
@@ -59,6 +59,7 @@ data "template_file" "user_data_nomad_server" {
     num_servers       = "${var.num_nomad_servers}"
     cluster_tag_key   = "${var.cluster_tag_key}"
     cluster_tag_value = "${var.consul_cluster_name}"
+    datacenter        = "backoffice"
   }
 }
 
@@ -66,7 +67,7 @@ data "template_file" "user_data_nomad_server" {
 # DEPLOY THE CONSUL SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_servers" {
-  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.1.0"
+  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
 
   cluster_name  = "${var.consul_cluster_name}-server"
   cluster_size  = "${var.num_consul_servers}"
@@ -139,7 +140,7 @@ module "nomad_clients" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "consul_iam_policies_clients" {
-  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.1.0"
+  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
 
   iam_role_id = "${module.nomad_clients.iam_role_id}"
 }
@@ -155,5 +156,6 @@ data "template_file" "user_data_nomad_client" {
   vars {
     cluster_tag_key   = "${var.cluster_tag_key}"
     cluster_tag_value = "${var.consul_cluster_name}"
+    datacenter        = "public-services"
   }
 }

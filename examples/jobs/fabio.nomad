@@ -1,13 +1,13 @@
 
 job "fabio" {
-  datacenters = ["dc1"]
+  datacenters = ["public-services"]
 
   type = "system"
   update {
     stagger = "5s"
     max_parallel = 1
   }
-
+  #1.5.8
   group "fabio" {
     task "fabio" {
       driver = "exec"

@@ -46,6 +46,16 @@ nomad run $job_dir/fabio.nomad
 nomad run $job_dir/ping_service.nomad
 ```
 
+## Test the service
+
+```bash
+# 1. find the ip of one instance
+instance_ip=$(get_nomad_client_info.sh | awk '!/INSTANCE/{print $1}' | head -n 1)
+
+# call the service
+watch -x curl -s http://$instance_ip:9999/ping
+```
+
 ## Destroy the infrastructure
 
 ```bash
