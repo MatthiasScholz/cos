@@ -6,7 +6,7 @@ provider "aws" {
 module "nomad-infra" {
   source        = "../../"
   aws_region    = "${var.aws_region}"
-  nomad_ami_id  = "ami-f7adae8d"
-  consul_ami_id = "ami-f7adae8d"
+  nomad_ami_id  = "ami-1cec3961"
+  consul_ami_id = "ami-1cec3961"
   ssh_key_name  = "kp-us-east-1-playground-instancekey"
 }
