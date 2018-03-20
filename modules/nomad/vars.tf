@@ -8,7 +8,6 @@ variable "consul_ami_id" {
 
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
-  default     = "playground"
 }
 
 variable "stack_name" {
@@ -63,4 +62,12 @@ variable "cluster_tag_key" {
 variable "ssh_key_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this cluster. Set to an empty string to not associate a Key Pair."
   default     = ""
+}
+
+variable "alb_public_services_arn" {
+  description = "The arn of the alb for public-services access."
+}
+
+variable "alb_backoffice_arn" {
+  description = "The arn of the alb for backoffice access (nomad + consul ui)."
 }

@@ -10,10 +10,14 @@ resource "aws_alb" "alb_public_services" {
   }
 }
 
+locals {
+  dummy_port = 6000
+}
+
 # Listener with empty dummy target group
 resource "aws_alb_target_group" "dummy_targetgroup_alb_public_services" {
   name     = "alb-dummy-public-services"
-  port     = 80
+  port     = "${local.dummy_port}"
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.vpc_main.id}"
 
@@ -26,7 +30,7 @@ resource "aws_alb_target_group" "dummy_targetgroup_alb_public_services" {
 resource "aws_alb_listener" "alb_authentication_https_listener" {
   load_balancer_arn = "${aws_alb.alb_public_services.arn}"
   protocol          = "HTTP"
-  port              = "80"
+  port              = "${local.dummy_port}"
 
   #protocol        = "HTTPS"
   #port            = "443"

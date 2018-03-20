@@ -20,4 +20,7 @@ module "nomad" {
   ssh_key_name            = "${var.ssh_key_name}"
   vpc_id                  = "${module.networking.vpc_id}"
   nomad_server_subnet_ids = "${module.networking.subnet_ids}"
+  env_name                = "${var.env_name}"
+  alb_public_services_arn = "${module.networking.alb_public_services_arn}"
+  alb_backoffice_arn      = "${module.networking.alb_public_services_arn}"
 }
