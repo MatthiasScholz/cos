@@ -1,0 +1,78 @@
+{
+  "min_packer_version": "0.12.0",
+  "variables": {
+    "aws_region": "us-east-1",
+    "nomad_version": "0.7.1",
+    "consul_module_version": "v0.3.1",
+    "consul_version": "1.0.6"
+  },
+  "builders": [
+    {
+      "ami_name": "nomad-consul-docker-ecr-amazon-linux-{{isotime | clean_ami_name}}",
+      "ami_description": "An Amazon Linux AMI that has Nomad, Consul and Docker installed and is prepared for ECR usage.",
+      "instance_type": "t2.micro",
+      "name": "amazon-linux-ami",
+      "region": "{{user `aws_region`}}",
+      "type": "amazon-ebs",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "architecture": "x86_64",
+          "name": "*amzn-ami-hvm-*",
+          "block-device-mapping.volume-type": "gp2",
+          "root-device-type": "ebs"
+        },
+        "owners": [
+          "amazon"
+        ],
+        "most_recent": true
+      },
+      "ssh_username": "ec2-user"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "{{template_dir}}/setup_amazon-linux.sh",
+      "only": [
+        "amazon-linux-ami"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "{{template_dir}}/install-nomad",
+      "destination": "/tmp/install-nomad/",
+      "pause_before": "30s"
+    },
+    {
+      "type": "file",
+      "source": "{{template_dir}}/run-nomad",
+      "destination": "/tmp/run-nomad/",
+      "pause_before": "30s"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "NOMAD_VERSION={{user `nomad_version`}}",
+        "CONSUL_VERSION={{user `consul_version`}}",
+        "CONSUL_MODULE_VERSION={{user `consul_module_version`}}"
+      ],
+      "script": "{{template_dir}}/setup_nomad_consul.sh"
+    },
+      {
+          "type": "shell",
+          "script": "setup_ecr_helper.sh"
+      },
+      {
+          "type": "shell",
+          "inline": [
+              "mkdir -p ~/.docker"
+          ]
+      },
+      {
+          "type": "file",
+          "source": "docker_config.json",
+          "destination": "$HOME/.docker/config.json"
+      }
+  ]
+}
