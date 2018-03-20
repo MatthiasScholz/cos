@@ -22,4 +22,6 @@ module "nomad" {
   vpc_id                  = "${module.networking.vpc_id}"
   nomad_server_subnet_ids = "${module.networking.subnet_ids}"
   unique_postfix          = "${var.unique_postfix}"
+  nomad_cluster_name      = "${var.nomad_cluster_name}"
+  consul_cluster_name     = "${var.consul_cluster_name}"
 }

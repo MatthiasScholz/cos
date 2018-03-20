@@ -9,11 +9,11 @@ resource "random_pet" "unicorn" {
 }
 
 module "nomad-infra" {
-  source        = "../../"
-  aws_region    = "${var.aws_region}"
-  nomad_ami_id  = "ami-f01fca8d"
-  consul_ami_id = "ami-f01fca8d"
-  ssh_key_name  = "kp-us-east-1-playground-instancekey"
-  env_name      = "${var.env_name}"
+  source              = "../../"
+  aws_region          = "${var.aws_region}"
+  ssh_key_name        = "kp-us-east-1-playground-instancekey"
+  env_name            = "${var.env_name}"
   unique_postfix      = "${random_pet.unicorn.id}"
+  nomad_cluster_name  = "${var.nomad_cluster_name}"
+  consul_cluster_name = "${var.consul_cluster_name}"
 }

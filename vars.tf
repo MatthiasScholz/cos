@@ -23,4 +23,12 @@ variable "unique_postfix" {
   default     = ""
 }
 
+variable "nomad_cluster_name" {
+  description = "What to name the Nomad cluster and all of its associated resources."
+  default     = "nomad-example"
+}
+
+variable "consul_cluster_name" {
+  description = "What to name the Consul cluster and all of its associated resources."
+  default     = "consul-example"
 }
