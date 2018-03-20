@@ -24,4 +24,7 @@ module "nomad" {
   unique_postfix          = "${var.unique_postfix}"
   nomad_cluster_name      = "${var.nomad_cluster_name}"
   consul_cluster_name     = "${var.consul_cluster_name}"
+  env_name                = "${var.env_name}"
+  alb_public_services_arn = "${module.networking.alb_public_services_arn}"
+  alb_backoffice_arn      = "${module.networking.alb_public_services_arn}"
 }

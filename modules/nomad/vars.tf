@@ -8,7 +8,6 @@ variable "consul_ami_id" {
 
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
-  default     = "playground"
 }
 
 variable "stack_name" {
@@ -68,4 +67,12 @@ variable "ssh_key_name" {
 variable "unique_postfix" {
   description = "A postfix to be used to generate unique resource names per deployment."
   default     = ""
+}
+
+variable "alb_public_services_arn" {
+  description = "The arn of the alb for public-services access."
+}
+
+variable "alb_backoffice_arn" {
+  description = "The arn of the alb for backoffice access (nomad + consul ui)."
 }

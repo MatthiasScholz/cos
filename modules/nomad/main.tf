@@ -131,6 +131,13 @@ module "nomad_clients" {
 
   allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
   ssh_key_name                = "${var.ssh_key_name}"
+
+  # HACK: Take the connected ALB configuration for the nomad client ui export.
+  # FIXME: This will open port: 80 as well, but this is negligible.
+  #    "${aws_security_group.sg_alb.id}",
+  security_groups = [
+    "${aws_security_group.sg_client.id}",
+  ]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
