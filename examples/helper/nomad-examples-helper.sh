@@ -7,9 +7,6 @@
 
 set -e
 
-# name of the profile defined in your ~/.aws/credential file
-readonly AWS_PROFILE_NAME="home"
-
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SCRIPT_NAME="$(basename "$0")"
 
@@ -183,14 +180,35 @@ function print_instructions {
   echo -e "$instructions_str"
 }
 
+function get_aws_profile() {
+  # name of the profile defined in your ~/.aws/credential file
+
+  profile="$AWS_PROFILE"
+
+  # check cmd param, if set it will overwrite the env variable
+  if [ ! -z "$1" ];then
+    profile="$1"
+  fi 
+
+  echo "$profile"
+}
+
 function run {
+  profile=$(get_aws_profile "$1" )
+  if [ -z "$profile" ];then
+    echo "Error AWS profile missing."
+    echo -e "\tYou can specify it setting the env var AWS_PROFILE or"
+    echo -e "\tby calling the script with the according parameter."
+    exit 1
+  fi 
+
   assert_is_installed "aws"
   assert_is_installed "jq"
   assert_is_installed "terraform"
   assert_is_installed "nomad"
 
   local server_ips
-  server_ips=$(get_all_nomad_server_ips "$AWS_PROFILE_NAME")
+  server_ips=$(get_all_nomad_server_ips "$profile")
 
   log_info "Public ips: $server_ips"
 
@@ -198,4 +216,4 @@ function run {
   print_instructions "$server_ips"
 }
 
-run 
+run "$@"
