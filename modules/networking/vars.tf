@@ -11,7 +11,7 @@ variable "stack_name" {
 variable "az_postfixes" {
   description = "list of AZ postfixes"
   type        = "list"
-  default     = ["a"]
+  default     = ["a","b"]
 }
 
 variable "region" {
