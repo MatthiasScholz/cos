@@ -6,7 +6,7 @@ job "ping_service" {
   type = "service"
 
   meta {
-    my-key = "uuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
+    my-key = "example"
   }
 
   # The group stanza defines a series of tasks that should be co-located on the same Nomad client.
@@ -26,17 +26,13 @@ job "ping_service" {
     task "ping_service_task" {
       driver = "docker"
       config {
-        image = "thobe/ping_service:0.0.4"
-        #args    = ["Hello, World!"]
+        image = "thobe/ping_service:0.0.7"
       }
 
-      template {
-        data = <<EOH
-        CONSUL_SERVER_ADDR={{key "consul/ip"}}
-        EOH
-
-          destination = "secrets/file.env"
-          env         = true
+      config {
+        port_map = {
+          http = 8080
+        }
       }
 
       resources {
@@ -45,7 +41,6 @@ job "ping_service" {
         network {
           mbits = 10
           port "http" {
-            static = 8080
           }
         }
       }
@@ -68,7 +63,7 @@ job "ping_service" {
 
       env {
         SERVICE_NAME        = "${NOMAD_TASK_NAME}",
-        PROVIDER            = "ping-service"
+        PROVIDER            = "ping-service",
       }
     }
   }
