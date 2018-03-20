@@ -2,6 +2,7 @@ module "networking" {
   source   = "modules/networking"
   region   = "${var.aws_region}"
   env_name = "${var.env_name}"
+  unique_postfix = "${var.unique_postfix}"
 }
 
 data "aws_vpc" "default" {
@@ -20,4 +21,5 @@ module "nomad" {
   ssh_key_name            = "${var.ssh_key_name}"
   vpc_id                  = "${module.networking.vpc_id}"
   nomad_server_subnet_ids = "${module.networking.subnet_ids}"
+  unique_postfix          = "${var.unique_postfix}"
 }

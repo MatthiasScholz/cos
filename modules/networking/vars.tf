@@ -21,3 +21,8 @@ variable "region" {
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
 }
+
+variable "unique_postfix" {
+  description = "A postfix to be used to generate unique resource names per deployment."
+  default     = ""
+}

@@ -1,6 +1,6 @@
 # the application loadbalancer
 resource "aws_alb" "alb_public_services" {
-  name            = "alb-public-services"
+  name            = "alb-public-services-${var.unique_postfix}"
   internal        = false
   subnets         = ["${aws_subnet.subn_public.*.id}"]
   security_groups = ["${aws_security_group.sg_alb.id}"]
@@ -12,7 +12,7 @@ resource "aws_alb" "alb_public_services" {
 
 # Listener with empty dummy target group
 resource "aws_alb_target_group" "dummy_targetgroup_alb_public_services" {
-  name     = "alb-dummy-public-services"
+  name     = "alb-dummy-public-${var.unique_postfix}"
   port     = 80
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.vpc_main.id}"
