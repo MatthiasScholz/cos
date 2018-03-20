@@ -13,7 +13,7 @@ locals {
 # DEPLOY THE NOMAD SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "nomad_servers" {
-  source = "git::git@github.com:hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
+  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
 
   cluster_name      = "${local.nomad_server_cluster_name}"
   cluster_tag_value = "${local.nomad_server_cluster_name}"
@@ -44,7 +44,7 @@ module "nomad_servers" {
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_iam_policies_servers" {
-  source      = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
+  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
   iam_role_id = "${module.nomad_servers.iam_role_id}"
 }
 
@@ -67,7 +67,7 @@ data "template_file" "user_data_nomad_server" {
 # DEPLOY THE CONSUL SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_servers" {
-  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
+  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
 
   cluster_name  = "${var.consul_cluster_name}-server"
   cluster_size  = "${var.num_consul_servers}"
@@ -108,7 +108,7 @@ data "template_file" "user_data_consul_server" {
 # DEPLOY THE NOMAD CLIENT NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "nomad_clients" {
-  source = "git::git@github.com:hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
+  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
 
   cluster_name      = "${local.nomad_client_cluster_name}"
   cluster_tag_value = "${local.nomad_client_cluster_name}"
@@ -140,7 +140,7 @@ module "nomad_clients" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "consul_iam_policies_clients" {
-  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
+  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
 
   iam_role_id = "${module.nomad_clients.iam_role_id}"
 }
