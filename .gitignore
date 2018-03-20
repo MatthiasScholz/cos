@@ -6,4 +6,4 @@
 .terraform/
 
 # Plan files
-file.plan
+cos.plan

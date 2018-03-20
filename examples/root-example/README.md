@@ -7,13 +7,13 @@ Per default the module will be deployed in us-east-1 (virginia).
 
 ```bash
 # terraform init &&\
-# terraform plan -out file.plan -var deploy_profile=<your-profile> &&\
-# terraform apply "file.plan"
+# terraform plan -out cos.plan -var deploy_profile=<your-profile> &&\
+# terraform apply "cos.plan"
 
 # on playground
 terraform init &&\
-terraform plan -out file.plan -var deploy_profile=playground &&\
-terraform apply "file.plan"
+terraform plan -out cos.plan -var deploy_profile=playground &&\
+terraform apply "cos.plan"
 ```
 
 ## Setup helper scripts
