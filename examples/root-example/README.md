@@ -28,7 +28,8 @@ export AWS_PROFILE=playground
 ```bash
 # Wait for the servers getting ready and set the NOMAD_ADDR env variable
 server_ip=$(get_nomad_server_ip.sh) &&\
-export NOMAD_ADDR=http://$server_ip:4646
+export NOMAD_ADDR=http://$server_ip:4646 &&\
+echo ${NOMAD_ADDR}
 
 # Show some commands
 nomad-examples-helper.sh
