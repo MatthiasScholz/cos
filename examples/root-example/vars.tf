@@ -22,3 +22,7 @@ variable "consul_cluster_name" {
   default     = "consul-example"
 }
 
+variable "ami" {
+  description = "AMI for all the nomad instances."
+  default     = "ami-a23feadf"
+}
