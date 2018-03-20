@@ -7,7 +7,7 @@ resource "aws_iam_role_policy_attachment" "irpa_ecr_read_access" {
 }
 
 resource "aws_iam_policy" "ip_ecr_read_access" {
-  name   = "APP-${var.stack_name}-${var.region}-${var.env_name}-IP-ECR-read"
+  name   = "APP-${var.stack_name}-${var.aws_region}-${var.env_name}-IP-ECR-read"
   policy = "${data.aws_iam_policy_document.ipd_ecr_read_access.json}"
 }
 

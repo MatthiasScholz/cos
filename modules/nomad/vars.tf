@@ -6,6 +6,16 @@ variable "consul_ami_id" {
   description = "The ID of the AMI to be used for the consul nodes."
 }
 
+variable "env_name" {
+  description = "name of the environment (i.e. prod)"
+  default     = "playground"
+}
+
+variable "stack_name" {
+  description = "shortcut for this stack"
+  default     = "NOMAD"
+}
+
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
