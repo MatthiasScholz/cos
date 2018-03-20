@@ -1,6 +1,7 @@
 module "networking" {
-  source = "modules/networking"
-  region = "${var.aws_region}"
+  source   = "modules/networking"
+  region   = "${var.aws_region}"
+  env_name = "${var.env_name}"
 }
 
 data "aws_vpc" "default" {

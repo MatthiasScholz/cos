@@ -9,4 +9,5 @@ module "nomad-infra" {
   nomad_ami_id  = "ami-f01fca8d"
   consul_ami_id = "ami-f01fca8d"
   ssh_key_name  = "kp-us-east-1-playground-instancekey"
+  env_name      = "${var.env_name}"
 }
