@@ -11,7 +11,7 @@ cd /tmp/ecr_helper
 sudo make docker
 
 echo "[INFO] [${SCRIPT}] .Install"
-sudo cp bin/local/docker-credential-ecr-login /opt/aws/bin
+sudo cp bin/local/docker-credential-ecr-login /usr/bin
 
 echo "[INFO] [${SCRIPT}] .Cleanup"
 cd /tmp/
