@@ -217,6 +217,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "$$hashKey": "object:1165",
           "expr": "nomad_client_consul_check_registrations",
           "format": "time_series",
           "intervalFactor": 2,
@@ -298,7 +299,8 @@
       "steppedLine": true,
       "targets": [
         {
-          "expr": "nomad_linux_client_allocations_running",
+          "$$hashKey": "object:1112",
+          "expr": "nomad_client_allocations_running",
           "format": "time_series",
           "intervalFactor": 2,
           "metric": "nomad_linux_client_allocations_running",
@@ -379,9 +381,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nomad_linux_client_allocations_blocked",
+          "$$hashKey": "object:1218",
+          "expr": "nomad_client_allocations_blocked",
           "format": "time_series",
           "intervalFactor": 2,
+          "legendFormat": "",
           "metric": "nomad_linux_client_allocations_blocked",
           "refId": "A",
           "step": 40
@@ -452,7 +456,8 @@
       "links": [],
       "targets": [
         {
-          "expr": "nomad_linux_runtime_total_gc_pause_ns",
+          "$$hashKey": "object:1265",
+          "expr": "nomad_runtime_total_gc_pause_ns",
           "format": "time_series",
           "intervalFactor": 2,
           "metric": "nomad_linux_runtime_total_gc_pause_ns",
@@ -520,7 +525,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "nomad_linux_runtime_alloc_bytes",
+          "$$hashKey": "object:1318",
+          "expr": "nomad_runtime_alloc_bytes",
           "format": "time_series",
           "intervalFactor": 2,
           "metric": "nomad_linux_runtime_alloc_bytes",
@@ -603,5 +609,5 @@
   "timezone": "",
   "title": "Prometheus Nomad",
   "uid": "XCnI1Skmk",
-  "version": 2
+  "version": 3
 }
