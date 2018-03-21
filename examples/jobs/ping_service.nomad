@@ -1,4 +1,3 @@
-
 # job>group>task>service
 # container for tasks or task-groups that nomad should run
 job "ping_service" {
@@ -10,7 +9,7 @@ job "ping_service" {
   }
 
   # The group stanza defines a series of tasks that should be co-located on the same Nomad client.
-  # Any task within a group will be placed on the same client. 
+  # Any task within a group will be placed on the same client.
   group "ping_service_group" {
     count = 3
 
@@ -26,7 +25,10 @@ job "ping_service" {
     task "ping_service_task" {
       driver = "docker"
       config {
+        # Docker Hub:
         image = "thobe/ping_service:0.0.7"
+        # AWS ECR playground: image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/ping-service:0.0.7"
+        #args    = ["Hello, World!"]
       }
 
       config {
