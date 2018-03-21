@@ -38,8 +38,8 @@ job "ping_service" {
       }
 
       resources {
-        cpu    = 500 # 500 MHz
-        memory = 256 # 256MB
+        cpu    = 500 # MHz
+        memory = 128 # MB
         network {
           mbits = 10
           port "http" {
@@ -50,10 +50,10 @@ job "ping_service" {
       # The service stanza instructs Nomad to register the task as a service using the service discovery integration
       service {
         name = "ping-service"
-        tags = ["urlprefix-/ping"]
+        tags = ["urlprefix-/ping"] # fabio
         port = "http"
         check {
-          name     = "alive"
+          name     = "Ping-Service Alive State"
           port     = "http"
           type     = "http"
           method   = "GET"
