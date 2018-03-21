@@ -85,7 +85,7 @@
     {
       "type": "shell",
       "inline": [
-          "sudo cp -r $HOME/.docker /etc/docker",
+          "sudo cp $HOME/.docker/config.json /etc/docker/config.json",
           "sudo chmod a+rwX /etc/docker/"
       ]
     },
