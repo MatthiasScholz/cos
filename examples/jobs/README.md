@@ -19,6 +19,14 @@ Collect metrics from the COS.
 
 * Job Type: service
 
+* [Nomad Telemetry](https://www.nomadproject.io/docs/agent/telemetry.html)
+  * [Enabling](https://www.nomadproject.io/docs/agent/configuration/telemetry.html#prometheus_metrics)
+  * [GitHub Feature Discussion](https://github.com/hashicorp/nomad/issues/2528)
+
+List metrics of one specific node in the prometheus format:
+`http://<nomad_node>:4646/v1/metrics?format=prometheus`
+
+
 ## Grafana
 Grafana Dashboarding service for metrics as Docker container. Shall visualise COS metrics.
 
@@ -26,3 +34,9 @@ Grafana Dashboarding service for metrics as Docker container. Shall visualise CO
 
 ### UI
 * Default credentials: admin/admin
+
+* [DataSource Configuration](https://prometheus.io/docs/visualization/grafana/#creating-a-prometheus-data-source)
+  * [Preconfiguration](http://docs.grafana.org/administration/provisioning/)
+
+* URL: <take_it_from_fabio_ui>
+* Access: `proxy`
