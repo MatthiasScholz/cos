@@ -16,7 +16,7 @@ locals {
 
 # Listener with empty dummy target group
 resource "aws_alb_target_group" "tgr_dummy_public_services" {
-  name     = "tgr-dummy-public-services-${var.unique_postfix}"
+  name     = "tgr-dummy-public-${var.unique_postfix}"
   port     = "${local.dummy_port}"
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.vpc_main.id}"
@@ -27,7 +27,7 @@ resource "aws_alb_target_group" "tgr_dummy_public_services" {
 }
 
 # listener for https with one default action to a dummy target group
-resource "aws_alb_listener" "albl_dummy-public-services" {
+resource "aws_alb_listener" "alb_dummy-public-services" {
   load_balancer_arn = "${aws_alb.alb_public_services.arn}"
   protocol          = "HTTP"
   port              = "${local.dummy_port}"
