@@ -6,6 +6,9 @@ The examples uses fabio as the cluster internal load balances. This has implicat
 
 * Job Type: system
 
+## References
+* [Fabio Stip Prefix Feature](https://github.com/fabiolb/fabio/issues/44)
+
 # Ping-Server
 Simple golang application to run in the cluster and to check service discovery.
 
@@ -39,7 +42,8 @@ Prometheus is then reachable via: `http://172.17.0.1:9999/prometheus`
 Currently it is not possible to use the ALB to get access to the prometheus ui.
 It reports gives an incomplete page. Using the direct instance access works as expected.
 There seems to be a problem how prometheus is handling the request.
-* [Issue](https://github.com/prometheus/prometheus/issues/1583)
+* [Issue 1583](https://github.com/prometheus/prometheus/issues/1583)
+* [Issue 2948](https://github.com/prometheus/prometheus/pull/2948)
 
 ### TODOs
 * [ ] [Use consul to discover nodes dynamically](https://misterhex.github.io/Prometheus-and-Consul-for-monitoring-dynamic-services/)
