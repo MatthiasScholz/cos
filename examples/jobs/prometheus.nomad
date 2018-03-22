@@ -18,7 +18,7 @@ job "prometheus" {
     }
 
     # The task stanza creates an individual unit of work, such as a Docker container, web application, or batch processing.
-    task "prometheus_task" {
+    task "prometheus-server" {
       driver = "docker"
       config {
         # AWS ECR playground:
@@ -56,6 +56,47 @@ job "prometheus" {
           timeout  = "2s"
         }
        }
+    }
+
+    task "prom-consul-exporter" {
+      driver = "docker"
+      config {
+        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/prom-consul-exporter:0.0.1"
+        args = [
+          "--consul.server=172.17.0.1:8500"
+        ]
+      }
+
+      config {
+        port_map = {
+          http = 9107
+        }
+      }
+
+      resources {
+        cpu    = 100 # MHz
+        memory = 100 # MB
+        network {
+          mbits = 10
+          port "http" {
+          }
+        }
+      }
+
+      service {
+        name = "prom-consul-exporter"
+        tags = ["urlprefix-/prom-consul-exporter"] # fabio
+        port = "http"
+        check {
+          name = "Prometheus Consul Exporter Alive Status"
+          port = "http"
+          type = "http"
+          method = "GET"
+          path = "/"
+          interval = "10s"
+          timeout = "2s"
+        }
+      }
     }
   }
 }

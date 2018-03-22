@@ -43,6 +43,7 @@ There seems to be a problem how prometheus is handling the request.
 
 ### TODOs
 * [ ] [Use consul to discover nodes dynamically](https://misterhex.github.io/Prometheus-and-Consul-for-monitoring-dynamic-services/)
+* [ ] [Consul metrics in prometheus](https://github.com/prometheus/consul_exporter)
 
 ## Grafana
 Grafana Dashboarding service for metrics as Docker container. Shall visualise COS metrics.
