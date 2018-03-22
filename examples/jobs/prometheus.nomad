@@ -51,7 +51,7 @@ job "prometheus" {
           port     = "http"
           type     = "http"
           method   = "GET"
-          path     = "/-/healthy"
+          path     = "/prometheus/-/healthy"
           interval = "10s"
           timeout  = "2s"
         }
