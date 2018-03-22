@@ -1,0 +1,5 @@
+datasources:
+  - name: COS Metrics
+    type: prometheus
+    access: proxy
+    url: http://172.17.0.1:9999/prometheus # Use Fabio to route the requests to prometheus.

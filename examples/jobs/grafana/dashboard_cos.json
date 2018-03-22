@@ -23,7 +23,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "COS Metrics",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -55,7 +55,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:829",
+          "$$hashKey": "object:669",
           "expr": "nomad_client_allocated_memory",
           "format": "time_series",
           "intervalFactor": 1,
@@ -105,7 +105,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": null,
+      "datasource": "COS Metrics",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -137,7 +137,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:955",
+          "$$hashKey": "object:512",
           "expr": "nomad_client_host_memory_available",
           "format": "time_series",
           "intervalFactor": 1,
@@ -182,7 +182,7 @@
     },
     {
       "aliasColors": {},
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "COS Metrics",
@@ -192,6 +192,86 @@
         "w": 24,
         "x": 0,
         "y": 9
+      },
+      "id": 12,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "$$hashKey": "object:823",
+          "expr": "nomad_uptime",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Nomad Clients Uptime",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "COS Metrics",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 16
       },
       "id": 1,
       "legend": {
@@ -217,7 +297,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:1165",
+          "$$hashKey": "object:560",
           "expr": "nomad_client_consul_check_registrations",
           "format": "time_series",
           "intervalFactor": 2,
@@ -273,7 +353,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 23
       },
       "id": 6,
       "legend": {
@@ -299,7 +379,6 @@
       "steppedLine": true,
       "targets": [
         {
-          "$$hashKey": "object:1112",
           "expr": "nomad_client_allocations_running",
           "format": "time_series",
           "intervalFactor": 2,
@@ -355,7 +434,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 23
       },
       "id": 5,
       "legend": {
@@ -381,7 +460,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:1218",
           "expr": "nomad_client_allocations_blocked",
           "format": "time_series",
           "intervalFactor": 2,
@@ -445,7 +523,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 23
+        "y": 30
       },
       "heatmap": {},
       "highlightCards": true,
@@ -456,7 +534,6 @@
       "links": [],
       "targets": [
         {
-          "$$hashKey": "object:1265",
           "expr": "nomad_runtime_total_gc_pause_ns",
           "format": "time_series",
           "intervalFactor": 2,
@@ -499,7 +576,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 23
+        "y": 30
       },
       "id": 2,
       "legend": {
@@ -525,7 +602,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:1318",
           "expr": "nomad_runtime_alloc_bytes",
           "format": "time_series",
           "intervalFactor": 2,
@@ -578,7 +654,7 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -609,5 +685,5 @@
   "timezone": "",
   "title": "Prometheus Nomad",
   "uid": "XCnI1Skmk",
-  "version": 3
+  "version": 2
 }

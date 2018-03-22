@@ -49,6 +49,8 @@ Grafana Dashboarding service for metrics as Docker container. Shall visualise CO
 
 * Job Type: service
 
+* [Docker Install](http://docs.grafana.org/installation/docker/)
+
 ### UI
 * Default credentials: admin/admin
 
@@ -57,3 +59,9 @@ Grafana Dashboarding service for metrics as Docker container. Shall visualise CO
 
 * URL: <take_it_from_fabio_ui>
 * Access: `proxy`
+
+### BUG - Dashboard Auto Import
+Automatic dashboard import not workig.
+
+* [Manual](http://docs.grafana.org/administration/provisioning/#dashboards) -> NOT WORKING ( 2018-03-22 )
+* [PR: Feature Implementation](https://github.com/grafana/grafana/pull/10052)
