@@ -1,6 +1,12 @@
 # Overview
 Collection of nomad sample jobs.
 
+# Nomad
+
+## Troubleshooting
+When the web ui or the remote query might not show any error logs try ssh into the instance and use the command line tool to examine log messages:
+* `nomad logs -stderr <alloc-id>`
+
 # Fabio
 The examples uses fabio as the cluster internal load balances. This has implications on the security group configuration and the ALB configuration.
 
@@ -70,3 +76,17 @@ Automatic dashboard import not workig.
 
 * [Manual](http://docs.grafana.org/administration/provisioning/#dashboards) -> NOT WORKING ( 2018-03-22 )
 * [PR: Feature Implementation](https://github.com/grafana/grafana/pull/10052)
+
+# Logging
+Make use of ElasticSearch, Fluentd and Kibana ( EFK ).
+* [Nomad Reference](https://www.nomadproject.io/docs/drivers/docker.html#logging)
+* [Fluentd EFK](https://docs.fluentd.org/v0.12/articles/docker-logging-efk-compose)
+* [Elastic Docker Images](https://www.docker.elastic.co/#)
+* [Elasticsearch Docker Install](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html)
+* [Elasticsearch Configuration](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html)
+* [Kibana Configuration](https://www.elastic.co/guide/en/kibana/current/production.html)
+  * [Kibana Configuration Parameter](https://www.elastic.co/guide/en/kibana/current/settings.html) ( Check: `server.basePath` )
+* [Elastic Search Configuration via Nomad template](https://groups.google.com/forum/#!topic/nomad-tool/yEd9VLZvE7w) ( It was not fully working. )
+
+## Notes
+"We recommend to use debian version for production because it uses jemalloc to mitigate memory fragmentation issue."
