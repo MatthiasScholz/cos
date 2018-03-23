@@ -17,7 +17,7 @@ module "nomad_servers" {
 
   cluster_name      = "${local.nomad_server_cluster_name}"
   cluster_tag_value = "${local.nomad_server_cluster_name}"
-  instance_type     = "t2.micro"
+  instance_type     = "${var.instance_type_server}"
 
   # You should typically use a fixed size of 3 or 5 for your Nomad server cluster
   min_size         = "${var.num_nomad_servers}"
@@ -69,9 +69,9 @@ data "template_file" "user_data_nomad_server" {
 module "consul_servers" {
   source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
 
-  cluster_name  = "${var.consul_cluster_name}-server"
-  cluster_size  = "${var.num_consul_servers}"
-  instance_type = "t2.micro"
+  cluster_name   = "${var.consul_cluster_name}-server"
+  cluster_size   = "${var.num_consul_servers}"
+  instance_type  = "${var.instance_type_server}"
 
   # The EC2 Instances will use these tags to automatically discover each other and form a cluster
   cluster_tag_key   = "${var.cluster_tag_key}"
@@ -112,7 +112,7 @@ module "nomad_clients" {
 
   cluster_name      = "${local.nomad_client_cluster_name}"
   cluster_tag_value = "${local.nomad_client_cluster_name}"
-  instance_type     = "t2.micro"
+  instance_type     = "${var.instance_type_client}"
 
   # To keep the example simple, we are using a fixed-size cluster. In real-world usage, you could use auto scaling
   # policies to dynamically resize the cluster in response to load.

@@ -29,4 +29,8 @@ module "nomad" {
   alb_backoffice_nomad_arn  = "${module.networking.alb_backoffice_nomad_arn}"
   alb_backoffice_consul_arn = "${module.networking.alb_backoffice_consul_arn}"
   alb_backoffice_fabio_arn  = "${module.networking.alb_backoffice_fabio_arn}"
+  num_nomad_servers         = "${var.num_nomad_servers}"
+  num_nomad_clients         = "${var.num_nomad_clients}"
+  instance_type_server      = "${var.instance_type_server}"
+  instance_type_client      = "${var.instance_type_client}"
 }

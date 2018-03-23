@@ -54,6 +54,16 @@ variable "num_consul_servers" {
   default     = 3
 }
 
+variable "instance_type_server" {
+  description = "The instance type for all nomad and consul server nodes."
+  default     = "t2.micro"
+}
+
+variable "instance_type_client" {
+  description = "The instance type for all nomad client nodes."
+  default     = "t2.micro"
+}
+
 variable "cluster_tag_key" {
   description = "The tag the Consul EC2 Instances will look for to automatically discover each other and form a cluster."
   default     = "consul-servers"

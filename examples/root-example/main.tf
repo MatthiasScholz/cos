@@ -9,13 +9,17 @@ resource "random_pet" "unicorn" {
 }
 
 module "nomad-infra" {
-  source              = "../../"
-  aws_region          = "${var.aws_region}"
-  nomad_ami_id        = "${var.ami}"
-  consul_ami_id       = "${var.ami}"
-  ssh_key_name        = "kp-us-east-1-playground-instancekey"
-  env_name            = "${var.env_name}"
-  unique_postfix      = "${random_pet.unicorn.id}"
-  nomad_cluster_name  = "${var.nomad_cluster_name}"
-  consul_cluster_name = "${var.consul_cluster_name}"
+  source               = "../../"
+  aws_region           = "${var.aws_region}"
+  nomad_ami_id         = "${var.ami}"
+  consul_ami_id        = "${var.ami}"
+  ssh_key_name         = "kp-us-east-1-playground-instancekey"
+  env_name             = "${var.env_name}"
+  unique_postfix       = "${random_pet.unicorn.id}"
+  nomad_cluster_name   = "${var.nomad_cluster_name}"
+  consul_cluster_name  = "${var.consul_cluster_name}"
+  num_nomad_servers    = "${var.num_nomad_servers}"
+  num_nomad_clients    = "${var.num_nomad_clients}"
+  instance_type_server = "${var.instance_type_server}"
+  instance_type_client = "${var.instance_type_client}"
 }
