@@ -100,6 +100,11 @@
           "echo 'vm.max_map_count=262144' >> /tmp/sysctl.conf",
           "sudo cp /tmp/sysctl.conf /etc/sysctl.conf"
     ]
+    {
+      "type": "shell",
+      "inline": [
+        "sudo yum downgrade -y docker-17.09.1ce-1.111.amzn1.x86_64"
+      ]
     }
   ]
 }
