@@ -90,3 +90,14 @@ Make use of ElasticSearch, Fluentd and Kibana ( EFK ).
 
 ## Notes
 "We recommend to use debian version for production because it uses jemalloc to mitigate memory fragmentation issue."
+
+# CI/CD
+Giving [Concourse](https://concourse-ci.org/concourse-vs.html) a try.
+
+## References
+* [Setup](https://concourse-ci.org/docker-repository.html)
+* [Nomad privileged](https://www.nomadproject.io/docs/drivers/docker.html#privileged)
+* [Testing](https://concourse-ci.org/hello-world.html)
+* [Prometheus Support Discussion](https://github.com/concourse/concourse/issues/1540) ( open )
+  * [1st Part](https://github.com/concourse/atc/pull/216)
+
