@@ -1,0 +1,11 @@
+[Unit]
+Description=Nomad
+Documentation=https://nomadproject.io/docs/
+
+[Service]
+ExecStart=/opt/nomad/bin/nomad agent -config /opt/nomad/config  -data-dir /opt/nomad/data
+ExecReload=/bin/kill -HUP $MAINPID
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
