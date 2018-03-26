@@ -108,7 +108,9 @@ data "template_file" "user_data_consul_server" {
 # DEPLOY THE NOMAD CLIENT NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "nomad_clients" {
-  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
+  # source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
+  # HACK: Playing around with GlusterFS - additional EBS volume per client node needed.
+  source = "../../../terraform-aws-nomad/modules/nomad-cluster"
 
   cluster_name      = "${local.nomad_client_cluster_name}"
   cluster_tag_value = "${local.nomad_client_cluster_name}"
@@ -137,6 +139,7 @@ module "nomad_clients" {
   #    "${aws_security_group.sg_alb.id}",
   security_groups = [
     "${aws_security_group.sg_client.id}",
+    "${aws_security_group.sg_client_glusterfs.id}",
   ]
 }
 
