@@ -11,8 +11,9 @@ resource "random_pet" "unicorn" {
 module "nomad-infra" {
   source               = "../../"
   aws_region           = "${var.aws_region}"
-  nomad_ami_id         = "${var.ami}"
-  consul_ami_id        = "${var.ami}"
+  nomad_ami_id_servers = "${var.ami_servers}"
+  nomad_ami_id_clients = "${var.ami_clients}"
+  consul_ami_id        = "${var.ami_servers}"
   ssh_key_name         = "kp-us-east-1-playground-instancekey"
   env_name             = "${var.env_name}"
   unique_postfix       = "${random_pet.unicorn.id}"

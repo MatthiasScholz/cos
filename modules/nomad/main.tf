@@ -24,7 +24,7 @@ module "nomad_servers" {
   max_size         = "${var.num_nomad_servers}"
   desired_capacity = "${var.num_nomad_servers}"
 
-  ami_id    = "${var.nomad_ami_id}"
+  ami_id    = "${var.nomad_ami_id_servers}"
   user_data = "${data.template_file.user_data_nomad_server.rendered}"
 
   vpc_id     = "${var.vpc_id}"
@@ -120,7 +120,7 @@ module "nomad_clients" {
 
   max_size         = "${var.num_nomad_clients}"
   desired_capacity = "${var.num_nomad_clients}"
-  ami_id           = "${var.nomad_ami_id}"
+  ami_id           = "${var.nomad_ami_id_clients}"
   user_data        = "${data.template_file.user_data_nomad_client.rendered}"
   vpc_id           = "${var.vpc_id}"
   subnet_ids       = "${var.nomad_server_subnet_ids}"

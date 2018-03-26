@@ -2,8 +2,12 @@ variable "aws_region" {
   description = "region this stack should be applied to"
 }
 
-variable "nomad_ami_id" {
-  description = "The ID of the AMI to be used for the nomad nodes."
+variable "nomad_ami_id_servers" {
+  description = "The ID of the AMI to be used for the nomad server nodes."
+}
+
+variable "nomad_ami_id_clients" {
+  description = "The ID of the AMI to be used for the nomad clientnodes."
 }
 
 variable "consul_ami_id" {

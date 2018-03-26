@@ -16,7 +16,8 @@ data "aws_subnet_ids" "default" {
 module "nomad" {
   source                    = "modules/nomad"
   aws_region                = "${var.aws_region}"
-  nomad_ami_id              = "${var.nomad_ami_id}"
+  nomad_ami_id_servers      = "${var.nomad_ami_id_servers}"
+  nomad_ami_id_clients      = "${var.nomad_ami_id_clients}"
   consul_ami_id             = "${var.consul_ami_id}"
   ssh_key_name              = "${var.ssh_key_name}"
   vpc_id                    = "${module.networking.vpc_id}"
