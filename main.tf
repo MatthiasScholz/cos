@@ -1,3 +1,8 @@
+locals {
+  postfix             = "${length(var.unique_postfix) >= 1 ? "-${var.unique_postfix}" : ""}"
+  consul_cluster_name = "${var.stack_name}-consul${local.postfix}"
+}
+
 module "consul" {
   source                   = "modules/consul"
   env_name                 = "${var.env_name}"
@@ -6,7 +11,7 @@ module "consul" {
   vpc_id                   = "${var.vpc_id}"
   consul_server_subnet_ids = "${var.consul_server_subnet_ids}"
   consul_ami_id            = "${var.consul_ami_id}"
-  consul_cluster_name      = "MNG-${var.stack_name}-${var.env_name}-consul${var.unique_postfix}"
+  consul_cluster_name      = "${local.consul_cluster_name}"
   consul_num_servers       = "${var.consul_num_servers}"
   instance_type            = "${var.consul_instance_type}"
   allowed_ssh_cidr_blocks  = "${var.allowed_ssh_cidr_blocks}"
@@ -24,7 +29,7 @@ module "nomad" {
   nomad_server_subnet_ids   = "${var.nomad_server_subnet_ids}"
   unique_postfix            = "${var.unique_postfix}"
   nomad_cluster_name        = "${var.nomad_cluster_name}"
-  consul_cluster_name       = "${var.consul_cluster_name}"
+  consul_cluster_name       = "${local.consul_cluster_name}"
   env_name                  = "${var.env_name}"
   alb_public_services_arn   = "${var.alb_public_services_arn}"
   alb_backoffice_nomad_arn  = "${var.alb_backoffice_nomad_arn}"
