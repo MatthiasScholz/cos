@@ -7,4 +7,5 @@
 
 # Plan files
 cos.plan
+consul.plan
 *.tfvars

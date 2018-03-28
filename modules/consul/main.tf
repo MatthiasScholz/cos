@@ -5,16 +5,6 @@ terraform {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# ATTACH IAM POLICIES FOR CONSUL
-# To allow our server Nodes to automatically discover the Consul servers, we need to give them the IAM permissions from
-# the Consul AWS Module's consul-iam-policies module.
-# ---------------------------------------------------------------------------------------------------------------------
-module "consul_iam_policies_servers" {
-  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
-  iam_role_id = "${var.nomad_servers_iam_role_id}"
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY THE CONSUL SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_servers" {
@@ -53,16 +43,4 @@ data "template_file" "user_data_consul_server" {
     cluster_tag_key   = "${var.cluster_tag_key}"
     cluster_tag_value = "${var.consul_cluster_name}"
   }
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ATTACH IAM POLICIES FOR CONSUL
-# To allow our client Nodes to automatically discover the Consul servers, we need to give them the IAM permissions from
-# the Consul AWS Module's consul-iam-policies module.
-# ---------------------------------------------------------------------------------------------------------------------
-
-module "consul_iam_policies_clients" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
-
-  iam_role_id = "${var.nomad_clients_iam_role_id}"
 }

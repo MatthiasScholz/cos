@@ -19,7 +19,6 @@ CS --> BNW
 UI --> BNW
 UI --> NM: ASG of\nnomad-servers\nand -clients
 UI --> CS: ASG of\nconsul-servers
-CS --> NM: IAM role of\nnomad instances
 CS --> VARS: consul_cluster_name
 NM --> VARS: consul_cluster_name
 

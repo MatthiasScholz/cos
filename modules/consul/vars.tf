@@ -6,14 +6,6 @@ variable "env_name" {
   description = "name of the environment (i.e. prod)"
 }
 
-variable "nomad_servers_iam_role_id" {
-  description = "Id of the IAM-role of the nomad servers. This is needed in order to inject a policy that grants access to consul for service-discovery."
-}
-
-variable "nomad_clients_iam_role_id" {
-  description = "Id of the IAM-role of the nomad clients. This is needed in order to inject a policy that grants access to consul for service-discovery."
-}
-
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
