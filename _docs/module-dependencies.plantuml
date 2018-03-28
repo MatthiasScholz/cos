@@ -1,0 +1,14 @@
+@startuml "Dependencies of the modules of the cos-stack."
+
+(**ui-access:**proxy, dns,\nui alb's,\nui alb-attachment,\n ui alb-targetgroup) as (UI)
+(**networking:**\nvpc, subnets, peering,\nacl, routes, dns,\ningress alb,\ningress alb-attachment,\n ingress-alb-targetgroup) as NW
+(**nomad**) as (NM)  
+(**consul**) as (CS)
+
+(NM) --> (NW)
+(CS) --> (NW)
+(UI) --> (NW)
+(UI) --> (NM)
+(UI) --> (CS)
+
+@enduml
