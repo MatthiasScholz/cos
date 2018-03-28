@@ -82,3 +82,28 @@ variable "nomad_server_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad servers into."
   type        = "list"
 }
+
+variable "consul_server_subnet_ids" {
+  description = "Ids of the subnets to deploy the consul servers into."
+  type        = "list"
+}
+
+variable "stack_name" {
+  description = "Shortcut for this stack."
+  default     = "COS"
+}
+
+variable "consul_num_servers" {
+  description = "The number of Consul server nodes to deploy. We strongly recommend using 3 or 5."
+  default     = 3
+}
+
+variable "consul_instance_type" {
+  description = "The instance type for all consul server nodes."
+  default     = "t2.micro"
+}
+
+variable "allowed_ssh_cidr_blocks" {
+  description = "A list of cidr block from which inbound ssh traffic should be allowed."
+  type        = "list"
+}

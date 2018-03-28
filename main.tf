@@ -1,3 +1,18 @@
+module "consul" {
+  source                   = "modules/consul"
+  env_name                 = "${var.env_name}"
+  stack_name               = "${var.stack_name}"
+  aws_region               = "${var.aws_region}"
+  vpc_id                   = "${var.vpc_id}"
+  consul_server_subnet_ids = "${var.consul_server_subnet_ids}"
+  consul_ami_id            = "${var.consul_ami_id}"
+  consul_cluster_name      = "MNG-${var.stack_name}-${var.env_name}-consul${var.unique_postfix}"
+  consul_num_servers       = "${var.consul_num_servers}"
+  instance_type            = "${var.consul_instance_type}"
+  allowed_ssh_cidr_blocks  = "${var.allowed_ssh_cidr_blocks}"
+  ssh_key_name             = "${var.ssh_key_name}"
+}
+
 module "nomad" {
   source                    = "modules/nomad"
   aws_region                = "${var.aws_region}"

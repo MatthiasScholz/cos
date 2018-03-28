@@ -20,6 +20,7 @@ module "nomad-infra" {
   aws_region                = "${var.aws_region}"
   vpc_id                    = "${module.networking.vpc_id}"
   nomad_server_subnet_ids   = "${module.networking.subnet_ids}"
+  consul_server_subnet_ids  = "${module.networking.subnet_ids}"
   nomad_ami_id_servers      = "${var.ami_servers}"
   nomad_ami_id_clients      = "${var.ami_clients}"
   consul_ami_id             = "${var.ami_servers}"
@@ -36,4 +37,5 @@ module "nomad-infra" {
   alb_backoffice_nomad_arn  = "${module.networking.alb_backoffice_nomad_arn}"
   alb_backoffice_consul_arn = "${module.networking.alb_backoffice_consul_arn}"
   alb_backoffice_fabio_arn  = "${module.networking.alb_backoffice_fabio_arn}"
+  allowed_ssh_cidr_blocks   = ["0.0.0.0/0"]
 }

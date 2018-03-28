@@ -11,7 +11,7 @@ module "consul_servers" {
   source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
 
   cluster_name  = "${var.consul_cluster_name}"
-  cluster_size  = "${var.num_consul_servers}"
+  cluster_size  = "${var.consul_num_servers}"
   instance_type = "${var.instance_type}"
 
   # The EC2 Instances will use these tags to automatically discover each other and form a cluster

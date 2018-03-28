@@ -32,7 +32,7 @@ variable "allowed_ssh_cidr_blocks" {
   type        = "list"
 }
 
-variable "num_consul_servers" {
+variable "consul_num_servers" {
   description = "The number of Consul server nodes to deploy. We strongly recommend using 3 or 5."
   default     = 3
 }
