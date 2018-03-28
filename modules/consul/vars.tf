@@ -21,12 +21,10 @@ variable "aws_region" {
 
 variable "stack_name" {
   description = "shortcut for this stack"
-  default     = "COS"
 }
 
 variable "consul_cluster_name" {
   description = "What to name the Consul cluster and all of its associated resources"
-  default     = "consul-example"
 }
 
 variable "num_consul_servers" {
@@ -46,10 +44,5 @@ variable "cluster_tag_key" {
 
 variable "ssh_key_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this cluster. Set to an empty string to not associate a Key Pair."
-  default     = ""
-}
-
-variable "unique_postfix" {
-  description = "A postfix to be used to generate unique resource names per deployment."
   default     = ""
 }

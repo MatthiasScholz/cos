@@ -11,3 +11,13 @@ variable "consul_ami_id" {
   description = "The ID of the AMI to be used for the consul nodes."
   default     = "ami-a23feadf"
 }
+
+variable "stack_name" {
+  description = "shortcut for this stack"
+  default     = "COS"
+}
+
+variable "env_name" {
+  description = "name of the environment (i.e. prod)"
+  default     = "playground"
+}

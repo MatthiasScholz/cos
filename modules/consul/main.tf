@@ -10,7 +10,7 @@ terraform {
 module "consul_servers" {
   source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
 
-  cluster_name  = "${var.consul_cluster_name}-server"
+  cluster_name  = "${var.consul_cluster_name}"
   cluster_size  = "${var.num_consul_servers}"
   instance_type = "${var.instance_type}"
 
