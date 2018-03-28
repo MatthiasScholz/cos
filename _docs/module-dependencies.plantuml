@@ -1,14 +1,26 @@
-@startuml "Dependencies of the modules of the cos-stack."
+@startuml
 
-(**ui-access:**proxy, dns,\nui alb's,\nui alb-attachment,\n ui alb-targetgroup) as (UI)
-(**networking:**\nvpc, subnets, peering,\nacl, routes, dns,\ningress alb,\ningress alb-attachment,\n ingress-alb-targetgroup) as NW
-(**nomad**) as (NM)  
-(**consul**) as (CS)
+package "networking-stack"{
+  [vpc, subnets,\nacl, routes] as BNW
+  [peering]
+  [dns,\ningress alb\ningress alb-sg] as INGR
+}
 
-(NM) --> (NW)
-(CS) --> (NW)
-(UI) --> (NW)
-(UI) --> (NM)
-(UI) --> (CS)
+package "cos-stack"{
+  [**consul**] as CS
+  [**ui-access:**\nproxy, dns,\nui alb's,\nui alb-attachment,\n ui alb-targetgroup] as UI
+  [**nomad:**\ningress alb-attachment,\n ingress-alb-targetgroup] as NM
+  [**vars:**\nconsul_cluster_name] as VARS
+}
+
+NM --> BNW
+NM --> INGR
+CS --> BNW
+UI --> BNW
+UI --> NM: ASG of\nnomad-servers\nand -clients
+UI --> CS: ASG of\nconsul-servers
+CS --> NM: IAM role of\nnomad instances
+CS --> VARS: consul_cluster_name
+NM --> VARS: consul_cluster_name
 
 @enduml
