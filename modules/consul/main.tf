@@ -10,19 +10,19 @@ terraform {
 module "consul_servers" {
   source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
 
-  cluster_name  = "${var.consul_cluster_name}"
-  cluster_size  = "${var.consul_num_servers}"
+  cluster_name  = "${var.cluster_tag_value}"
+  cluster_size  = "${var.num_servers}"
   instance_type = "${var.instance_type}"
 
   # The EC2 Instances will use these tags to automatically discover each other and form a cluster
   cluster_tag_key   = "${var.cluster_tag_key}"
-  cluster_tag_value = "${var.consul_cluster_name}"
+  cluster_tag_value = "${var.cluster_tag_value}"
 
-  ami_id    = "${var.consul_ami_id}"
+  ami_id    = "${var.ami_id}"
   user_data = "${data.template_file.user_data_consul_server.rendered}"
 
   vpc_id     = "${var.vpc_id}"
-  subnet_ids = "${var.consul_server_subnet_ids}"
+  subnet_ids = "${var.subnet_ids}"
 
   allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
 
@@ -39,6 +39,6 @@ data "template_file" "user_data_consul_server" {
 
   vars {
     cluster_tag_key   = "${var.cluster_tag_key}"
-    cluster_tag_value = "${var.consul_cluster_name}"
+    cluster_tag_value = "${var.cluster_tag_value}"
   }
 }

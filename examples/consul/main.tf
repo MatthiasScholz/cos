@@ -1,6 +1,12 @@
+locals {
+  aws_region = "us-east-1"
+  stack_name = "COS"
+  env_name   = "playground"
+}
+
 provider "aws" {
   profile = "${var.deploy_profile}"
-  region  = "${var.aws_region}"
+  region  = "${local.aws_region}"
 }
 
 ### obtaining default vpc, security group and subnet of the env
@@ -13,13 +19,19 @@ data "aws_subnet_ids" "all" {
 }
 
 module "consul" {
-  source                   = "../../modules/consul"
-  env_name                 = "playground"
-  stack_name               = "COS"
-  aws_region               = "${var.aws_region}"
-  vpc_id                   = "${data.aws_vpc.default.id}"
-  consul_server_subnet_ids = "${data.aws_subnet_ids.all.ids}"
-  consul_ami_id            = "${var.consul_ami_id}"
-  consul_cluster_name      = "MNG-${var.stack_name}-${var.env_name}-consul"
-  allowed_ssh_cidr_blocks  = ["0.0.0.0/0"]
+  source = "../../modules/consul"
+
+  ## required parameters
+  vpc_id     = "${data.aws_vpc.default.id}"
+  subnet_ids = "${data.aws_subnet_ids.all.ids}"
+  ami_id     = "ami-a23feadf"
+
+  ## optional parameters
+  aws_region              = "${local.aws_region}"
+  env_name                = "${local.env_name}"
+  stack_name              = "${local.stack_name}"
+  cluster_tag_key         = "consul-servers"
+  cluster_tag_value       = "${local.stack_name}-${local.env_name}-consul-srv"
+  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
+  ssh_key_name            = "kp-us-east-1-playground-instancekey"
 }
