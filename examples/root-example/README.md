@@ -53,7 +53,10 @@ nomad run $job_dir/ping_service.nomad
 # 1. find the ip of one instance
 instance_ip=$(get_nomad_client_info.sh | awk '!/INSTANCE/{print $1}' | head -n 1)
 
-# call the service
+# call the service over instance directly
+watch -x curl -s http://$instance_ip:9999/ping
+
+# call the service over loadbalancer
 watch -x curl -s http://<name-of-loadbalancer>/ping
 ```
 
