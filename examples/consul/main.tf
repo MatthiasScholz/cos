@@ -21,4 +21,5 @@ module "consul" {
   consul_server_subnet_ids = "${data.aws_subnet_ids.all.ids}"
   consul_ami_id            = "${var.consul_ami_id}"
   consul_cluster_name      = "MNG-${var.stack_name}-${var.env_name}-consul"
+  allowed_ssh_cidr_blocks  = ["0.0.0.0/0"]
 }

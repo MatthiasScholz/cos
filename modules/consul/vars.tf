@@ -27,6 +27,11 @@ variable "consul_cluster_name" {
   description = "What to name the Consul cluster and all of its associated resources"
 }
 
+variable "allowed_ssh_cidr_blocks" {
+  description = "A list of cidr block from which inbound ssh traffic should be allowed."
+  type        = "list"
+}
+
 variable "num_consul_servers" {
   description = "The number of Consul server nodes to deploy. We strongly recommend using 3 or 5."
   default     = 3
