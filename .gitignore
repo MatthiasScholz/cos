@@ -8,4 +8,5 @@
 # Plan files
 cos.plan
 consul.plan
+ui.plan
 *.tfvars

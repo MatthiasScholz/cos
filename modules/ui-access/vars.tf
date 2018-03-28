@@ -7,6 +7,10 @@ variable "subnet_ids" {
   type        = "list"
 }
 
+variable "nomad_server_asg_name" {
+  description = "Name of the AutoScalingGroup of the nomad-servers."
+}
+
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
   default     = "playground"
