@@ -15,7 +15,6 @@ resource "aws_autoscaling_attachment" "asg_attachment_nomad_ui" {
   alb_target_group_arn   = "${aws_alb_target_group.targetgroup_nomad_ui.arn}"
 }
 
-
 ##########
 # Fabio UI
 ##########
@@ -54,7 +53,6 @@ resource "aws_alb_listener" "listener_http_ui_fabio" {
     type             = "forward"
   }
 }
-
 
 ###########
 # Consul UI

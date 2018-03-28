@@ -49,7 +49,6 @@ resource "aws_alb_listener" "alb_dummy-backoffice-nomad" {
   }
 }
 
-
 ############################################
 # The application loadbalancer for Consul UI
 ############################################
@@ -63,7 +62,6 @@ resource "aws_alb" "alb_backoffice_consul" {
     Name = "${var.stack_name}-${var.region}${element(var.az_postfixes,count.index)}-ALB-backoffice-consul"
   }
 }
-
 
 # Listener with empty dummy target group
 resource "aws_alb_target_group" "tgr_dummy_backoffice_consul" {
@@ -93,7 +91,6 @@ resource "aws_alb_listener" "alb_dummy-backoffice-consul" {
     type             = "forward"
   }
 }
-
 
 ###########################################
 # The application loadbalancer for Fabio UI

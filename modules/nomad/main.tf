@@ -69,9 +69,9 @@ data "template_file" "user_data_nomad_server" {
 module "consul_servers" {
   source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
 
-  cluster_name   = "${var.consul_cluster_name}-server"
-  cluster_size   = "${var.num_consul_servers}"
-  instance_type  = "${var.instance_type_server}"
+  cluster_name  = "${var.consul_cluster_name}-server"
+  cluster_size  = "${var.num_consul_servers}"
+  instance_type = "${var.instance_type_server}"
 
   # The EC2 Instances will use these tags to automatically discover each other and form a cluster
   cluster_tag_key   = "${var.cluster_tag_key}"

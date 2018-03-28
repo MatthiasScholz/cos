@@ -30,7 +30,6 @@ resource "aws_security_group_rule" "sgr_client_ig_fabio_health" {
   security_group_id = "${aws_security_group.sg_client.id}"
 }
 
-
 resource "aws_security_group_rule" "sgr_client_ig_fabio" {
   type              = "ingress"
   description       = "Fabio Load Balancer"
