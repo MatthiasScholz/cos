@@ -10,6 +10,7 @@ cos.plan
 consul.plan
 ui.plan
 *.tfvars
+.terraform.tfstate.lock.info
 
 # folder with generated files
 out/
