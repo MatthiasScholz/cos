@@ -66,6 +66,11 @@ variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
 
+variable "nomad_clients_public_services_subnet_ids" {
+  description = "Ids of the subnets to deploy the nomad client nodes providing the data-center public-services into."
+  type        = "list"
+}
+
 variable "nomad_server_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad servers into."
   type        = "list"

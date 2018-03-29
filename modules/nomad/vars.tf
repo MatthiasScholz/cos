@@ -79,7 +79,26 @@ variable "ingress_controller_port" {
   default     = 9999
 }
 
-variable "client_data_center_names" {
-  type    = "list"
-  default = ["public-services", "private-services", "content-connector"]
+variable "clients_public_services_subnet_ids" {
+  description = "Subnet id's for nomad client nodes providing the data-center public-services."
+  type        = "list"
+}
+
+variable "client_public_services_cfg" {
+  description = "Configuration for the nomad client nodes providing the data-center public-services."
+  type        = "map"
+
+  default = {
+    "data-center"      = "public-services"
+    "min"              = 2
+    "max"              = 2
+    "desired_capacity" = 2
+    "instance_type"    = "t2.micro"
+  }
+}
+
+variable "allowed_ssh_cidr_blocks" {
+  description = "A list of cidr block from which inbound ssh traffic should be allowed."
+  type        = "list"
+  default     = []
 }

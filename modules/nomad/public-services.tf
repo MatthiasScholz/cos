@@ -1,24 +1,31 @@
+# reading values from the client_public_services_cfg
+locals {
+  publ_srv_data_center      = "${lookup(var.client_public_services_cfg,"data-center","INVALID")}"
+  publ_srv_min              = "${lookup(var.client_public_services_cfg,"min","INVALID")}"
+  publ_srv_max              = "${lookup(var.client_public_services_cfg,"max","INVALID")}"
+  publ_srv_desired_capacity = "${lookup(var.client_public_services_cfg,"desired_capacity","INVALID")}"
+  publ_srv_instance_type    = "${lookup(var.client_public_services_cfg,"instance_type","INVALID")}"
+  publ_cluster_name         = "nomad-client-${local.publ_srv_data_center}"
+}
+
 module "clients_public_services" {
   source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
 
-  cluster_name      = "${local.client_cluster_name}"
-  cluster_tag_value = "${local.client_cluster_name}"
-  instance_type     = "${var.instance_type_client}"
+  cluster_name            = "${local.publ_cluster_name}"
+  cluster_tag_value       = "${local.publ_cluster_name}"
+  instance_type           = "${local.publ_srv_instance_type}"
+  ami_id                  = "${var.ami_id_clients}"
+  vpc_id                  = "${var.vpc_id}"
+  subnet_ids              = "${var.clients_public_services_subnet_ids}"
+  allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
+  user_data               = "${data.template_file.user_data_clients_public_services.rendered}"
 
   # To keep the example simple, we are using a fixed-size cluster. In real-world usage, you could use auto scaling
   # policies to dynamically resize the cluster in response to load.
-  min_size = "${var.num_clients}"
+  min_size = "${local.publ_srv_min}"
 
-  max_size         = "${var.num_clients}"
-  desired_capacity = "${var.num_clients}"
-  ami_id           = "${var.ami_id_clients}"
-  user_data        = "${data.template_file.user_data_clients_public_services.rendered}"
-  vpc_id           = "${var.vpc_id}"
-  subnet_ids       = "${var.server_subnet_ids}"
-
-  # To make testing easier, we allow Consul and SSH requests from any IP address here but in a production
-  # deployment, we strongly recommend you limit this to the IP address ranges of known, trusted servers inside your VPC.
-  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
+  max_size         = "${local.publ_srv_max}"
+  desired_capacity = "${local.publ_srv_desired_capacity}"
 
   allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
   ssh_key_name                = "${var.ssh_key_name}"
@@ -49,6 +56,6 @@ data "template_file" "user_data_clients_public_services" {
   vars {
     cluster_tag_key   = "${var.consul_cluster_tag_key}"
     cluster_tag_value = "${var.consul_cluster_tag_value}"
-    datacenter        = "public-services"
+    datacenter        = "${local.publ_srv_data_center}"
   }
 }
