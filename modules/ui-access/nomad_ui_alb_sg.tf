@@ -1,6 +1,3 @@
-######################################
-# HACK: Expose nomad server related UI
-######################################
 resource "aws_security_group" "sg_nomad_ui_alb" {
   vpc_id      = "${var.vpc_id}"
   name        = "MNG-${var.stack_name}-${var.aws_region}-${var.env_name}-SG-nomad-ui-alb"
