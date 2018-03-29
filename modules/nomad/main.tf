@@ -5,8 +5,8 @@ terraform {
 }
 
 locals {
-  nomad_client_cluster_name = "${var.nomad_cluster_name}-client"
-  nomad_server_cluster_name = "${var.nomad_cluster_name}-server"
+  client_cluster_name = "${var.cluster_name}-client"
+  server_cluster_name = "${var.cluster_name}-server"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -15,20 +15,20 @@ locals {
 module "nomad_servers" {
   source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
 
-  cluster_name      = "${local.nomad_server_cluster_name}"
-  cluster_tag_value = "${local.nomad_server_cluster_name}"
+  cluster_name      = "${local.server_cluster_name}"
+  cluster_tag_value = "${local.server_cluster_name}"
   instance_type     = "${var.instance_type_server}"
 
   # You should typically use a fixed size of 3 or 5 for your Nomad server cluster
-  min_size         = "${var.num_nomad_servers}"
-  max_size         = "${var.num_nomad_servers}"
-  desired_capacity = "${var.num_nomad_servers}"
+  min_size         = "${var.num_servers}"
+  max_size         = "${var.num_servers}"
+  desired_capacity = "${var.num_servers}"
 
-  ami_id    = "${var.nomad_ami_id_servers}"
-  user_data = "${data.template_file.user_data_nomad_server.rendered}"
+  ami_id    = "${var.ami_id_servers}"
+  user_data = "${data.template_file.user_data_server.rendered}"
 
   vpc_id     = "${var.vpc_id}"
-  subnet_ids = "${var.nomad_server_subnet_ids}"
+  subnet_ids = "${var.server_subnet_ids}"
 
   # To make testing easier, we allow requests from any IP address here but in a production deployment, we strongly
   # recommend you limit this to the IP address ranges of known, trusted servers inside your VPC.
@@ -52,11 +52,11 @@ module "consul_iam_policies_servers" {
 # THE USER DATA SCRIPT THAT WILL RUN ON EACH NOMAD SERVER NODE WHEN IT'S BOOTING
 # This script will configure and start Nomad
 # ---------------------------------------------------------------------------------------------------------------------
-data "template_file" "user_data_nomad_server" {
+data "template_file" "user_data_server" {
   template = "${file("${path.module}/user-data-nomad-server.sh")}"
 
   vars {
-    num_servers       = "${var.num_nomad_servers}"
+    num_servers       = "${var.num_servers}"
     cluster_tag_key   = "${var.consul_cluster_tag_key}"
     cluster_tag_value = "${var.consul_cluster_tag_value}"
     datacenter        = "backoffice"
@@ -69,20 +69,20 @@ data "template_file" "user_data_nomad_server" {
 module "nomad_clients" {
   source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
 
-  cluster_name      = "${local.nomad_client_cluster_name}"
-  cluster_tag_value = "${local.nomad_client_cluster_name}"
+  cluster_name      = "${local.client_cluster_name}"
+  cluster_tag_value = "${local.client_cluster_name}"
   instance_type     = "${var.instance_type_client}"
 
   # To keep the example simple, we are using a fixed-size cluster. In real-world usage, you could use auto scaling
   # policies to dynamically resize the cluster in response to load.
-  min_size = "${var.num_nomad_clients}"
+  min_size = "${var.num_clients}"
 
-  max_size         = "${var.num_nomad_clients}"
-  desired_capacity = "${var.num_nomad_clients}"
-  ami_id           = "${var.nomad_ami_id_clients}"
-  user_data        = "${data.template_file.user_data_nomad_client.rendered}"
+  max_size         = "${var.num_clients}"
+  desired_capacity = "${var.num_clients}"
+  ami_id           = "${var.ami_id_clients}"
+  user_data        = "${data.template_file.user_data_client.rendered}"
   vpc_id           = "${var.vpc_id}"
-  subnet_ids       = "${var.nomad_server_subnet_ids}"
+  subnet_ids       = "${var.server_subnet_ids}"
 
   # To make testing easier, we allow Consul and SSH requests from any IP address here but in a production
   # deployment, we strongly recommend you limit this to the IP address ranges of known, trusted servers inside your VPC.
@@ -116,7 +116,7 @@ module "consul_iam_policies_clients" {
 # This script will configure and start Consul and Nomad
 # ---------------------------------------------------------------------------------------------------------------------
 
-data "template_file" "user_data_nomad_client" {
+data "template_file" "user_data_client" {
   template = "${file("${path.module}/user-data-nomad-client.sh")}"
 
   vars {

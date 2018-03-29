@@ -32,12 +32,12 @@ variable "ami_clients" {
   default     = "ami-a23feadf"
 }
 
-variable "num_nomad_servers" {
+variable "nomad_num_servers" {
   description = "The number of Nomad server nodes to deploy. You can deploy as many as you need to run your jobs."
   default     = 3
 }
 
-variable "num_nomad_clients" {
+variable "nomad_num_clients" {
   description = "The number of Nomad client nodes to deploy. You can deploy as many as you need to run your jobs."
   default     = 3
 }

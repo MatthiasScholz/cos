@@ -1,8 +1,8 @@
-variable "nomad_ami_id_servers" {
+variable "ami_id_servers" {
   description = "The ID of the AMI to be used for the nomad server nodes."
 }
 
-variable "nomad_ami_id_clients" {
+variable "ami_id_clients" {
   description = "The ID of the AMI to be used for the nomad client nodes."
 }
 
@@ -18,7 +18,7 @@ variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
 
-variable "nomad_server_subnet_ids" {
+variable "server_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad servers into."
   type        = "list"
 }
@@ -27,17 +27,17 @@ variable "aws_region" {
   description = "The AWS region to deploy into (e.g. us-east-1)."
 }
 
-variable "nomad_cluster_name" {
+variable "cluster_name" {
   description = "What to name the Nomad cluster and all of its associated resources"
   default     = "nomad-example"
 }
 
-variable "num_nomad_servers" {
+variable "num_servers" {
   description = "The number of Nomad server nodes to deploy. We strongly recommend using 3 or 5."
   default     = 3
 }
 
-variable "num_nomad_clients" {
+variable "num_clients" {
   description = "The number of Nomad client nodes to deploy. You can deploy as many as you need to run your jobs."
   default     = 3
 }
