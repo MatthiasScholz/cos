@@ -1,3 +1,4 @@
+#### Required Variables ############################################
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
@@ -7,6 +8,19 @@ variable "subnet_ids" {
   type        = "list"
 }
 
+variable "nomad_server_asg_name" {
+  description = "Name of the AutoScalingGroup of the nomad-servers."
+}
+
+variable "consul_server_asg_name" {
+  description = "Name of the AutoScalingGroup of the consul-servers."
+}
+
+variable "fabio_server_asg_name" {
+  description = "Name of the AutoScalingGroup of the fabio-servers."
+}
+
+#### Optional Variables ############################################
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
   default     = "playground"
@@ -22,26 +36,14 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
-variable "nomad_server_asg_name" {
-  description = "Name of the AutoScalingGroup of the nomad-servers."
-}
-
 variable "nomad_ui_port" {
   description = "The port to access the nomad ui."
   default     = 4646
 }
 
-variable "consul_server_asg_name" {
-  description = "Name of the AutoScalingGroup of the consul-servers."
-}
-
 variable "consul_ui_port" {
   description = "The port to access the consul ui."
   default     = 8500
-}
-
-variable "fabio_server_asg_name" {
-  description = "Name of the AutoScalingGroup of the fabio-servers."
 }
 
 variable "fabio_ui_port" {

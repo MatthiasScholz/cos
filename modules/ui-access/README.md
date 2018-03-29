@@ -21,3 +21,7 @@ module "ui-access" {
   fabio_server_asg_name  = # ....
 }
 ```
+
+## allowed_cidr_blocks_for_ui_alb
+
+The access to the ui alb's is restricted to certain ip's. In order to access the ui's you have to extend the ```allowed_cidr_blocks_for_ui_alb``` by adding your ip.
