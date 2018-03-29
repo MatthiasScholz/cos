@@ -18,9 +18,16 @@ nomad node-status
 echo "[INFO] [${SCRIPT}] Deploying some jobs"
 nomad run ../jobs/fabio.nomad
 nomad run ../jobs/ping_service.nomad
-nomad run ../jobs/cicd.nomad
+#nomad run ../jobs/cicd.nomad
 
 sleep 5
 
 echo "[INFO] [${SCRIPT}] Current state jobs"
 nomad status
+
+sleep 5
+
+echo "[INFO] [${SCRIPT}] Open ui's"
+xdg-open $(get_ui_albs.sh | awk '/consul/ {print $3}')
+xdg-open $(get_ui_albs.sh | awk '/nomad/ {print $3}')
+xdg-open $(get_ui_albs.sh | awk '/fabio/ {print $3}')
