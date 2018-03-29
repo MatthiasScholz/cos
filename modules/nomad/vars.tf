@@ -97,6 +97,42 @@ variable "client_public_services_cfg" {
   }
 }
 
+variable "clients_private_services_subnet_ids" {
+  description = "Subnet id's for nomad client nodes providing the data-center private-services."
+  type        = "list"
+}
+
+variable "client_private_services_cfg" {
+  description = "Configuration for the nomad client nodes providing the data-center private-services."
+  type        = "map"
+
+  default = {
+    "data-center"      = "private-services"
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+    "instance_type"    = "t2.micro"
+  }
+}
+
+variable "clients_content_connector_subnet_ids" {
+  description = "Subnet id's for nomad client nodes providing the data-center content-connector."
+  type        = "list"
+}
+
+variable "client_content_connector_cfg" {
+  description = "Configuration for the nomad client nodes providing the data-center content-connector."
+  type        = "map"
+
+  default = {
+    "data-center"      = "content-connector"
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+    "instance_type"    = "t2.micro"
+  }
+}
+
 variable "allowed_ssh_cidr_blocks" {
   description = "A list of cidr block from which inbound ssh traffic should be allowed."
   type        = "list"

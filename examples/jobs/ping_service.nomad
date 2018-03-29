@@ -1,7 +1,7 @@
 # job>group>task>service
 # container for tasks or task-groups that nomad should run
 job "ping_service" {
-  datacenters = ["public-services"]
+  datacenters = ["public-services","private-services","content-connector"]
   type = "service"
 
   meta {
@@ -11,7 +11,7 @@ job "ping_service" {
   # The group stanza defines a series of tasks that should be co-located on the same Nomad client.
   # Any task within a group will be placed on the same client.
   group "ping_service_group" {
-    count = 3
+    count = 4
 
     # restart-policy
     restart {

@@ -71,6 +71,16 @@ variable "nomad_clients_public_services_subnet_ids" {
   type        = "list"
 }
 
+variable "nomad_clients_private_services_subnet_ids" {
+  description = "Ids of the subnets to deploy the nomad client nodes providing the data-center private-services into."
+  type        = "list"
+}
+
+variable "nomad_clients_content_connector_subnet_ids" {
+  description = "Ids of the subnets to deploy the nomad client nodes providing the data-center content-connector into."
+  type        = "list"
+}
+
 variable "nomad_server_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad servers into."
   type        = "list"
