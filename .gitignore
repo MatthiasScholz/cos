@@ -10,3 +10,6 @@ cos.plan
 consul.plan
 ui.plan
 *.tfvars
+
+# folder with generated files
+out/

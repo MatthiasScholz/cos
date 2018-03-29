@@ -8,9 +8,8 @@ package "networking-stack"{
 
 package "cos-stack"{
   [**consul**] as CS
-  [**ui-access:**\nproxy, dns,\nui alb's,\nui alb-attachment,\n ui alb-targetgroup] as UI
+  [**ui-access:**\ndns,\nui alb's,\nui alb-attachment,\n ui alb-targetgroup] as UI
   [**nomad:**\ningress alb-attachment,\n ingress-alb-targetgroup] as NM
-  [**vars:**\nconsul_cluster_name] as VARS
 }
 
 NM --> BNW
@@ -19,7 +18,5 @@ CS --> BNW
 UI --> BNW
 UI --> NM: ASG of\nnomad-servers\nand -clients
 UI --> CS: ASG of\nconsul-servers
-CS --> VARS: consul_cluster_name
-NM --> VARS: consul_cluster_name
 
 @enduml
