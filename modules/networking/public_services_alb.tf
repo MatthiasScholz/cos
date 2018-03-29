@@ -1,6 +1,10 @@
+locals {
+  dummy_port = 6000
+}
+
 # the application loadbalancer
 resource "aws_alb" "alb_public_services" {
-  name            = "alb-public-services"
+  name_prefix     = "pubsrv"
   internal        = false
   subnets         = ["${aws_subnet.subn_public.*.id}"]
   security_groups = ["${aws_security_group.sg_public_services_alb.id}"]
@@ -10,16 +14,12 @@ resource "aws_alb" "alb_public_services" {
   }
 }
 
-locals {
-  dummy_port = 6000
-}
-
 # Listener with empty dummy target group
 resource "aws_alb_target_group" "tgr_dummy_public_services" {
-  name     = "tgr-dummy-public-${var.unique_postfix}"
-  port     = "${local.dummy_port}"
-  protocol = "HTTP"
-  vpc_id   = "${aws_vpc.vpc_main.id}"
+  name_prefix = "pdummy"
+  port        = "${local.dummy_port}"
+  protocol    = "HTTP"
+  vpc_id      = "${aws_vpc.vpc_main.id}"
 
   tags {
     Name = "${var.stack_name}-${var.region}${element(var.az_postfixes,count.index)}-TGR-public-services"

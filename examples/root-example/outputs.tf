@@ -31,7 +31,7 @@ output "consul_ui_alb_dns" {
 }
 
 output "curl_consul_ui" {
-  value = "curl http://${module.nomad-infra.consul_ui_alb_dns}/v1/status/leader"
+  value = "curl http://${module.nomad-infra.consul_ui_alb_dns}/ui"
 }
 
 output "fabio_ui_alb_dns" {
@@ -39,5 +39,5 @@ output "fabio_ui_alb_dns" {
 }
 
 output "curl_fabio_ui" {
-  value = "curl http://${module.nomad-infra.fabio_ui_alb_dns}/health"
+  value = "curl http://${module.nomad-infra.fabio_ui_alb_dns}"
 }

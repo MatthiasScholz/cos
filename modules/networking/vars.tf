@@ -5,13 +5,13 @@ variable "ip_prefix" {
 
 variable "stack_name" {
   description = "shortcut for this stack"
-  default     = "NOMAD"
+  default     = "COS"
 }
 
 variable "az_postfixes" {
   description = "list of AZ postfixes"
   type        = "list"
-  default     = ["a", "b"]
+  default     = ["a", "b", "c"]
 }
 
 variable "region" {
@@ -20,9 +20,4 @@ variable "region" {
 
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
-}
-
-variable "unique_postfix" {
-  description = "A postfix to be used to generate unique resource names per deployment."
-  default     = ""
 }
