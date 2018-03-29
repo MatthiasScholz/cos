@@ -1,7 +1,7 @@
 ## ALB -> ALB-Listener (port 80) -forwards to -> target-group (on port 8500) which is attached to the 
 ## AutoScalingGroup that maintains the consul-servers.
 resource "aws_alb" "alb_consul_ui" {
-  name_prefix     = "alb-consul-ui"
+  name_prefix     = "consul"
   internal        = false
   subnets         = ["${var.subnet_ids}"]
   security_groups = ["${aws_security_group.sg_ui_alb.id}"]
@@ -17,7 +17,7 @@ resource "aws_autoscaling_attachment" "asg_attachment_consul_ui" {
 }
 
 resource "aws_alb_target_group" "tgr_consul_ui" {
-  name_prefix = "tgr-consul-ui"
+  name_prefix = "consul"
   port        = "${var.consul_ui_port}"
   protocol    = "HTTP"
   vpc_id      = "${var.vpc_id}"

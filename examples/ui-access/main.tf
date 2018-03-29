@@ -82,13 +82,13 @@ module "ui-access" {
   source = "../../modules/ui-access"
 
   ## required parameters
-  vpc_id                = "${data.aws_vpc.default.id}"
-  subnet_ids            = "${data.aws_subnet_ids.all.ids}"
-  nomad_server_asg_name = "${aws_autoscaling_group.asg_sample.name}"
+  vpc_id                 = "${data.aws_vpc.default.id}"
+  subnet_ids             = "${data.aws_subnet_ids.all.ids}"
+  nomad_server_asg_name  = "${aws_autoscaling_group.asg_sample.name}"
+  consul_server_asg_name = "${aws_autoscaling_group.asg_sample.name}"
 
   ## optional parameters
-  aws_region     = "${local.aws_region}"
-  env_name       = "${local.env_name}"
-  stack_name     = "${local.stack_name}"
-  unique_postfix = "-example"
+  aws_region = "${local.aws_region}"
+  env_name   = "${local.env_name}"
+  stack_name = "${local.stack_name}"
 }
