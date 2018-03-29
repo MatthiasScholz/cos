@@ -17,10 +17,10 @@ nohup busybox httpd -f -p ${nomad_ui_port} &
 
 
 cd ..
-mkdir -p consul/ui
+mkdir -p consul/v1/status/
 cd  consul
 
-cat > ui/index.html <<EOF
+cat > /v1/status/leader <<EOF
 <h1>Consul UI</h1>
 EOF
 

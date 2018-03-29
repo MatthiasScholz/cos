@@ -7,10 +7,6 @@ variable "subnet_ids" {
   type        = "list"
 }
 
-variable "nomad_server_asg_name" {
-  description = "Name of the AutoScalingGroup of the nomad-servers."
-}
-
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
   default     = "playground"
@@ -26,14 +22,22 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
-variable "unique_postfix" {
-  description = "A postfix to be used to generate unique resource names per deployment."
-  default     = ""
+variable "nomad_server_asg_name" {
+  description = "Name of the AutoScalingGroup of the nomad-servers."
 }
 
 variable "nomad_ui_port" {
   description = "The port to access the nomad ui."
   default     = 4646
+}
+
+variable "consul_server_asg_name" {
+  description = "Name of the AutoScalingGroup of the consul-servers."
+}
+
+variable "consul_ui_port" {
+  description = "The port to access the consul ui."
+  default     = 8500
 }
 
 variable "allowed_cidr_blocks_for_ui_alb" {
