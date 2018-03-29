@@ -23,6 +23,8 @@ module "nomad_servers" {
 
   allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
   ssh_key_name                = "${var.ssh_key_name}"
+
+  security_groups = ["${aws_security_group.sg_server.id}"]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

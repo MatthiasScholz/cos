@@ -5,7 +5,7 @@ locals {
   publ_srv_max              = "${lookup(var.client_public_services_cfg,"max","INVALID")}"
   publ_srv_desired_capacity = "${lookup(var.client_public_services_cfg,"desired_capacity","INVALID")}"
   publ_srv_instance_type    = "${lookup(var.client_public_services_cfg,"instance_type","INVALID")}"
-  publ_cluster_name         = "nomad-client-${local.publ_srv_data_center}"
+  publ_cluster_name         = "${var.stack_name}-${var.env_name}-${local.publ_srv_data_center}"
 }
 
 module "clients_public_services" {
@@ -19,23 +19,21 @@ module "clients_public_services" {
   subnet_ids              = "${var.clients_public_services_subnet_ids}"
   allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
   user_data               = "${data.template_file.user_data_clients_public_services.rendered}"
+  ssh_key_name            = "${var.ssh_key_name}"
 
   # To keep the example simple, we are using a fixed-size cluster. In real-world usage, you could use auto scaling
   # policies to dynamically resize the cluster in response to load.
-  min_size = "${local.publ_srv_min}"
 
+  min_size         = "${local.publ_srv_min}"
   max_size         = "${local.publ_srv_max}"
   desired_capacity = "${local.publ_srv_desired_capacity}"
-
-  allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name                = "${var.ssh_key_name}"
-
-  # HACK: Take the connected ALB configuration for the nomad client ui export.
-  # FIXME: This will open port: 80 as well, but this is negligible.
-  #    "${aws_security_group.sg_alb.id}",
   security_groups = [
     "${aws_security_group.sg_client.id}",
   ]
+  # Access over cidr blocks is disabled here.
+  # The need access for the nomad-server is granted over the 
+  # aws_security_group.sg_client.id.
+  allowed_inbound_cidr_blocks = ["0.0.0.0/32"]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

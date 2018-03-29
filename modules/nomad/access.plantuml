@@ -1,0 +1,17 @@
+@startuml
+
+package "backoffice"{
+  [**sg_server**\n(security-group of the nomad-server)] as SG_SERVER
+}
+
+package "services"{
+  [**Public-Services**] as SG_PULBIC
+}
+
+[**sg_client**\n(security-group of the nomad-clients)] as SG_CLIENT
+
+SG_PULBIC --> SG_CLIENT: uses
+SG_CLIENT --> SG_SERVER: grants: \ntcp 4646-4648\nudp 4648
+
+
+@enduml

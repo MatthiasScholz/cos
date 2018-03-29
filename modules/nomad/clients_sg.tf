@@ -50,6 +50,28 @@ resource "aws_security_group_rule" "sgr_client_ig_docker" {
   security_group_id = "${aws_security_group.sg_client.id}"
 }
 
+# rule that grants TCP ingress access from nomad-server to nomad-clients
+resource "aws_security_group_rule" "sgr_client_tcp_ig_from_nomad_server" {
+  type                     = "ingress"
+  description              = "tcp ingress from Nomad Servers"
+  from_port                = 4646
+  to_port                  = 4648
+  protocol                 = "tcp"
+  source_security_group_id = "${aws_security_group.sg_server.id}"
+  security_group_id        = "${aws_security_group.sg_client.id}"
+}
+
+# rule that grants UDP ingress access from nomad-server to nomad-clients
+resource "aws_security_group_rule" "sgr_client_udp_ig_from_nomad_server" {
+  type                     = "ingress"
+  description              = "udp ingress from Nomad Servers"
+  from_port                = 4648
+  to_port                  = 4648
+  protocol                 = "udp"
+  source_security_group_id = "${aws_security_group.sg_server.id}"
+  security_group_id        = "${aws_security_group.sg_client.id}"
+}
+
 # EGRESS
 # grants access for all tcp but only to the services subnet
 resource "aws_security_group_rule" "sgr_client_eg_all" {
