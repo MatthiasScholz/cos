@@ -40,6 +40,15 @@ variable "consul_ui_port" {
   default     = 8500
 }
 
+variable "fabio_server_asg_name" {
+  description = "Name of the AutoScalingGroup of the fabio-servers."
+}
+
+variable "fabio_ui_port" {
+  description = "The port to access the fabio ui."
+  default     = 9998
+}
+
 variable "allowed_cidr_blocks_for_ui_alb" {
   type = "map"
 

@@ -75,6 +75,7 @@ data "template_file" "user_data" {
   vars {
     nomad_ui_port  = 4646
     consul_ui_port = 8500
+    fabio_ui_port  = 9998
   }
 }
 
@@ -86,6 +87,7 @@ module "ui-access" {
   subnet_ids             = "${data.aws_subnet_ids.all.ids}"
   nomad_server_asg_name  = "${aws_autoscaling_group.asg_sample.name}"
   consul_server_asg_name = "${aws_autoscaling_group.asg_sample.name}"
+  fabio_server_asg_name  = "${aws_autoscaling_group.asg_sample.name}"
 
   ## optional parameters
   aws_region = "${local.aws_region}"

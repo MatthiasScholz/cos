@@ -7,14 +7,17 @@ The module creates:
 
 ## How to use this module
 
-* [ ] TODO: adjust this documentation
-
-At [examples/parking](../../examples/parking/) there is a full running example (incl. minimal needed environment).
+At [examples/ui-access](../../examples/ui-access/) there is a full running example (incl. minimal needed environment).
 
 ```bash
-module "parking" {
-  source = "git::ssh://git@git.mib3.technisat-digital/mib3-navigation/tsd.nav.cloud.infrastructure.modules.git?ref=snapshot//services/poi/modules/parking"
+module "ui-access" {
+  source = "../../modules/ui-access"
 
-  # for parameters see vars.tf and the inputs section
+  ## required parameters
+  vpc_id                 = # ....
+  subnet_ids             = # ....
+  nomad_server_asg_name  = # ....
+  consul_server_asg_name = # ....
+  fabio_server_asg_name  = # ....
 }
 ```
