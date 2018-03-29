@@ -11,7 +11,7 @@ job "ping_service" {
   # The group stanza defines a series of tasks that should be co-located on the same Nomad client.
   # Any task within a group will be placed on the same client.
   group "ping_service_group" {
-    count = 4
+    count = 5
 
     # restart-policy
     restart {
