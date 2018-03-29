@@ -73,15 +73,3 @@ variable "unique_postfix" {
 variable "alb_public_services_arn" {
   description = "The arn of the alb for public-services access."
 }
-
-variable "alb_backoffice_nomad_arn" {
-  description = "The arn of the alb for backoffice access (nomad ui)."
-}
-
-variable "alb_backoffice_consul_arn" {
-  description = "The arn of the alb for backoffice access (consul ui)."
-}
-
-variable "alb_backoffice_fabio_arn" {
-  description = "The arn of the alb for backoffice access (fabio ui)."
-}

@@ -17,3 +17,15 @@ output "num_nomad_servers" {
 output "nomad_clients_cluster_tag_value" {
   value = "${module.nomad.nomad_clients_cluster_tag_value}"
 }
+
+output "nomad_ui_alb_dns" {
+  value = "${module.ui-access.nomad_ui_alb_dns}"
+}
+
+output "consul_ui_alb_dns" {
+  value = "${module.ui-access.consul_ui_alb_dns}"
+}
+
+output "fabio_ui_alb_dns" {
+  value = "${module.ui-access.fabio_ui_alb_dns}"
+}

@@ -62,18 +62,6 @@ variable "alb_public_services_arn" {
   description = "The arn of the alb for public-services access."
 }
 
-variable "alb_backoffice_nomad_arn" {
-  description = "The arn of the alb for backoffice access (nomad ui)."
-}
-
-variable "alb_backoffice_consul_arn" {
-  description = "The arn of the alb for backoffice access (consul ui)."
-}
-
-variable "alb_backoffice_fabio_arn" {
-  description = "The arn of the alb for backoffice access (fabio ui)."
-}
-
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
@@ -85,6 +73,11 @@ variable "nomad_server_subnet_ids" {
 
 variable "consul_server_subnet_ids" {
   description = "Ids of the subnets to deploy the consul servers into."
+  type        = "list"
+}
+
+variable "alb_subnet_ids" {
+  description = "Ids of the subnets to deploy the alb's into."
   type        = "list"
 }
 
