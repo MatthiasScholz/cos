@@ -47,6 +47,14 @@ nomad run $job_dir/fabio.nomad
 nomad run $job_dir/ping_service.nomad
 ```
 
+## Open UI's
+
+```bash
+xdg-open $(get_ui_albs.sh | awk '/consul/ {print $3}') &&\
+xdg-open $(get_ui_albs.sh | awk '/nomad/ {print $3}') &&\
+xdg-open $(get_ui_albs.sh | awk '/fabio/ {print $3}')
+```
+
 ## Test the service
 
 ```bash
