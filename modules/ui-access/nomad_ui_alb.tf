@@ -4,7 +4,7 @@ resource "aws_alb" "alb_nomad_ui" {
   name            = "alb-nomad-ui${var.unique_postfix}"
   internal        = false
   subnets         = ["${var.subnet_ids}"]
-  security_groups = ["${aws_security_group.sg_nomad_ui_alb.id}"]
+  security_groups = ["${aws_security_group.sg_ui_alb.id}"]
 
   tags {
     Name = "${var.stack_name}-${var.aws_region}-ALB-nomad-ui"

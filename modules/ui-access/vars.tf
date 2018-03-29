@@ -30,3 +30,17 @@ variable "unique_postfix" {
   description = "A postfix to be used to generate unique resource names per deployment."
   default     = ""
 }
+
+variable "nomad_ui_port" {
+  description = "The port to access the nomad ui."
+  default     = 4646
+}
+
+variable "allowed_cidr_blocks_for_ui_alb" {
+  type = "map"
+
+  default = {
+    "pcc_dev" = "80.146.215.90/32"
+    "thomas"  = "95.90.215.115/32"
+  }
+}
