@@ -84,7 +84,7 @@ function get_nomad_client_info {
   fi 
 
   aws_region=$(get_required_terraform_output "aws_region")
-  cluster_tag_value=$(get_required_terraform_output "nomad_clients_cluster_tag_value")
+  cluster_tag_value=$(get_required_terraform_output "nomad_clients_public_services_cluster_tag_value")
 
   if [ -z "$cluster_tag_value" ];then
     cluster_tag_value="$(get_required_terraform_output "nomad_servers_cluster_tag_value")-client"

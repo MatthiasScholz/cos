@@ -78,3 +78,8 @@ variable "ingress_controller_port" {
   description = "The port of the ingress controller (i.e. fabio)."
   default     = 9999
 }
+
+variable "client_data_center_names" {
+  type    = "list"
+  default = ["public-services", "private-services", "content-connector"]
+}

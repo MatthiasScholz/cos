@@ -2,7 +2,7 @@
 # Policy-attachment that grants read access to AWS ECR for nomad clients
 resource "aws_iam_role_policy_attachment" "irpa_ecr_read_access" {
   # FIXME: Because of this constellation it is not possible to provide the ECR access configuration as module.
-  role       = "${module.nomad_clients.iam_role_id}"
+  role       = "${module.clients_public_services.iam_role_id}"
   policy_arn = "${aws_iam_policy.ip_ecr_read_access.arn}"
 }
 

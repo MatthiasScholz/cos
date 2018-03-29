@@ -12,7 +12,7 @@ module "ui-access" {
   subnet_ids             = "${var.alb_subnet_ids}"
   consul_server_asg_name = "${module.consul.asg_name_consul_servers}"
   nomad_server_asg_name  = "${module.nomad.asg_name_nomad_servers}"
-  fabio_server_asg_name  = "${module.nomad.asg_name_nomad_clients}"
+  fabio_server_asg_name  = "${module.nomad.asg_name_clients_public_services}"
 
   ## optional parameters
   aws_region = "${var.aws_region}"

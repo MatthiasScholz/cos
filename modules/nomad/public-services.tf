@@ -1,7 +1,4 @@
-# ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY THE NOMAD CLIENT NODES
-# ---------------------------------------------------------------------------------------------------------------------
-module "nomad_clients" {
+module "clients_public_services" {
   source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
 
   cluster_name      = "${local.client_cluster_name}"
@@ -15,7 +12,7 @@ module "nomad_clients" {
   max_size         = "${var.num_clients}"
   desired_capacity = "${var.num_clients}"
   ami_id           = "${var.ami_id_clients}"
-  user_data        = "${data.template_file.user_data_client.rendered}"
+  user_data        = "${data.template_file.user_data_clients_public_services.rendered}"
   vpc_id           = "${var.vpc_id}"
   subnet_ids       = "${var.server_subnet_ids}"
 
@@ -39,19 +36,14 @@ module "nomad_clients" {
 # To allow our client Nodes to automatically discover the Consul servers, we need to give them the IAM permissions from
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
-
-module "consul_iam_policies_clients" {
+module "consul_iam_policies_public_services" {
   source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
 
-  iam_role_id = "${module.nomad_clients.iam_role_id}"
+  iam_role_id = "${module.clients_public_services.iam_role_id}"
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# THE USER DATA SCRIPT THAT WILL RUN ON EACH CLIENT NODE WHEN IT'S BOOTING
 # This script will configure and start Consul and Nomad
-# ---------------------------------------------------------------------------------------------------------------------
-
-data "template_file" "user_data_client" {
+data "template_file" "user_data_clients_public_services" {
   template = "${file("${path.module}/user-data-nomad-client.sh")}"
 
   vars {

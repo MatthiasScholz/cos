@@ -5,7 +5,7 @@
 
 # Define autoscaling attachments to connect the ingress-controller target group with the autoscaling group having the ingress-contoller instances.
 resource "aws_autoscaling_attachment" "asga_ingress_controller" {
-  autoscaling_group_name = "${module.nomad_clients.asg_name}"
+  autoscaling_group_name = "${module.clients_public_services.asg_name}"
   alb_target_group_arn   = "${aws_alb_target_group.tgr_ingress_controller.arn}"
 }
 
