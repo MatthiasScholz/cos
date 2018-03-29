@@ -73,3 +73,8 @@ variable "unique_postfix" {
 variable "alb_public_services_arn" {
   description = "The arn of the alb for public-services access."
 }
+
+variable "ingress_controller_port" {
+  description = "The port of the ingress controller (i.e. fabio)."
+  default     = 9999
+}

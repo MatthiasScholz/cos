@@ -1,5 +1,5 @@
-# Add policy to the already create iam role for the nomad clients in the nomad cluster module.
-# policy-attachment that grants read access to AWS ECR for nomad clients
+# Add policy to the already created iam role of the nomad clients in the nomad cluster module.
+# Policy-attachment that grants read access to AWS ECR for nomad clients
 resource "aws_iam_role_policy_attachment" "irpa_ecr_read_access" {
   # FIXME: Because of this constellation it is not possible to provide the ECR access configuration as module.
   role       = "${module.nomad_clients.iam_role_id}"
