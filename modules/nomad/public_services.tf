@@ -29,6 +29,7 @@ module "clients_public_services" {
   desired_capacity = "${local.publ_srv_desired_capacity}"
   security_groups = [
     "${aws_security_group.sg_client.id}",
+    "${aws_security_group.sg_public_services.id}",
   ]
   # Access over cidr blocks is disabled here.
   # The need access for the nomad-server is granted over the 

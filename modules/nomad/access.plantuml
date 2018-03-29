@@ -1,17 +1,24 @@
 @startuml
 
 package "backoffice"{
+  [**Nomad-Server**] as SERVER
   [**sg_server**\n(security-group of the nomad-server)] as SG_SERVER
 }
 
 package "services"{
-  [**Public-Services**] as SG_PULBIC
+  [**Public-Services**] as PULBIC
+  [**sg_public_services**\n(security-group of the nomad-clients\nin data-center public-services)] as SG_PULBIC
 }
 
 [**sg_client**\n(security-group of the nomad-clients)] as SG_CLIENT
 
-SG_PULBIC --> SG_CLIENT: uses
+[0.0.0.0/0] as ALL
+
+PULBIC --> SG_CLIENT: uses
+PULBIC --> SG_PULBIC: uses
+SG_PULBIC --> ALL: grants: \ntcp 9998,9999,\n20000-32000
 SG_CLIENT --> SG_SERVER: grants: \ntcp 4646-4648\nudp 4648
+SERVER --> SG_SERVER: uses
 
 
 @enduml
