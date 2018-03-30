@@ -40,15 +40,20 @@
     },
     {
       "type": "file",
+      "source": "{{template_dir}}/dnsmasq_10-consul.conf",
+      "destination": "/tmp/dnsmasq_10-consul.conf"
+    },
+    {
+      "type": "file",
       "source": "{{template_dir}}/install-nomad",
       "destination": "/tmp/install-nomad/",
-      "pause_before": "30s"
+      "pause_before": "10s"
     },
     {
       "type": "file",
       "source": "{{template_dir}}/run-nomad",
       "destination": "/tmp/run-nomad/",
-      "pause_before": "30s"
+      "pause_before": "10s"
     },
     {
       "type": "shell",
