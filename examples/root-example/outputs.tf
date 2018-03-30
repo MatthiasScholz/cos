@@ -43,5 +43,5 @@ output "curl_fabio_ui" {
 }
 
 output "curl_ping_service" {
-  value = "watch -x curl -s http://${module.networking.alb_public_services_dns}"
+  value = "watch -x curl -s http://${module.networking.alb_public_services_dns}/ping"
 }
