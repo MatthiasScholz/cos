@@ -1,7 +1,6 @@
 locals {
-  postfix                  = "${length(var.unique_postfix) >= 1 ? "-${var.unique_postfix}" : ""}"
   consul_cluster_tag_key   = "consul-servers"
-  consul_cluster_tag_value = "${var.stack_name}-consul${local.postfix}"
+  consul_cluster_tag_value = "${var.stack_name}-consul${var.unique_postfix}"
 }
 
 module "ui-access" {
@@ -15,9 +14,10 @@ module "ui-access" {
   fabio_server_asg_name  = "${module.dc-public-services.asg_name}"
 
   ## optional parameters
-  aws_region = "${var.aws_region}"
-  env_name   = "${var.env_name}"
-  stack_name = "${var.stack_name}"
+  aws_region     = "${var.aws_region}"
+  env_name       = "${var.env_name}"
+  stack_name     = "${var.stack_name}"
+  unique_postfix = "${var.unique_postfix}"
 }
 
 module "consul" {
