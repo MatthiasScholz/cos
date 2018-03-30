@@ -9,7 +9,7 @@ locals {
 }
 
 module "clients_content_connector" {
-  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
+  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.1"
 
   cluster_name            = "${local.content_conn_cluster_name}"
   cluster_tag_value       = "${local.content_conn_cluster_name}"
@@ -32,7 +32,7 @@ module "clients_content_connector" {
     "${aws_security_group.sg_content_connector.id}",
   ]
   # Access over cidr blocks is disabled here.
-  # The need access for the nomad-server is granted over the 
+  # The need access for the nomad-server is granted over the
   # aws_security_group.sg_client.id.
   allowed_inbound_cidr_blocks = ["0.0.0.0/32"]
 }
