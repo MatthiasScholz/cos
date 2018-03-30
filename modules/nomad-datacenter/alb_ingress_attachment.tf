@@ -3,20 +3,16 @@
 
 # Git: Since version 0.3.0 of the nomad terraform module attachments have to be used.
 
-locals {
-  attach_alb = "${length(var.alb_ingress_arn)>"0" ? 1: 0}"
-}
-
 # Define autoscaling attachments to connect the ingress-controller target group with the autoscaling group having the ingress-contoller instances.
 resource "aws_autoscaling_attachment" "asga_ingress_controller" {
-  count                  = "${local.attach_alb}"
+  count                  = "${var.attach_ingress_alb}"
   autoscaling_group_name = "${module.data_center.asg_name}"
   alb_target_group_arn   = "${aws_alb_target_group.tgr_ingress_controller.arn}"
 }
 
 # Targetgroup that points to the ingress-controller (i.e. fabio) port
 resource "aws_alb_target_group" "tgr_ingress_controller" {
-  count    = "${local.attach_alb}"
+  count    = "${var.attach_ingress_alb}"
   name     = "${var.datacenter_name}-inctl${var.unique_postfix}"
   port     = "${var.ingress_controller_port}"
   protocol = "HTTP"
@@ -39,7 +35,7 @@ resource "aws_alb_target_group" "tgr_ingress_controller" {
 
 # listener for http with one default action to a fabio target group
 resource "aws_alb_listener" "albl_http_ingress_controller" {
-  count             = "${local.attach_alb}"
+  count             = "${var.attach_ingress_alb}"
   load_balancer_arn = "${var.alb_ingress_arn}"
 
   protocol = "HTTP"

@@ -59,3 +59,8 @@ variable "allowed_cidr_blocks_for_ui_alb" {
     "thomas"  = "95.90.215.115/32"
   }
 }
+
+variable "unique_postfix" {
+  description = "A postfix that will be used in names to avoid collisions (mainly used for name tags)."
+  default     = ""
+}

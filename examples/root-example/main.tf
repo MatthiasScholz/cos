@@ -29,7 +29,7 @@ module "nomad-infra" {
   consul_ami_id                              = "${var.ami_servers}"
   ssh_key_name                               = "kp-us-east-1-playground-instancekey"
   env_name                                   = "${var.env_name}"
-  unique_postfix                             = "${random_pet.unicorn.id}"
+  unique_postfix                             = "-${random_pet.unicorn.id}"
   nomad_cluster_name                         = "${var.nomad_cluster_name}"
   consul_cluster_name                        = "${var.consul_cluster_name}"
   nomad_num_servers                          = "${var.nomad_num_servers}"

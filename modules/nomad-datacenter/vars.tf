@@ -30,6 +30,11 @@ variable "alb_ingress_arn" {
   default     = ""
 }
 
+variable "attach_ingress_alb" {
+  description = "If true, the datacenter nodes will be attached to the ingress alb. Therfore the variable alb_ingress_arn has to be set."
+  default     = false
+}
+
 variable "ingress_controller_port" {
   description = "The port of the ingress controller (i.e. fabio)."
   default     = 9999
