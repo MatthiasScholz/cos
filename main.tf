@@ -12,7 +12,7 @@ module "ui-access" {
   subnet_ids             = "${var.alb_subnet_ids}"
   consul_server_asg_name = "${module.consul.asg_name_consul_servers}"
   nomad_server_asg_name  = "${module.nomad.asg_name_nomad_servers}"
-  fabio_server_asg_name  = "${module.nomad.asg_name_clients_public_services}"
+  fabio_server_asg_name  = "${module.dc-public-services.asg_name}"
 
   ## optional parameters
   aws_region = "${var.aws_region}"
@@ -56,6 +56,7 @@ module "dc-public-services" {
   ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "public-services"
   unique_postfix          = "${var.unique_postfix}"
+  alb_ingress_arn         = "${var.alb_public_services_arn}"
 }
 
 module "nomad" {

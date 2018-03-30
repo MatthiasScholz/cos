@@ -25,6 +25,16 @@ variable "subnet_ids" {
 }
 
 #### Optional Variables ############################################
+variable "alb_ingress_arn" {
+  description = "The arn of the alb for ingress data. If not specified, no alb-attachment will be created to grant ingress access to the data-center nodes."
+  default     = ""
+}
+
+variable "ingress_controller_port" {
+  description = "The port of the ingress controller (i.e. fabio)."
+  default     = 9999
+}
+
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
   default     = "playground"
