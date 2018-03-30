@@ -15,7 +15,7 @@ job "envoy" {
     task "envoy_task" {
       driver = "docker"
       config {
-        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/envoy:2018-03-30_21-11-06_42d60ff_dirty"
+        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/envoy:2018-03-30_22-15-10_c844b98_dirty"
 
         port_map = {
           http = 9901
@@ -56,7 +56,7 @@ job "envoy" {
       task "envoy-eds" {
         driver = "docker"
         config {
-          image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/envoy:2018-03-30_21-11-06_42d60ff_dirty"
+          image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/envoy:2018-03-30_22-15-10_c844b98_dirty"
 
           port_map = {
             http = 8053
