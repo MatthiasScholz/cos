@@ -1,7 +1,7 @@
 # SG granting access of the nomad servers to this datacenter nodes
 resource "aws_security_group" "sg_nomad_server_access" {
   vpc_id      = "${var.vpc_id}"
-  name_prefix = "${var.stack_name}-${var.datacenter_name}${var.unique_postfix}"
+  name        = "${var.stack_name}-${var.datacenter_name}-nomad-server-access${var.unique_postfix}"
   description = "Security group that allows ingress access for the nomad-servers."
 
   tags {

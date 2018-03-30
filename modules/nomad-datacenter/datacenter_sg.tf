@@ -7,7 +7,7 @@
 # for example fabio will use consul to figure out the port mapping and direct requests directly to this ports.
 resource "aws_security_group" "sg_datacenter" {
   vpc_id      = "${var.vpc_id}"
-  name_prefix = "${var.stack_name}-${var.datacenter_name}${var.unique_postfix}"
+  name        = "${var.stack_name}-${var.datacenter_name}${var.unique_postfix}"
   description = "Security group that allows ingress access for the nomad service handling and docker ports."
 
   tags {

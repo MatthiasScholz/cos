@@ -48,5 +48,5 @@ module "nomad-datacenter" {
   ssh_key_name            = "kp-us-east-1-playground-instancekey"
   datacenter_name         = "public-services"
   instance_type           = "t2.micro"
-  unique_postfix          = "${random_pet.unicorn.id}"
+  unique_postfix          = "-${random_pet.unicorn.id}"
 }
