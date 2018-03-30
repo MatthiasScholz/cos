@@ -90,13 +90,13 @@ job "envoy" {
         }
 
         env {
-          PORT               =8053
-          LOG_LEVEL          ="INFO"
-          CONSUL_AGENT_PORT  =8500
-          CONSUL_CLIENT_HOST ="172.17.0.1"
-          CONSUL_DC          ="us-east-1"
-          CONSUL_TOKEN       =""
-          WATCHED_SERVICE    ="ping-service"
+          PORT               = 8053
+          LOG_LEVEL          = "INFO"
+          CONSUL_CLIENT_PORT = 8500
+          CONSUL_CLIENT_HOST = "172.17.0.1"
+          CONSUL_DC          = "us-east-1"
+          CONSUL_TOKEN       = "unused"
+          WATCHED_SERVICE    = "ping-service"
         }
       }
   }

@@ -22,7 +22,7 @@ FROM envoyproxy/envoy:latest
 COPY --from=builder /go/bin/consul-envoy-xds /bin/consul-envoy-xds
 COPY --from=builder /go/src/consul-envoy-xds/application.yml.sample /etc/envoy/application.yml
 
-RUN apt-get update
+RUN apt-get update && apt-get install -y musl
 COPY envoy.yaml /etc/envoy.yaml
 CMD /usr/local/bin/envoy -c /etc/envoy.yaml
 
