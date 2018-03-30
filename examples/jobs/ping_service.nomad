@@ -26,7 +26,7 @@ job "ping_service" {
       driver = "docker"
       config {
         # Docker Hub:
-        image = "thobe/ping_service:0.0.7"
+        image = "thobe/ping_service:0.0.9"
         # AWS ECR playground: image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/ping-service:0.0.7"
         #args    = ["Hello, World!"]
       }
@@ -66,7 +66,9 @@ job "ping_service" {
       env {
         SERVICE_NAME        = "${NOMAD_DC}",
         PROVIDER            = "ping-service",
-        CONSUL_SERVER_ADDR  = "172.17.0.1:8500"
+        # uncomment to enable sd over consul
+        #CONSUL_SERVER_ADDR  = "172.17.0.1:8500"
+        PROVIDER_ADDR = "ping-service:25000"
       }
     }
   }
