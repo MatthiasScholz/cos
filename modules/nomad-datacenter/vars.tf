@@ -1,55 +1,14 @@
-variable "ami_id_servers" {
-  description = "The ID of the AMI to be used for the nomad server nodes."
-}
-
-variable "ami_id_clients" {
-  description = "The ID of the AMI to be used for the nomad client nodes."
-}
-
-variable "env_name" {
-  description = "name of the environment (i.e. prod)"
-}
-
-variable "stack_name" {
-  description = "shortcut for this stack"
+#### Required Variables ############################################
+variable "ami_id" {
+  description = "The ID of the AMI to be used for the nomad nodes."
 }
 
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
 
-variable "server_subnet_ids" {
-  description = "Ids of the subnets to deploy the nomad servers into."
-  type        = "list"
-}
-
-variable "aws_region" {
-  description = "The AWS region to deploy into (e.g. us-east-1)."
-}
-
-variable "cluster_name" {
-  description = "What to name the Nomad cluster and all of its associated resources"
-  default     = "nomad-example"
-}
-
-variable "num_servers" {
-  description = "The number of Nomad server nodes to deploy. We strongly recommend using 3 or 5."
-  default     = 3
-}
-
-variable "num_clients" {
-  description = "The number of Nomad client nodes to deploy. You can deploy as many as you need to run your jobs."
-  default     = 3
-}
-
-variable "instance_type_server" {
-  description = "The instance type for all nomad server nodes."
-  default     = "t2.micro"
-}
-
-variable "instance_type_client" {
-  description = "The instance type for all nomad client nodes."
-  default     = "t2.micro"
+variable "server_sg_id" {
+  description = "The id of the nomad-server security group. This is needed to grant access to the datacenter nodes."
 }
 
 variable "consul_cluster_tag_key" {
@@ -60,81 +19,60 @@ variable "consul_cluster_tag_value" {
   description = "This variable defines the value of the tag defined by consul_cluster_tag_key. This is used to find the consul servers (see: consul_cluster_tag_key)."
 }
 
+variable "subnet_ids" {
+  description = "Subnet id's for nomad client nodes providing this data-center."
+  type        = "list"
+}
+
+#### Optional Variables ############################################
+variable "env_name" {
+  description = "name of the environment (i.e. prod)"
+  default     = "playground"
+}
+
+variable "stack_name" {
+  description = "shortcut for this stack"
+  default     = "COS"
+}
+
+variable "aws_region" {
+  description = "The AWS region to deploy into (e.g. us-east-1)."
+  default     = "eu-central-1"
+}
+
+variable "datacenter_name" {
+  description = "The name of the datacenter (i.e. backoffice)."
+  default     = "dc-example"
+}
+
+variable "node_scaling_cfg" {
+  description = "Scaling configuration for the nomad nodes to deploy for this datacenter. You can deploy as many as you need to run your jobs."
+  type        = "map"
+
+  default = {
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+  }
+}
+
+variable "instance_type" {
+  description = "The instance type for nomad nodes."
+  default     = "t2.micro"
+}
+
 variable "ssh_key_name" {
   description = "The name of an EC2 Key Pair that can be used to SSH to the EC2 Instances in this cluster. Set to an empty string to not associate a Key Pair."
   default     = ""
 }
 
-variable "unique_postfix" {
-  description = "A postfix to be used to generate unique resource names per deployment."
-  default     = ""
-}
-
-variable "alb_public_services_arn" {
-  description = "The arn of the alb for public-services access."
-}
-
-variable "ingress_controller_port" {
-  description = "The port of the ingress controller (i.e. fabio)."
-  default     = 9999
-}
-
-variable "clients_public_services_subnet_ids" {
-  description = "Subnet id's for nomad client nodes providing the data-center public-services."
-  type        = "list"
-}
-
-variable "client_public_services_cfg" {
-  description = "Configuration for the nomad client nodes providing the data-center public-services."
-  type        = "map"
-
-  default = {
-    "data-center"      = "public-services"
-    "min"              = 2
-    "max"              = 2
-    "desired_capacity" = 2
-    "instance_type"    = "t2.micro"
-  }
-}
-
-variable "clients_private_services_subnet_ids" {
-  description = "Subnet id's for nomad client nodes providing the data-center private-services."
-  type        = "list"
-}
-
-variable "client_private_services_cfg" {
-  description = "Configuration for the nomad client nodes providing the data-center private-services."
-  type        = "map"
-
-  default = {
-    "data-center"      = "private-services"
-    "min"              = 1
-    "max"              = 1
-    "desired_capacity" = 1
-    "instance_type"    = "t2.micro"
-  }
-}
-
-variable "clients_content_connector_subnet_ids" {
-  description = "Subnet id's for nomad client nodes providing the data-center content-connector."
-  type        = "list"
-}
-
-variable "client_content_connector_cfg" {
-  description = "Configuration for the nomad client nodes providing the data-center content-connector."
-  type        = "map"
-
-  default = {
-    "data-center"      = "content-connector"
-    "min"              = 1
-    "max"              = 1
-    "desired_capacity" = 1
-    "instance_type"    = "t2.micro"
-  }
-}
-
 variable "allowed_ssh_cidr_blocks" {
-  description = "A list of cidr block from which inbound ssh traffic should be allowed."
+  description = "A list of cidr block from which inbound ssh traffic should be allowed for this datacenter."
   type        = "list"
   default     = []
+}
+
+variable "unique_postfix" {
+  description = "A postfix that will be used in names to avoid collisions (mainly used for name tags)."
+  default     = ""
 }
