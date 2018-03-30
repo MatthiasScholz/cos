@@ -9,14 +9,15 @@ package "networking-stack"{
 package "cos-stack"{
   [**consul**] as CS
   [**ui-access:**\ndns,\nui alb's,\nui alb-attachment,\n ui alb-targetgroup] as UI
-  [**nomad:**\ningress alb-attachment,\n ingress-alb-targetgroup] as NM
-  [**nomad-datacenter**] as DC
+  [**nomad:**\ningress alb-attachment,\n ingress-alb-targetgroup\nnomad-servers] as NM
+  [**nomad-datacenter:**\npublic-services,\nprivate-services,\ncontent-connector,\nbackoffice] as DC
 }
 
 NM --> BNW
 CS --> BNW
 UI --> BNW
-UI --> NM: ASG of\nnomad-servers\nand -clients
+UI --> NM: ASG of\nnomad-servers
+UI --> DC: ASG of\npublic-services nodes
 UI --> CS: ASG of\nconsul-servers
 DC --> NM: SG of Nomad Server
 DC --> BNW
