@@ -23,8 +23,8 @@ COPY --from=builder /go/bin/consul-envoy-xds /bin/consul-envoy-xds
 COPY --from=builder /go/src/consul-envoy-xds/application.yml.sample /etc/envoy/application.yml
 
 RUN apt-get update && apt-get install -y musl
-COPY envoy.yaml /etc/envoy.yaml
-CMD /usr/local/bin/envoy -c /etc/envoy.yaml
+COPY envoy.yaml /etc/envoy/envoy.yaml
+CMD envoy --v2-config-only -c /etc/envoy.yaml --service-cluster local_service_cluster --service-node local_service_node
 
 #################################################
 # NOTE: The following lines can keep untouched. #

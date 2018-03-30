@@ -15,11 +15,19 @@ job "envoy" {
     task "envoy_task" {
       driver = "docker"
       config {
-        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/envoy:2018-03-30_22-15-10_c844b98_dirty"
+        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/envoy:2018-03-30_22-51-24_8b92478_dirty"
 
         port_map = {
           http = 9901
         }
+
+        command = "envoy"
+        args = [
+          "--v2-config-only",
+          "-c /etc/envoy/envoy.yaml",
+          "--service-cluster local_service_cluster",
+          "--service-node local_service_node"
+        ]
       }
 
       resources {
@@ -45,24 +53,18 @@ job "envoy" {
           timeout  = "2s"
         }
       }
-
-      env {
-        XDS_IP="${NOMAD_IP_envoy-eds_http}"
-        XDS_PORT="${NOMAD_PORT_envoy-eds_http}"
-        SERVICE_PORT=25000
-      }
     }
 
       task "envoy-eds" {
         driver = "docker"
         config {
-          image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/envoy:2018-03-30_22-15-10_c844b98_dirty"
+          image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/envoy:2018-03-30_22-51-24_8b92478_dirty"
 
           port_map = {
             http = 8053
           }
 
-          command = "/bin/consul-envoy-xds"
+          command = "consul-envoy-xds"
         }
 
         resources {

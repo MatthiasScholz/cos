@@ -24,7 +24,7 @@ all: clean version build push finish
 
 chgwork: delim
 	@echo "[INFO] Changing to work directory: $(docker_dir)"
-	cd $(docker_dir)
+	@cd $(docker_dir)
 
 chgroot: delim
 	@echo "[INFO] Changing to root directory"
