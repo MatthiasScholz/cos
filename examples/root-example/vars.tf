@@ -29,7 +29,7 @@ variable "ami_servers" {
 
 variable "ami_clients" {
   description = "AMI for all the nomad client instances."
-  default     = "ami-a23feadf"
+  default     = "ami-e5e34798"
 }
 
 variable "nomad_num_servers" {
