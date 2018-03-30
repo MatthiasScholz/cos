@@ -9,9 +9,10 @@ resource "random_pet" "unicorn" {
 }
 
 module "networking" {
-  source   = "../../modules/networking"
-  region   = "${var.aws_region}"
-  env_name = "${var.env_name}"
+  source         = "../../modules/networking"
+  region         = "${var.aws_region}"
+  env_name       = "${var.env_name}"
+  unique_postfix = "-${random_pet.unicorn.id}"
 }
 
 module "nomad-infra" {
