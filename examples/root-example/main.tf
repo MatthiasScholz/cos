@@ -23,6 +23,7 @@ module "nomad-infra" {
   nomad_clients_public_services_subnet_ids   = "${module.networking.subnet_ids}"
   nomad_clients_private_services_subnet_ids  = "${module.networking.subnet_ids}"
   nomad_clients_content_connector_subnet_ids = "${module.networking.subnet_ids}"
+  nomad_clients_backoffice_subnet_ids        = "${module.networking.subnet_ids}"
   consul_server_subnet_ids                   = "${module.networking.subnet_ids}"
   alb_subnet_ids                             = "${module.networking.subnet_ids}"
   nomad_ami_id_servers                       = "${var.ami_servers}"
