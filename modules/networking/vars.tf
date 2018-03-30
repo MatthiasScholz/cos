@@ -20,4 +20,10 @@ variable "region" {
 
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
+  default     = "playground"
+}
+
+variable "unique_postfix" {
+  description = "A postfix that will be used in names to avoid collisions (mainly used for name tags)."
+  default     = ""
 }

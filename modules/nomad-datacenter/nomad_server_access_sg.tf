@@ -1,10 +1,11 @@
-resource "aws_security_group" "sg_client" {
+# SG granting access of the nomad servers to this datacenter nodes
+resource "aws_security_group" "sg_nomad_server_access" {
   vpc_id      = "${var.vpc_id}"
-  name        = "MNG-${var.stack_name}-${var.aws_region}-${var.env_name}-SG-client-nomad"
+  name        = "${var.stack_name}-${var.datacenter_name}-nomad-server-access${var.unique_postfix}"
   description = "Security group that allows ingress access for the nomad-servers."
 
   tags {
-    Name = "MNG-${var.stack_name}-${var.aws_region}-${var.env_name}-SG-client-nomad"
+    Name = "${var.stack_name}-${var.datacenter_name}-nomad-server-access${var.unique_postfix}"
   }
 
   lifecycle {
@@ -20,8 +21,8 @@ resource "aws_security_group_rule" "sgr_client_tcp_ig_from_nomad_server" {
   from_port                = 4646
   to_port                  = 4648
   protocol                 = "tcp"
-  source_security_group_id = "${aws_security_group.sg_server.id}"
-  security_group_id        = "${aws_security_group.sg_client.id}"
+  source_security_group_id = "${var.server_sg_id}"
+  security_group_id        = "${aws_security_group.sg_nomad_server_access.id}"
 }
 
 # rule that grants UDP ingress access from nomad-server to nomad-clients
@@ -31,8 +32,8 @@ resource "aws_security_group_rule" "sgr_client_udp_ig_from_nomad_server" {
   from_port                = 4648
   to_port                  = 4648
   protocol                 = "udp"
-  source_security_group_id = "${aws_security_group.sg_server.id}"
-  security_group_id        = "${aws_security_group.sg_client.id}"
+  source_security_group_id = "${var.server_sg_id}"
+  security_group_id        = "${aws_security_group.sg_nomad_server_access.id}"
 }
 
 # EGRESS
@@ -44,5 +45,5 @@ resource "aws_security_group_rule" "sgr_client_eg_all" {
   protocol  = "tcp"
 
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.sg_client.id}"
+  security_group_id = "${aws_security_group.sg_nomad_server_access.id}"
 }

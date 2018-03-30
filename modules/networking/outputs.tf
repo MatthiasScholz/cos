@@ -9,3 +9,7 @@ output "vpc_id" {
 output "alb_public_services_arn" {
   value = "${aws_alb.alb_public_services.arn}"
 }
+
+output "alb_public_services_dns" {
+  value = "${aws_alb.alb_public_services.dns_name}"
+}

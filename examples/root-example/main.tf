@@ -9,9 +9,10 @@ resource "random_pet" "unicorn" {
 }
 
 module "networking" {
-  source   = "../../modules/networking"
-  region   = "${var.aws_region}"
-  env_name = "${var.env_name}"
+  source         = "../../modules/networking"
+  region         = "${var.aws_region}"
+  env_name       = "${var.env_name}"
+  unique_postfix = "-${random_pet.unicorn.id}"
 }
 
 module "nomad-infra" {
@@ -22,6 +23,7 @@ module "nomad-infra" {
   nomad_clients_public_services_subnet_ids   = "${module.networking.subnet_ids}"
   nomad_clients_private_services_subnet_ids  = "${module.networking.subnet_ids}"
   nomad_clients_content_connector_subnet_ids = "${module.networking.subnet_ids}"
+  nomad_clients_backoffice_subnet_ids        = "${module.networking.subnet_ids}"
   consul_server_subnet_ids                   = "${module.networking.subnet_ids}"
   alb_subnet_ids                             = "${module.networking.subnet_ids}"
   nomad_ami_id_servers                       = "${var.ami_servers}"
@@ -29,7 +31,7 @@ module "nomad-infra" {
   consul_ami_id                              = "${var.ami_servers}"
   ssh_key_name                               = "kp-us-east-1-playground-instancekey"
   env_name                                   = "${var.env_name}"
-  unique_postfix                             = "${random_pet.unicorn.id}"
+  unique_postfix                             = "-${random_pet.unicorn.id}"
   nomad_cluster_name                         = "${var.nomad_cluster_name}"
   consul_cluster_name                        = "${var.consul_cluster_name}"
   nomad_num_servers                          = "${var.nomad_num_servers}"

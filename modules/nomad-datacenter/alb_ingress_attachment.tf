@@ -5,16 +5,18 @@
 
 # Define autoscaling attachments to connect the ingress-controller target group with the autoscaling group having the ingress-contoller instances.
 resource "aws_autoscaling_attachment" "asga_ingress_controller" {
-  autoscaling_group_name = "${module.clients_public_services.asg_name}"
+  count                  = "${var.attach_ingress_alb}"
+  autoscaling_group_name = "${module.data_center.asg_name}"
   alb_target_group_arn   = "${aws_alb_target_group.tgr_ingress_controller.arn}"
 }
 
 # Targetgroup that points to the ingress-controller (i.e. fabio) port
 resource "aws_alb_target_group" "tgr_ingress_controller" {
-  name_prefix = "inctrl"
-  port        = "${var.ingress_controller_port}"
-  protocol    = "HTTP"
-  vpc_id      = "${var.vpc_id}"
+  count    = "${var.attach_ingress_alb}"
+  name     = "${var.datacenter_name}-inctl${var.unique_postfix}"
+  port     = "${var.ingress_controller_port}"
+  protocol = "HTTP"
+  vpc_id   = "${var.vpc_id}"
 
   health_check {
     interval            = 15
@@ -27,13 +29,14 @@ resource "aws_alb_target_group" "tgr_ingress_controller" {
   }
 
   tags {
-    Name = "MNG-${var.stack_name}-${var.aws_region}-${var.env_name}-TGR-ingress-controller"
+    Name = "${var.stack_name}-${var.datacenter_name}-ingress-controller${var.unique_postfix}"
   }
 }
 
 # listener for http with one default action to a fabio target group
 resource "aws_alb_listener" "albl_http_ingress_controller" {
-  load_balancer_arn = "${var.alb_public_services_arn}"
+  count             = "${var.attach_ingress_alb}"
+  load_balancer_arn = "${var.alb_ingress_arn}"
 
   protocol = "HTTP"
   port     = "80"

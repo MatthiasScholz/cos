@@ -10,13 +10,16 @@ package "cos-stack"{
   [**consul**] as CS
   [**ui-access:**\ndns,\nui alb's,\nui alb-attachment,\n ui alb-targetgroup] as UI
   [**nomad:**\ningress alb-attachment,\n ingress-alb-targetgroup] as NM
+  [**nomad-datacenter**] as DC
 }
 
 NM --> BNW
-NM --> INGR
 CS --> BNW
 UI --> BNW
 UI --> NM: ASG of\nnomad-servers\nand -clients
 UI --> CS: ASG of\nconsul-servers
+DC --> NM: SG of Nomad Server
+DC --> BNW
+DC --> INGR: ARN of ingress alb
 
 @enduml

@@ -9,6 +9,7 @@
 cos.plan
 consul.plan
 ui.plan
+dc.plan
 *.tfvars
 .terraform.tfstate.lock.info
 

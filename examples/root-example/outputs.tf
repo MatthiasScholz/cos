@@ -41,3 +41,7 @@ output "fabio_ui_alb_dns" {
 output "curl_fabio_ui" {
   value = "curl http://${module.nomad-infra.fabio_ui_alb_dns}"
 }
+
+output "curl_ping_service" {
+  value = "watch -x curl -s http://${module.networking.alb_public_services_dns}/ping"
+}

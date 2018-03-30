@@ -48,6 +48,6 @@ data "template_file" "user_data_server" {
     num_servers       = "${var.num_servers}"
     cluster_tag_key   = "${var.consul_cluster_tag_key}"
     cluster_tag_value = "${var.consul_cluster_tag_value}"
-    datacenter        = "backoffice"
+    datacenter        = "leader"
   }
 }

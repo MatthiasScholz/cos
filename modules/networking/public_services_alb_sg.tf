@@ -1,10 +1,10 @@
 resource "aws_security_group" "sg_public_services_alb" {
   vpc_id      = "${aws_vpc.vpc_main.id}"
-  name        = "MNG-${var.stack_name}-${var.region}-${var.env_name}-SG-frontend-alb"
+  name        = "${var.stack_name}-ingress${var.unique_postfix}"
   description = "security group that allows ingress access to everyone."
 
   tags {
-    Name = "MNG-${var.stack_name}-${var.region}-${var.env_name}-SG-frontend-alb"
+    Name = "${var.stack_name}-ingress${var.unique_postfix}"
   }
 
   lifecycle {

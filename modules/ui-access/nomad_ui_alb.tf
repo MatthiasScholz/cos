@@ -1,13 +1,13 @@
 ## ALB -> ALB-Listener (port 80) -forwards to -> target-group (on port 4646) which is attached to the 
 ## AutoScalingGroup that maintains the nomad-servers.
 resource "aws_alb" "alb_nomad_ui" {
-  name_prefix     = "nomad"
+  name            = "${var.stack_name}-nomad-ui${var.unique_postfix}"
   internal        = false
   subnets         = ["${var.subnet_ids}"]
   security_groups = ["${aws_security_group.sg_ui_alb.id}"]
 
   tags {
-    Name = "${var.stack_name}-${var.aws_region}-ALB-nomad-ui"
+    Name = "${var.stack_name}-nomad-ui${var.unique_postfix}"
   }
 }
 
@@ -33,7 +33,7 @@ resource "aws_alb_target_group" "tgr_nomad_ui" {
   }
 
   tags {
-    Name = "MNG-${var.stack_name}-${var.aws_region}-${var.env_name}-TGR-nomad-ui"
+    Name = "${var.stack_name}-nomad-ui${var.unique_postfix}"
   }
 }
 

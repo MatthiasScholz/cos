@@ -55,7 +55,13 @@ variable "allowed_cidr_blocks_for_ui_alb" {
   type = "map"
 
   default = {
-    "pcc_dev" = "80.146.215.90/32"
-    "thomas"  = "95.90.215.115/32"
+    "pcc_dev"  = "80.146.215.90/32"
+    "thomas"   = "95.90.215.115/32"
+    "matthias" = "89.247.74.78/32"
   }
+}
+
+variable "unique_postfix" {
+  description = "A postfix that will be used in names to avoid collisions (mainly used for name tags)."
+  default     = ""
 }

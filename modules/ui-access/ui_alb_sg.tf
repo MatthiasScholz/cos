@@ -1,10 +1,10 @@
 resource "aws_security_group" "sg_ui_alb" {
   vpc_id      = "${var.vpc_id}"
-  name        = "MNG-${var.stack_name}-${var.aws_region}-${var.env_name}-SG-ui-alb"
+  name        = "${var.stack_name}-ui-alb${var.unique_postfix}"
   description = "Security group that allows ingress access to uis in backoffice."
 
   tags {
-    Name = "MNG-${var.stack_name}-${var.aws_region}-${var.env_name}-SG-ui-alb"
+    Name = "${var.stack_name}-ui-alb${var.unique_postfix}"
   }
 
   lifecycle {

@@ -1,13 +1,13 @@
 ## ALB -> ALB-Listener (port 80) -forwards to -> target-group (on port 4646) which is attached to the 
 ## AutoScalingGroup that maintains the fabio-servers.
 resource "aws_alb" "alb_fabio_ui" {
-  name_prefix     = "fabio"
+  name            = "${var.stack_name}-fabio-ui${var.unique_postfix}"
   internal        = false
   subnets         = ["${var.subnet_ids}"]
   security_groups = ["${aws_security_group.sg_ui_alb.id}"]
 
   tags {
-    Name = "${var.stack_name}-${var.aws_region}-ALB-fabio-ui"
+    Name = "${var.stack_name}-fabio-ui${var.unique_postfix}"
   }
 }
 
@@ -33,7 +33,7 @@ resource "aws_alb_target_group" "tgr_fabio_ui" {
   }
 
   tags {
-    Name = "MNG-${var.stack_name}-${var.aws_region}-${var.env_name}-TGR-fabio-ui"
+    Name = "${var.stack_name}-fabio-ui${var.unique_postfix}"
   }
 }
 

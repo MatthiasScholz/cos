@@ -1,7 +1,7 @@
 # job>group>task>service
 # container for tasks or task-groups that nomad should run
 job "ping_service" {
-  datacenters = ["public-services","private-services","content-connector"]
+  datacenters = ["public-services","private-services","content-connector","backoffice"]
   type = "service"
 
   meta {
@@ -64,7 +64,7 @@ job "ping_service" {
        }
 
       env {
-        SERVICE_NAME        = "${NOMAD_TASK_NAME}",
+        SERVICE_NAME        = "${NOMAD_DC}",
         PROVIDER            = "ping-service",
         CONSUL_SERVER_ADDR  = "172.17.0.1:8500"
       }
