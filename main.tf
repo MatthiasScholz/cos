@@ -57,6 +57,7 @@ module "dc-public-services" {
   datacenter_name         = "public-services"
   unique_postfix          = "${var.unique_postfix}"
   alb_ingress_arn         = "${var.alb_public_services_arn}"
+  attach_ingress_alb      = true
 }
 
 module "nomad" {
