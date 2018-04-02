@@ -1,11 +1,15 @@
-category := service
-name     := postgres
-aws_reg  := us-east-1
-aws_aid  := <aws_account_id>
+category 		:= service
+name     		:= postgres
+aws_reg  		:= us-east-1
+aws_profile := playground
 
 ################################################################################################################
 # NOTE: The following lines can keep untouched. There is nothing more to configure the category and the name.  #
 #################################################################################################################
+
+# obtain aws account id
+aws_aid     := $(shell aws sts get-caller-identity --output text --query 'Account' --profile $(aws_profile))
+
 ecr_url  := $(aws_aid).dkr.ecr.$(aws_reg).amazonaws.com
 
 # Create version tag from git commit message. Indicate if there are uncommited local changes.
@@ -15,8 +19,7 @@ flag := $(shell git diff-index --quiet HEAD -- || echo "_dirty";)
 tag  := $(date)_$(rev)$(flag)
 
 # Create credentials for Docker for AWS ecr login
-creds := $(shell aws ecr get-login --no-include-email --region $(aws_reg))
-
+creds := $(shell aws ecr get-login --no-include-email --region $(aws_reg) --profile $(aws_profile))
 
 all: clean version build push finish
 
@@ -41,7 +44,7 @@ clean:
 	@rm -f version
 
 delim:
-        @echo "------------------------------------------------------------------------------------------------"
+	@echo "------------------------------------------------------------------------------------------------"
 
 finish:
 	@echo "================================================================================================"
