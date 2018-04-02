@@ -1,27 +1,50 @@
-category = service
-name     = grafana
-tag      = latest
+category 		:= service
+name     		:= grafana
+aws_reg  		:= us-east-1
+aws_profile := playground
 
+################################################################################################################
+# NOTE: The following lines can keep untouched. There is nothing more to configure the category and the name.  #
+#################################################################################################################
 
-aws_reg  = us-east-1
-ecr_url  = <aws_account_id>.dkr.ecr.$(aws_reg).amazonaws.com
+# obtain aws account id
+aws_aid     := $(shell aws sts get-caller-identity --output text --query 'Account' --profile $(aws_profile))
 
+ecr_url  := $(aws_aid).dkr.ecr.$(aws_reg).amazonaws.com
 
-all: credentials build tag push clean
+# Create version tag from git commit message. Indicate if there are uncommited local changes.
+date := $(shell date '+%Y-%m-%d_%H-%M-%S')
+rev  := $(shell git rev-parse --short HEAD)
+flag := $(shell git diff-index --quiet HEAD -- || echo "_dirty";)
+tag  := $(date)_$(rev)$(flag)
 
-credentials:
-	aws ecr get-login --no-include-email --region $(aws_reg) > ecr_creds.sh
-	chmod +x ecr_creds.sh
-	./ecr_creds.sh
+# Create credentials for Docker for AWS ecr login
+creds := $(shell aws ecr get-login --no-include-email --region $(aws_reg) --profile $(aws_profile))
 
-build:
-	docker build -t $(category)/$(name) .
+all: clean version build push finish
 
-tag:
-	docker tag $(category)/$(name):latest $(ecr_url)/$(category)/$(name):$(tag)
+version: delim
+	@echo "[INFO] Building version:"
+	@echo $(tag) | tee version
 
-push:
-	docker push $(ecr_url)/$(category)/$(name):$(tag)
+credentials: delim
+	@echo "[INFO] Login to AWS ECR"
+	@$(creds)
+
+build: delim
+	@echo "[INFO] Building and tagging image"
+	docker build -t $(category)/$(name) --build-arg VERSION=$(tag) .
+	@docker tag $(category)/$(name):latest $(ecr_url)/$(category)/$(name):$(tag)
+
+push: credentials delim
+	@echo "[INFO] Pushing image to AWS ECR"
+	@docker push $(ecr_url)/$(category)/$(name):$(tag)
 
 clean:
-	rm ecr_creds.sh
+	@rm -f version
+
+delim:
+	@echo "------------------------------------------------------------------------------------------------"
+
+finish:
+	@echo "================================================================================================"
