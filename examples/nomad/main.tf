@@ -63,4 +63,11 @@ module "nomad" {
   ssh_key_name            = "kp-us-east-1-playground-instancekey"
   instance_type           = "t2.micro"
   unique_postfix          = "-${random_pet.unicorn.id}"
+  datacenter_name         = "leader"
+
+  node_scaling_cfg = {
+    "min"              = 3
+    "max"              = 3
+    "desired_capacity" = 3
+  }
 }

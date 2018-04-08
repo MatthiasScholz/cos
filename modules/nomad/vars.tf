@@ -12,6 +12,14 @@ variable "subnet_ids" {
   type        = "list"
 }
 
+variable "consul_cluster_tag_key" {
+  description = "This variable defines the name of the tag that is used to find the consul-servers. On each nomad instance the consul-agent searches for EC2 instances tagged with this tag and having the value of consul_cluster_tag_value."
+}
+
+variable "consul_cluster_tag_value" {
+  description = "This variable defines the value of the tag defined by consul_cluster_tag_key. This is used to find the consul servers (see: consul_cluster_tag_key)."
+}
+
 #### Optional Variables ############################################
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
@@ -28,38 +36,9 @@ variable "stack_name" {
   default     = "COS"
 }
 
-variable "cluster_name" {
-  description = "What to name the Nomad cluster and all of its associated resources"
-  default     = "nomad-server"
-}
-
-variable "datacenter_name" {
-  description = "The name for the nomad-servers (i.e. leader)."
-  default     = "leader"
-}
-
-variable "node_scaling_cfg" {
-  description = "Scaling configuration for the nomad servers."
-  type        = "map"
-
-  default = {
-    "min"              = 3
-    "max"              = 3
-    "desired_capacity" = 3
-  }
-}
-
 variable "instance_type" {
   description = "The instance type for all nomad server nodes."
   default     = "t2.micro"
-}
-
-variable "consul_cluster_tag_key" {
-  description = "This variable defines the name of the tag that is used to find the consul-servers. On each nomad instance the consul-agent searches for EC2 instances tagged with this tag and having the value of consul_cluster_tag_value."
-}
-
-variable "consul_cluster_tag_value" {
-  description = "This variable defines the value of the tag defined by consul_cluster_tag_key. This is used to find the consul servers (see: consul_cluster_tag_key)."
 }
 
 variable "ssh_key_name" {
@@ -76,4 +55,20 @@ variable "allowed_ssh_cidr_blocks" {
   description = "A list of cidr block from which inbound ssh traffic should be allowed."
   type        = "list"
   default     = []
+}
+
+variable "datacenter_name" {
+  description = "The name for the nomad-servers (i.e. leader)."
+  default     = "leader"
+}
+
+variable "node_scaling_cfg" {
+  description = "Scaling configuration for the nomad servers."
+  type        = "map"
+
+  default = {
+    "min"              = 3
+    "max"              = 3
+    "desired_capacity" = 3
+  }
 }
