@@ -3,7 +3,7 @@ locals {
   min              = "${lookup(var.node_scaling_cfg,"min","INVALID")}"
   max              = "${lookup(var.node_scaling_cfg,"max","INVALID")}"
   desired_capacity = "${lookup(var.node_scaling_cfg,"desired_capacity","INVALID")}"
-  cluster_name     = "${var.stack_name}-${var.datacenter_name}${var.unique_postfix}"
+  cluster_name     = "${local.base_cluster_name}${var.unique_postfix}"
 }
 
 module "data_center" {

@@ -90,7 +90,16 @@ module "ui-access" {
   fabio_server_asg_name  = "${aws_autoscaling_group.asg_sample.name}"
 
   ## optional parameters
-  aws_region = "${local.aws_region}"
-  env_name   = "${local.env_name}"
-  stack_name = "${local.stack_name}"
+  aws_region     = "${local.aws_region}"
+  env_name       = "${local.env_name}"
+  stack_name     = "${local.stack_name}"
+  nomad_ui_port  = 4646
+  consul_ui_port = 8500
+  fabio_ui_port  = 9998
+
+  allowed_cidr_blocks_for_ui_alb = {
+    "all" = "0.0.0.0/0"
+  }
+
+  unique_postfix = ""
 }

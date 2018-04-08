@@ -21,6 +21,12 @@ job "ping_service" {
       mode = "delay"
     }
 
+     ephemeral_disk {
+      migrate = false
+      size    = "50"
+      sticky  = false
+    }
+
     # The task stanza creates an individual unit of work, such as a Docker container, web application, or batch processing.
     task "ping_service_task" {
       driver = "docker"
@@ -31,6 +37,11 @@ job "ping_service" {
         #args    = ["Hello, World!"]
       }
 
+      logs {
+        max_files     = 2
+        max_file_size = 10
+      }
+
       config {
         port_map = {
           http = 8080
@@ -38,8 +49,8 @@ job "ping_service" {
       }
 
       resources {
-        cpu    = 500 # MHz
-        memory = 128 # MB
+        cpu    = 100 # MHz
+        memory = 20 # MB
         network {
           mbits = 10
           port "http" {
@@ -67,8 +78,8 @@ job "ping_service" {
         SERVICE_NAME        = "${NOMAD_DC}",
         PROVIDER            = "ping-service",
         # uncomment to enable sd over consul
-        #CONSUL_SERVER_ADDR  = "172.17.0.1:8500"
-        PROVIDER_ADDR = "ping-service:25000"
+        CONSUL_SERVER_ADDR  = "172.17.0.1:8500"
+        #PROVIDER_ADDR = "ping-service:25000"
       }
     }
   }

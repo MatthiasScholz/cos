@@ -1,41 +1,15 @@
-variable "ami_id_servers" {
+#### Required Variables ############################################
+variable "ami_id" {
   description = "The ID of the AMI to be used for the nomad server nodes."
-}
-
-variable "env_name" {
-  description = "name of the environment (i.e. prod)"
-}
-
-variable "stack_name" {
-  description = "shortcut for this stack"
 }
 
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
 
-variable "server_subnet_ids" {
+variable "subnet_ids" {
   description = "Ids of the subnets to deploy the nomad servers into."
   type        = "list"
-}
-
-variable "aws_region" {
-  description = "The AWS region to deploy into (e.g. us-east-1)."
-}
-
-variable "cluster_name" {
-  description = "What to name the Nomad cluster and all of its associated resources"
-  default     = "nomad-example"
-}
-
-variable "num_servers" {
-  description = "The number of Nomad server nodes to deploy. We strongly recommend using 3 or 5."
-  default     = 3
-}
-
-variable "instance_type_server" {
-  description = "The instance type for all nomad server nodes."
-  default     = "t2.micro"
 }
 
 variable "consul_cluster_tag_key" {
@@ -44,6 +18,27 @@ variable "consul_cluster_tag_key" {
 
 variable "consul_cluster_tag_value" {
   description = "This variable defines the value of the tag defined by consul_cluster_tag_key. This is used to find the consul servers (see: consul_cluster_tag_key)."
+}
+
+#### Optional Variables ############################################
+variable "env_name" {
+  description = "name of the environment (i.e. prod)"
+  default     = "playground"
+}
+
+variable "aws_region" {
+  description = "The AWS region to deploy into (e.g. us-east-1)."
+  default     = "eu-central-1"
+}
+
+variable "stack_name" {
+  description = "shortcut for this stack"
+  default     = "COS"
+}
+
+variable "instance_type" {
+  description = "The instance type for all nomad server nodes."
+  default     = "t2.micro"
 }
 
 variable "ssh_key_name" {
@@ -60,4 +55,20 @@ variable "allowed_ssh_cidr_blocks" {
   description = "A list of cidr block from which inbound ssh traffic should be allowed."
   type        = "list"
   default     = []
+}
+
+variable "datacenter_name" {
+  description = "The name for the nomad-servers (i.e. leader)."
+  default     = "leader"
+}
+
+variable "node_scaling_cfg" {
+  description = "Scaling configuration for the nomad servers."
+  type        = "map"
+
+  default = {
+    "min"              = 3
+    "max"              = 3
+    "desired_capacity" = 3
+  }
 }
