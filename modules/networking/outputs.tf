@@ -6,6 +6,14 @@ output "public_subnet_ids" {
   value = "${aws_subnet.subn_public.*.id}"
 }
 
+output "backoffice_subnet_ids" {
+  value = "${aws_subnet.subn_backoffice.*.id}"
+}
+
+output "content_connector_subnet_ids" {
+  value = "${aws_subnet.subn_contentconnector.*.id}"
+}
+
 output "vpc_id" {
   value = "${aws_vpc.vpc_main.id}"
 }
