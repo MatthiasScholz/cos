@@ -34,7 +34,7 @@ module "nomad-infra" {
   unique_postfix                             = "-${random_pet.unicorn.id}"
   nomad_cluster_name                         = "${var.nomad_cluster_name}"
   consul_cluster_name                        = "${var.consul_cluster_name}"
-  nomad_num_servers                          = "${var.nomad_num_servers}"
+  nomad_server_scaling_cfg                   = "${var.nomad_server_scaling_cfg}"
   nomad_num_clients                          = "${var.nomad_num_clients}"
   instance_type_server                       = "${var.instance_type_server}"
   instance_type_client                       = "${var.instance_type_client}"

@@ -38,11 +38,6 @@ variable "consul_cluster_name" {
   default     = "consul-example"
 }
 
-variable "nomad_num_servers" {
-  description = "The number of Nomad server nodes to deploy. You can deploy as many as you need to run your jobs."
-  default     = 3
-}
-
 variable "nomad_num_clients" {
   description = "The number of Nomad client nodes to deploy. You can deploy as many as you need to run your jobs."
   default     = 3
@@ -119,4 +114,15 @@ variable "consul_instance_type" {
 variable "allowed_ssh_cidr_blocks" {
   description = "A list of cidr block from which inbound ssh traffic should be allowed."
   type        = "list"
+}
+
+variable "nomad_server_scaling_cfg" {
+  description = "Scaling configuration for the nomad servers."
+  type        = "map"
+
+  default = {
+    "min"              = 3
+    "max"              = 3
+    "desired_capacity" = 3
+  }
 }
