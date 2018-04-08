@@ -49,5 +49,5 @@ variable "instance_type_server" {
 
 variable "instance_type_client" {
   description = "The instance type for all nomad client nodes."
-  default     = "t2.micro"
+  default     = "t2.small"
 }
