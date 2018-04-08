@@ -97,17 +97,16 @@ variable "allowed_ssh_cidr_blocks" {
   default     = []
 }
 
+variable "allowed_cidr_blocks_for_ui_alb" {
+  description = "Map for cidr blocks that should get access over alb. The format is name:cidr-block. I.e. 'my_cidr'='90.250.75.79/32'"
+  type        = "map"
+
+  default = {
+    "all" = "0.0.0.0/0"
+  }
+}
+
 #### [Nomad] Optional Variables ###################################################################
-variable "nomad_cluster_name" {
-  description = "What to name the Nomad cluster and all of its associated resources."
-  default     = "nomad-example"
-}
-
-variable "nomad_num_clients" {
-  description = "The number of Nomad client nodes to deploy. You can deploy as many as you need to run your jobs."
-  default     = 3
-}
-
 variable "nomad_server_scaling_cfg" {
   description = "Scaling configuration for the nomad servers."
   type        = "map"
@@ -119,13 +118,18 @@ variable "nomad_server_scaling_cfg" {
   }
 }
 
-#### [Consul] Optional Variables ##################################################################
+variable "nomad_client_scaling_cfg" {
+  description = "Scaling configuration for the nomad nodes to deploy for this datacenter. You can deploy as many as you need to run your jobs."
+  type        = "map"
 
-variable "consul_cluster_name" {
-  description = "What to name the Consul cluster and all of its associated resources."
-  default     = "consul-example"
+  default = {
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+  }
 }
 
+#### [Consul] Optional Variables ##################################################################
 variable "consul_num_servers" {
   description = "The number of Consul server nodes to deploy. We strongly recommend using 3 or 5."
   default     = 3

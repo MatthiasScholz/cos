@@ -140,7 +140,6 @@ module "nomad" {
   ami_id                   = "${var.nomad_ami_id_servers}"
   ssh_key_name             = "${var.ssh_key_name}"
   unique_postfix           = "${var.unique_postfix}"
-  cluster_name             = "${var.nomad_cluster_name}"
   consul_cluster_tag_key   = "${local.consul_cluster_tag_key}"
   consul_cluster_tag_value = "${local.consul_cluster_tag_value}"
   instance_type            = "${var.instance_type_server}"

@@ -52,12 +52,11 @@ variable "fabio_ui_port" {
 }
 
 variable "allowed_cidr_blocks_for_ui_alb" {
-  type = "map"
+  description = "Map for cidr blocks that should get access over alb. The format is name:cidr-block. I.e. 'my_cidr'='90.250.75.79/32'"
+  type        = "map"
 
   default = {
-    "pcc_dev"  = "80.146.215.90/32"
-    "thomas"   = "95.90.215.115/32"
-    "matthias" = "89.247.74.78/32"
+    "all" = "0.0.0.0/0"
   }
 }
 
