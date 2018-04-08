@@ -78,8 +78,8 @@ job "ping_service" {
         SERVICE_NAME        = "${NOMAD_DC}",
         PROVIDER            = "ping-service",
         # uncomment to enable sd over consul
-        #CONSUL_SERVER_ADDR  = "172.17.0.1:8500"
-        PROVIDER_ADDR = "ping-service:25000"
+        CONSUL_SERVER_ADDR  = "172.17.0.1:8500"
+        #PROVIDER_ADDR = "ping-service:25000"
       }
     }
   }
