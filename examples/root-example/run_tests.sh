@@ -18,6 +18,8 @@ nomad node-status
 echo "[INFO] [${SCRIPT}] Deploying some jobs"
 nomad run ../jobs/fabio.nomad
 nomad run ../jobs/ping_service.nomad
+nomad run ../jobs/prometheus.nomad
+nomad run ../jobs/grafana.nomad
 #nomad run ../jobs/cicd.nomad
 
 sleep 5
