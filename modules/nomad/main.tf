@@ -5,6 +5,6 @@ terraform {
 }
 
 locals {
-  client_cluster_name = "${var.cluster_name}-client"
-  server_cluster_name = "${var.cluster_name}-server"
+  short_dc_name     = "${format("%.1s",var.datacenter_name)}"
+  base_cluster_name = "${var.stack_name}-NMS-${local.short_dc_name}"
 }
