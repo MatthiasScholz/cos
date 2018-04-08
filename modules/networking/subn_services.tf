@@ -32,11 +32,11 @@ resource "aws_route_table_association" "rtassoc_services" {
   route_table_id = "${element(aws_route_table.rtb_services.*.id,count.index)}"
 }
 
-# this is the route to the internet gateway
-resource "aws_route" "r_egress_public_igw" {
+# this is the route to the egress_aws natgateway
+resource "aws_route" "r_services_egress_aws_ngw" {
   # one for each az
   count                  = "${length(var.az_postfixes)}"
   route_table_id         = "${element(aws_route_table.rtb_services.*.id,count.index)}"
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.igw_main.id}"
+  nat_gateway_id         = "${element(aws_nat_gateway.ngw_egress_aws.*.id,count.index)}"
 }
