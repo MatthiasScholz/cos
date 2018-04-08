@@ -45,3 +45,11 @@ output "curl_fabio_ui" {
 output "curl_ping_service" {
   value = "watch -x curl -s http://${module.networking.alb_public_services_dns}/ping"
 }
+
+output "bastion_ip" {
+  value = "${module.bastion.bastion_ip}"
+}
+
+output "ssh_login" {
+  value = "ssh ec2-user@${module.bastion.bastion_ip} -i ~/.ssh/${module.bastion.ssh_key_name}.pem"
+}

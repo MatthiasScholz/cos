@@ -1,5 +1,5 @@
 output "bastion_ip" {
-  value = "${aws_instance.ec2_bastion.public_ip}"
+  value = "${aws_eip.eip_bastion.public_ip}"
 }
 
 output "ssh_key_name" {

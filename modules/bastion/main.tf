@@ -51,3 +51,13 @@ resource "aws_security_group_rule" "sgr_bastion_ig_ssh" {
   cidr_blocks       = ["${lookup(var.allowed_ssh_cidr_blocks,element(local.keys,count.index),"0.0.0.0/32")}"]
   security_group_id = "${aws_security_group.sg_bastion.id}"
 }
+
+# elastic ips needed for the bastion
+resource "aws_eip" "eip_bastion" {
+  instance = "${aws_instance.ec2_bastion.id}"
+  vpc      = true
+
+  tags {
+    Name = "${var.stack_name}-EIP-bastion${var.unique_postfix}"
+  }
+}
