@@ -50,8 +50,8 @@ module "nomad" {
 
   ## required parameters
   vpc_id                   = "${data.aws_vpc.default.id}"
-  server_subnet_ids        = "${data.aws_subnet_ids.all.ids}"
-  ami_id_servers           = "${local.nomad_ami_id}"
+  subnet_ids               = "${data.aws_subnet_ids.all.ids}"
+  ami_id                   = "${local.nomad_ami_id}"
   consul_cluster_tag_key   = "${local.consul_cluster_tag_key}"
   consul_cluster_tag_value = "${local.consul_cluster_tag_value}"
 
@@ -61,6 +61,6 @@ module "nomad" {
   stack_name              = "${local.stack_name}"
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
   ssh_key_name            = "kp-us-east-1-playground-instancekey"
-  instance_type_server    = "t2.micro"
+  instance_type           = "t2.micro"
   unique_postfix          = "-${random_pet.unicorn.id}"
 }
