@@ -49,4 +49,13 @@ module "nomad-datacenter" {
   datacenter_name         = "public-services"
   instance_type           = "t2.micro"
   unique_postfix          = "-${random_pet.unicorn.id}"
+  alb_ingress_arn         = ""
+  attach_ingress_alb      = false
+  ingress_controller_port = 9999
+
+  node_scaling_cfg = {
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+  }
 }
