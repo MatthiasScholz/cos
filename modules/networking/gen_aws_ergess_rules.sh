@@ -8,7 +8,7 @@ set -e
 # traffic to the CIDR blocks in the AMAZON list, minus the CIDR blocks that are also in the EC2 list."
 
 readonly SCRIPT_NAME="$(basename "$0")"
-readonly DO_LOGGING=false
+
 
 function assert_is_installed {
   local readonly name="$1"
@@ -23,7 +23,7 @@ function log {
   local readonly level="$1"
   local readonly message="$2"
   local readonly timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-  if [ "$DO_LOGGING" = true ];then
+  if [ "$VERBOSE_LOGGING" = true ];then
     >&2 echo -e "${timestamp} [${level}] [$SCRIPT_NAME] ${message}"
   fi
 }
@@ -130,7 +130,7 @@ eval set -- "$PARSED"
 
 file=""
 region=""
-verbose=false
+VERBOSE_LOGGING=false
 print_help=false
 while true; do
     case "$1" in
@@ -143,7 +143,7 @@ while true; do
             shift 2
             ;;
         -v|--verbose)
-            verbose=true
+            VERBOSE_LOGGING=true
             shift
             ;;
         -h|--help)
