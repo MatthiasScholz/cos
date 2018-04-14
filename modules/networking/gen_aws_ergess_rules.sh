@@ -21,16 +21,17 @@ function assert_is_installed {
 
 function log {
   local readonly level="$1"
-  local readonly message="$2"
+  shift
+  local readonly message=("$@")
   local readonly timestamp=$(date +"%Y-%m-%d %H:%M:%S")
   if [ "$VERBOSE_LOGGING" = true ];then
-    >&2 echo -e "${timestamp} [${level}] [$SCRIPT_NAME] ${message}"
+    >&2 echo -e "${timestamp} [${level}] [$SCRIPT_NAME] ${message[@]}"
   fi
 }
 
 function log_info {
-  local readonly message="$1"
-  log "INFO" "$message"
+  local readonly message=("$@")
+  log "INFO" "${message[@]}"
 }
 
 # Brief: Returns the ip-ranges (ipv4) for the given service type based on the given file.
@@ -55,14 +56,14 @@ function get_ips {
 # 2 - the AMAZON ip's
 # example: ips=($(merge_ipranges "$ec2_ips" "$amazon_ips"))
 function merge_ipranges {
-  local readonly ec2_ips=$1
-  local readonly amazon_ips=$2  
+  local readonly ec2_ips=($1)
+  local readonly amazon_ips=($2)
 
   ips=()
-  for aip in $amazon_ips
+  for aip in ${amazon_ips[@]}
   do  
     isAnEC2Ip=false
-    for eip in $ec2_ips
+    for eip in ${ec2_ips[@]}
     do     
       if [ "$aip" = "$eip"  ];then
         isAnEC2Ip=true
@@ -77,7 +78,66 @@ function merge_ipranges {
     fi  
   done
 
-  echo "${ips[*]}"
+  echo "${ips[@]}"
+}
+
+
+# Brief: Widenes the given list of ip-ranges to /16
+# parameters: 
+# 1 - the ip's
+# example: widened_ips=$(widen_ip_ranges_to_16 "${ips[@]}")
+function widen_ip_ranges_to_16 { 
+  ips=($1)
+  
+  full_ips=()
+  for ip in ${ips[@]}
+  do
+    # strip the "" from the ip
+    # i.e. "205.251.240.0/22" -> 205.251.240.0/22
+    clean_ip=${ip//\"/}
+
+    # extract the maskbits
+    ip_arr=(${clean_ip//\// })
+    mask_bits=${ip_arr[1]}
+
+    if (( $mask_bits < 16 )); then
+      full_ips+=($clean_ip)
+      log_info "full ip: $clean_ip"
+    else
+      # splti into parts of the ip
+      # 10.102.23.45 --> [10 102 23 45]
+      ip_parts=(${ip_arr[0]//./ })
+
+      # generate a /16 mask
+      ip_prefix="${ip_parts[0]}.${ip_parts[1]}"
+      widened_ip="$ip_prefix.0.0/16"
+      
+      log_info "too narrow ip: $ip --> $widened_ip"
+      full_ips+=($widened_ip)
+    fi
+  done
+
+  # remove duplicates
+  widened_ips=()
+  for ip in ${full_ips[@]}
+  do
+    isDuplicate=false
+    for wip in ${widened_ips[@]}
+    do
+      if [ "$wip" = "$ip"  ];then
+        log_info "Remove duplicate: $wip"
+        isDuplicate=true
+        break
+      fi
+    done
+    
+    if [ "$isDuplicate" = false ];then
+      widened_ips+=("$ip")
+      log_info "Add $ip"
+    fi  
+  done
+
+  echo ${widened_ips[@]}
 }
 
 
@@ -88,25 +148,24 @@ function merge_ipranges {
 # example: tf_var=$(generate_tf_variable "${ips[*]}" "$region")
 function generate_tf_variable {
   
-  ips=$1
-  region=$2
+  local readonly ips=($1)
+  local readonly region=$2
 
-  out="variable \"aws_ip_address_ranges\" {\n"
+  local out="variable \"aws_ip_address_ranges\" {\n"
   out+="\tdescription \t= \"List of ip-ranges for accessing aws services (S3, EC2, ElastiCache, ..) in $region see: http://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html\"\n"
   out+="\ttype        \t\t= \"list\"\n"
   out+="\tdefault     \t= ["
 
-  num_elements="${#ips[*]}"
+  local readonly num_elements="${#ips[@]}"
   idx=0
-  for ip in $ips
+  for ip in ${ips[@]}
   do
-    out+=$ip
+    out+="\"$ip\""
     ((idx++))
 
     if (( $idx < $num_elements ));then
       out+=","
     fi
-
   done
   out+="]\n"
   out+="}"
@@ -201,10 +260,9 @@ ec2_ips=$(get_ips "$file" "$region" "EC2")
 amazon_ips=$(get_ips "$file" "$region" "AMAZON")
 
 # merge both ranges (AMAZON minus EC2)
-ips=($(merge_ipranges "$ec2_ips" "$amazon_ips"))
+ips=$(merge_ipranges "$ec2_ips" "$amazon_ips")
 
-log_info "Num items: ${#ips[*]}"
-log_info "Data: ${ips[*]}"
+widened_ips=$(widen_ip_ranges_to_16 "${ips[@]}")
 
 # Print the tf-variable
-echo -e $(generate_tf_variable "${ips[*]}" "$region")
+echo -e $(generate_tf_variable "${widened_ips[@]}" "$region")
