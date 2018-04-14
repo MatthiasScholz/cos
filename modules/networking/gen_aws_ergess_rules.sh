@@ -28,13 +28,17 @@ function log {
   fi
 }
 
-
-
 function log_info {
   local readonly message="$1"
   log "INFO" "$message"
 }
 
+# Brief: Returns the ip-ranges (ipv4) for the given service type based on the given file.
+# parameters: 
+# 1 - name of the file
+# 2 - aws region
+# 3 - aws service-type
+# example: ec2_ips=$(get_ips "$file" "$region" "EC2")
 function get_ips {
   local readonly file=$1
   local readonly region=$2
@@ -45,6 +49,11 @@ function get_ips {
   echo $ips
 }
 
+# Brief: Merges the EC2 and AMAZON ipv4 ip-ranges to return only the AMAZON minus the EC2 ip's
+# parameters: 
+# 1 - the EC2 ip's
+# 2 - the AMAZON ip's
+# example: ips=($(merge_ipranges "$ec2_ips" "$amazon_ips"))
 function merge_ipranges {
   local readonly ec2_ips=$1
   local readonly amazon_ips=$2  
@@ -71,6 +80,12 @@ function merge_ipranges {
   echo "${ips[*]}"
 }
 
+
+# Brief: Generates an terraform variable having the specfied AWS ip-ranges.
+# parameters: 
+# 1 - the ip's
+# 2 - the region
+# example: tf_var=$(generate_tf_variable "${ips[*]}" "$region")
 function generate_tf_variable {
   
   ips=$1
