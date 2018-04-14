@@ -29,3 +29,11 @@ output "consul_ui_alb_dns" {
 output "fabio_ui_alb_dns" {
   value = "${module.ui-access.fabio_ui_alb_dns}"
 }
+
+output "vpc_id" {
+  value = "${var.vpc_id}"
+}
+
+output "ssh_key_name" {
+  value = "${var.ssh_key_name}"
+}

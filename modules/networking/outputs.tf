@@ -25,3 +25,7 @@ output "alb_public_services_arn" {
 output "alb_public_services_dns" {
   value = "${aws_alb.alb_public_services.dns_name}"
 }
+
+output "vpc_cidr_block" {
+  value = "${aws_vpc.vpc_main.cidr_block}"
+}

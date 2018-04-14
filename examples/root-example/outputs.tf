@@ -51,5 +51,17 @@ output "bastion_ip" {
 }
 
 output "ssh_login" {
-  value = "ssh ec2-user@${module.bastion.bastion_ip} -i ~/.ssh/${module.bastion.ssh_key_name}.pem"
+  value = "ssh ec2-user@${module.bastion.bastion_ip} -i ~/.ssh/${module.nomad-infra.ssh_key_name}.pem"
+}
+
+output "ssh_key_name" {
+  value = "${module.nomad-infra.ssh_key_name}"
+}
+
+output "vpc_id" {
+  value = "${module.nomad-infra.vpc_id}"
+}
+
+output "vpc_cidr_block" {
+  value = "${module.networking.vpc_cidr_block}"
 }

@@ -23,6 +23,13 @@ script_dir=$(pwd)/../helper && export PATH=$PATH:$script_dir &&\
 export AWS_PROFILE=playground
 ```
 
+## Connect to the bastion using sshuttle
+
+```bash
+sshuttle_login.sh
+# and then call the output
+```
+
 ## Configure and check nomad
 
 ```bash

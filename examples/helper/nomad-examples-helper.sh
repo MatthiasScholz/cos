@@ -81,7 +81,7 @@ function get_all_nomad_server_ips {
   local expected_num_nomad_servers
   expected_num_nomad_servers=$(get_required_terraform_output "num_nomad_servers")
 
-  log_info "Looking up public IP addresses for $expected_num_nomad_servers Nomad server EC2 Instances."
+  log_info "Looking up private IP addresses for $expected_num_nomad_servers Nomad server EC2 Instances."
 
   local ips
   local i
@@ -89,11 +89,11 @@ function get_all_nomad_server_ips {
   for (( i=1; i<="$MAX_RETRIES"; i++ )); do
     ips=($(get_nomad_server_ips "$profile"))
     if [[ "${#ips[@]}" -eq "$expected_num_nomad_servers" ]]; then
-      log_info "Found all $expected_num_nomad_servers public IP addresses!"
+      log_info "Found all $expected_num_nomad_servers private IP addresses!"
       echo "${ips[@]}"
       return
     else
-      log_warn "Found ${#ips[@]} of $expected_num_nomad_servers public IP addresses. Will sleep for $SLEEP_BETWEEN_RETRIES_SEC seconds and try again."
+      log_warn "Found ${#ips[@]} of $expected_num_nomad_servers private IP addresses. Will sleep for $SLEEP_BETWEEN_RETRIES_SEC seconds and try again."
       sleep "$SLEEP_BETWEEN_RETRIES_SEC"
     fi
   done
@@ -148,14 +148,14 @@ function get_nomad_server_ips {
   cluster_tag_key=$(get_required_terraform_output "nomad_servers_cluster_tag_key")
   cluster_tag_value=$(get_required_terraform_output "nomad_servers_cluster_tag_value")
 
-  log_info "Fetching public IP addresses for EC2 Instances in $aws_region with tag $cluster_tag_key=$cluster_tag_value"
+  log_info "Fetching private IP addresses for EC2 Instances in $aws_region with tag $cluster_tag_key=$cluster_tag_value"
 
   instances=$(aws ec2 describe-instances \
     --region "$aws_region" \
     $profile \
     --filter "Name=tag:$cluster_tag_key,Values=$cluster_tag_value" "Name=instance-state-name,Values=running")
 
-  echo "$instances" | jq -r '.Reservations[].Instances[].PublicIpAddress'
+  echo "$instances" | jq -r '.Reservations[].Instances[].PrivateIpAddress'
 }
 
 function print_instructions {
@@ -210,7 +210,7 @@ function run {
   local server_ips
   server_ips=$(get_all_nomad_server_ips "$profile")
 
-  log_info "Public ips: $server_ips"
+  log_info "private ips: $server_ips"
 
   wait_for_all_nomad_servers_to_register "$server_ips"
   print_instructions "$server_ips"
