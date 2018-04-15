@@ -50,12 +50,12 @@ function get_ips {
   echo $ips
 }
 
-# Brief: Merges the EC2 and AMAZON ipv4 ip-ranges to return only the AMAZON minus the EC2 ip's
+# Brief: Substracts the EC2 from the AMAZON ipv4 ip-ranges.
 # parameters: 
 # 1 - the EC2 ip's
 # 2 - the AMAZON ip's
-# example: ips=($(merge_ipranges "$ec2_ips" "$amazon_ips"))
-function merge_ipranges {
+# example: ips=($(substract_amazon_and_ec2_cidr_blocks "$ec2_ips" "$amazon_ips"))
+function substract_amazon_and_ec2_cidr_blocks {
   local readonly ec2_ips=($1)
   local readonly amazon_ips=($2)
 
@@ -82,14 +82,38 @@ function merge_ipranges {
 }
 
 
-# Brief: Widenes the given list of ip-ranges to /16
+# Brief: Merges the two given lists of cird_blocks to one.
+# parameters: 
+# 1 - first list of cidr-blocks
+# 2 - second list of cidr-blocks
+# example: ips=($(merge_cidr_block_lists "$ec2_ips" "$amazon_ips"))
+function merge_cidr_block_lists {
+  local readonly cidr_list1=($1)
+  local readonly cidr_list2=($2)
+
+  merged_cidr_blocks=()
+  for cidr in ${cidr_list1[@]}
+  do  
+    merged_cidr_blocks+=("$cidr")
+  done
+
+  for cidr in ${cidr_list2[@]}
+  do  
+    merged_cidr_blocks+=("$cidr")
+  done
+  
+  echo "${merged_cidr_blocks[@]}"
+}
+
+
+# Brief: Takes the list of ip's and generates /8 cidr-blocks out of it
 # parameters: 
 # 1 - the ip's
-# example: widened_ips=$(widen_ip_ranges_to_16 "${ips[@]}")
-function widen_ip_ranges_to_16 { 
+# example: cidr_blocks=$(to_cidr_block_8 "${ips[@]}")
+function to_cidr_block_8 { 
   ips=($1)
   
-  full_ips=()
+  cidr_blocks=()
   for ip in ${ips[@]}
   do
     # strip the "" from the ip
@@ -98,10 +122,10 @@ function widen_ip_ranges_to_16 {
 
     # extract the maskbits
     ip_arr=(${clean_ip//\// })
-    mask_bits=${ip_arr[1]}
+    masked_part=${ip_arr[1]}
 
-    if (( $mask_bits < 16 )); then
-      full_ips+=($clean_ip)
+    if (( $masked_part < 8 )); then
+      cidr_blocks+=($clean_ip)
       log_info "full ip: $clean_ip"
     else
       # splti into parts of the ip
@@ -109,35 +133,47 @@ function widen_ip_ranges_to_16 {
       ip_parts=(${ip_arr[0]//./ })
 
       # generate a /16 mask
-      ip_prefix="${ip_parts[0]}.${ip_parts[1]}"
-      widened_ip="$ip_prefix.0.0/16"
+      #ip_prefix="${ip_parts[0]}.${ip_parts[1]}"
+      ip_prefix="${ip_parts[0]}.0"
+      widened_ip="$ip_prefix.0.0/8"
       
       log_info "too narrow ip: $ip --> $widened_ip"
-      full_ips+=($widened_ip)
+      cidr_blocks+=($widened_ip)
     fi
   done
 
+  echo ${cidr_blocks[@]}
+}
+
+
+# Brief: Removes duplicate entries in the given list of cidr-blocks.
+# parameters: 
+# 1 - the cidr_blocks
+# example: unique_cidr_blocks=$(remove_duplicates "${cidr_blocks[@]}")
+function remove_duplicates {
+  cidrs=($1)
+
   # remove duplicates
-  widened_ips=()
-  for ip in ${full_ips[@]}
+  unique_cidrs=()
+  for cidr in ${cidrs[@]}
   do
     isDuplicate=false
-    for wip in ${widened_ips[@]}
+    for unique_cidr in ${unique_cidrs[@]}
     do
-      if [ "$wip" = "$ip"  ];then
-        log_info "Remove duplicate: $wip"
+      if [ "$unique_cidr" = "$cidr"  ];then
+        log_info "Remove duplicate: $unique_cidr"
         isDuplicate=true
         break
       fi
     done
     
     if [ "$isDuplicate" = false ];then
-      widened_ips+=("$ip")
-      log_info "Add $ip"
+      unique_cidrs+=("$cidr")
+      log_info "Add $cidr"
     fi  
   done
 
-  echo ${widened_ips[@]}
+  echo ${unique_cidrs[@]}
 }
 
 
@@ -258,11 +294,17 @@ fi
 # obtain the ec2 ip and the AMAZON ip-ranges
 ec2_ips=$(get_ips "$file" "$region" "EC2")
 amazon_ips=$(get_ips "$file" "$region" "AMAZON")
+cloud_front_ips=$(get_ips "$file" "$region" "CLOUDFRONT")
+
+merged_cidrs=$(merge_cidr_block_lists "${ec2_ips[@]}" "${amazon_ips[@]}")
+merged_cidrs=$(merge_cidr_block_lists "${merged_cidrs[@]}" "${cloud_front_ips[@]}")
 
 # merge both ranges (AMAZON minus EC2)
-ips=$(merge_ipranges "$ec2_ips" "$amazon_ips")
+#ips=$(substract_amazon_and_ec2_cidr_blocks "$ec2_ips" "$amazon_ips")
 
-widened_ips=$(widen_ip_ranges_to_16 "${ips[@]}")
+cidr_8=$(to_cidr_block_8 "${merged_cidrs[@]}")
+
+unique_cidr_8=$(remove_duplicates "${cidr_8[@]}")
 
 # Print the tf-variable
-echo -e $(generate_tf_variable "${widened_ips[@]}" "$region")
+echo -e $(generate_tf_variable "${unique_cidr_8[@]}" "$region")
