@@ -26,8 +26,8 @@ export AWS_PROFILE=playground
 ## Connect to the bastion using sshuttle
 
 ```bash
+# call
 sshuttle_login.sh
-# and then call the output
 ```
 
 ## Configure and check nomad
