@@ -23,13 +23,6 @@ script_dir=$(pwd)/../helper && export PATH=$PATH:$script_dir &&\
 export AWS_PROFILE=playground
 ```
 
-## Connect to the bastion using sshuttle
-
-```bash
-# call
-sshuttle_login.sh
-```
-
 ## Configure and check nomad
 
 ```bash
@@ -47,7 +40,7 @@ wait_for_servers.sh &&\
 wait_for_clients.sh
 ```
 
-## Show some commands
+## (Optional) Show some commands
 
 ```bash
 nomad-examples-helper.sh
@@ -79,6 +72,13 @@ xdg-open $(get_ui_albs.sh | awk '/fabio/ {print $3}')
 # call the service over loadbalancer
 ingress_alb_dns=$(get_ingress_alb_dns.sh) &&\
 watch -x curl -s http://$ingress_alb_dns/ping
+```
+
+## (Optional) Connect to the bastion using sshuttle
+
+```bash
+# call
+sshuttle_login.sh
 ```
 
 ## Destroy the infrastructure
