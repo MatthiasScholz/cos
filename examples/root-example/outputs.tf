@@ -65,3 +65,7 @@ output "vpc_id" {
 output "vpc_cidr_block" {
   value = "${module.networking.vpc_cidr_block}"
 }
+
+output "cluster_prefix" {
+  value = "${module.nomad-infra.cluster_prefix}"
+}

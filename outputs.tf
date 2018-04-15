@@ -37,3 +37,7 @@ output "vpc_id" {
 output "ssh_key_name" {
   value = "${var.ssh_key_name}"
 }
+
+output "cluster_prefix" {
+  value = "${module.dc-public-services.cluster_prefix}"
+}
