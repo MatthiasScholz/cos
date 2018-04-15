@@ -46,6 +46,10 @@ output "curl_ping_service" {
   value = "watch -x curl -s http://${module.networking.alb_public_services_dns}/ping"
 }
 
+output "ingress_alb_dns" {
+  value = "${module.networking.alb_public_services_dns}"
+}
+
 output "bastion_ip" {
   value = "${module.bastion.bastion_ip}"
 }

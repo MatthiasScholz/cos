@@ -103,19 +103,17 @@ function get_all_nomad_server_ips {
 }
 
 function wait_for_all_nomad_servers_to_register {
-  local readonly server_ips=($@)
-  local readonly server_ip="${server_ips[0]}"
+  local readonly nomad_ui_alb_dns=$1
 
-  local expected_num_nomad_servers
-  expected_num_nomad_servers=$(get_required_terraform_output "num_nomad_servers")
+  local readonly expected_num_nomad_servers=$(get_required_terraform_output "num_nomad_servers")
 
   log_info "Waiting for $expected_num_nomad_servers Nomad servers to register in the cluster"
 
   for (( i=1; i<="$MAX_RETRIES"; i++ )); do
-    log_info "Running 'nomad server-members' command against server at IP address $server_ip"
+    log_info "Running 'nomad server-members' command against server behind dns $nomad_ui_alb_dns"
     # Intentionally use local and readonly here so that this script doesn't exit if the nomad server-members or grep
     # commands exit with an error.
-    local readonly members=$(nomad server-members -address="http://$server_ip:4646")
+    local readonly members=$(nomad server-members -address="http://$nomad_ui_alb_dns")
     local readonly alive_members=$(echo "$members" | grep "alive")
     local readonly num_nomad_servers=$(echo "$alive_members" | wc -l | tr -d ' ')
 
@@ -159,13 +157,16 @@ function get_nomad_server_ips {
 }
 
 function print_instructions {
-  local readonly server_ips=($@)
+  local readonly server_ips=($1)
+  local readonly nomad_alb_dns=$2
   local readonly server_ip="${server_ips[0]}"
 
   local instructions=()
-  instructions+=("\nYour Nomad servers are running at the following IP addresses:\n\n${server_ips[@]/#/    }\n")  
+  instructions+=("\nYour Nomad servers are running at the following IP addresses:\n\n${server_ips[@]/#/    }\n")
+
+  instructions+=("DNS entry to access the nomad masters: '$nomad_alb_dns'\n")
   instructions+=("Some commands for you to try:\n")
-  instructions+=("Configure ip of nomad-server:\texport NOMAD_ADDR=http://$server_ip:4646")
+  instructions+=("Configure ip of nomad-server:\texport NOMAD_ADDR=http://$nomad_alb_dns")
   instructions+=("Open nomad ui:\t\t\tnomad ui")
   instructions+=("Watch servers:\t\t\twatch -x nomad server-members")
   instructions+=("Watch nodes:\t\t\twatch -x nomad node-status")
@@ -173,6 +174,7 @@ function print_instructions {
   instructions+=("Deploy ping_service:\t\tnomad run $SCRIPT_DIR/ping_service.nomad")
   instructions+=("Remove ping_service:\t\tnomad stop ping_service")
   instructions+=("Watch status of ping_service:\twatch -x nomad status ping_service\n")
+  instructions+=("Watch status of nomad-clients:\twatch -x nomad node-status\n")
 
   local instructions_str
   instructions_str=$(join "\n" "${instructions[@]}")
@@ -207,13 +209,13 @@ function run {
   assert_is_installed "terraform"
   assert_is_installed "nomad"
 
-  local server_ips
-  server_ips=$(get_all_nomad_server_ips "$profile")
-
+  local readonly server_ips=$(get_all_nomad_server_ips "$profile")
   log_info "private ips: $server_ips"
 
-  wait_for_all_nomad_servers_to_register "$server_ips"
-  print_instructions "$server_ips"
+  local readonly nomad_ui_alb_dns=$(get_required_terraform_output "nomad_ui_alb_dns")
+
+  wait_for_all_nomad_servers_to_register "$nomad_ui_alb_dns"
+  print_instructions "$server_ips" "$nomad_ui_alb_dns"
 }
 
 run "$@"
