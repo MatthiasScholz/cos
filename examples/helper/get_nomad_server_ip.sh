@@ -93,7 +93,7 @@ function get_nomad_server_ips {
     $profile \
     --filter "Name=tag:Name,Values=$cluster_tag_value" "Name=instance-state-name,Values=running")
 
-  echo "$instances" | jq -r '.Reservations[].Instances[].PublicIpAddress'
+  echo "$instances" | jq -r '.Reservations[].Instances[].PrivateIpAddress'
 }
 
 function get_aws_profile() {

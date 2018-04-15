@@ -13,3 +13,7 @@ output "aws_region" {
 output "cluster_tag_value" {
   value = "${module.data_center.cluster_tag_value}"
 }
+
+output "cluster_prefix" {
+  value = "${local.cluster_prefix}"
+}

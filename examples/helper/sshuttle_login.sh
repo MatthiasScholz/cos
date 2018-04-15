@@ -1,5 +1,5 @@
 #!/bin/bash
-# A script that prints the public-ip of the nomad servers
+# A script that prints the sshuttle login to the bastion server
 
 set -e
 
@@ -52,11 +52,23 @@ function get_required_terraform_output {
 }
 
 
+
+function gen_sshuttle_login {
+  local readonly ssh_key_name=$(get_required_terraform_output "ssh_key_name")
+  local readonly bastion_ip=$(get_required_terraform_output "bastion_ip")
+  local readonly vpc_cidr_block=$(get_required_terraform_output "vpc_cidr_block")
+
+  echo "sshuttle -v -r ec2-user@"$bastion_ip" \
+   -e 'ssh -v -o StrictHostKeyChecking=false -i ~/.ssh/"$ssh_key_name".pem' \
+   -H "$vpc_cidr_block""
+}
+
 function run {
   assert_is_installed "terraform"
-
-  cidr_block=$(get_required_terraform_output "vpc_cidr_block")
-  echo $cidr_block
+  assert_is_installed "sshuttle"
+  cmd=$(gen_sshuttle_login)
+  echo "calling $cmd"
+  eval $cmd
 }
 
 run "$@"

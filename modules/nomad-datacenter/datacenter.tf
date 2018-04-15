@@ -9,15 +9,16 @@ locals {
 module "data_center" {
   source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.1"
 
-  cluster_name            = "${local.cluster_name}"
-  cluster_tag_value       = "${local.cluster_name}"
-  instance_type           = "${var.instance_type}"
-  ami_id                  = "${var.ami_id}"
-  vpc_id                  = "${var.vpc_id}"
-  subnet_ids              = "${var.subnet_ids}"
-  allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
-  user_data               = "${data.template_file.user_data_data_center.rendered}"
-  ssh_key_name            = "${var.ssh_key_name}"
+  cluster_name                = "${local.cluster_name}"
+  cluster_tag_value           = "${local.cluster_name}"
+  instance_type               = "${var.instance_type}"
+  ami_id                      = "${var.ami_id}"
+  vpc_id                      = "${var.vpc_id}"
+  subnet_ids                  = "${var.subnet_ids}"
+  allowed_ssh_cidr_blocks     = "${var.allowed_ssh_cidr_blocks}"
+  user_data                   = "${data.template_file.user_data_data_center.rendered}"
+  ssh_key_name                = "${var.ssh_key_name}"
+  associate_public_ip_address = false
 
   # To keep the example simple, we are using a fixed-size cluster. In real-world usage, you could use auto scaling
   # policies to dynamically resize the cluster in response to load.
@@ -33,6 +34,19 @@ module "data_center" {
   # The need access for the nomad-server is granted over the
   # aws_security_group.sg_nomad_server_access.id.
   allowed_inbound_cidr_blocks = ["0.0.0.0/32"]
+  # propagate tags to the instances
+  tags = [
+    {
+      "key"                 = "datacenter"
+      "value"               = "${var.datacenter_name}"
+      "propagate_at_launch" = "true"
+    },
+    {
+      "key"                 = "node-type"
+      "value"               = "client"
+      "propagate_at_launch" = "true"
+    },
+  ]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

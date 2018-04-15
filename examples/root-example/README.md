@@ -27,11 +27,22 @@ export AWS_PROFILE=playground
 
 ```bash
 # Wait for the servers getting ready and set the NOMAD_ADDR env variable
-server_ip=$(get_nomad_server_ip.sh) &&\
-export NOMAD_ADDR=http://$server_ip:4646 &&\
+nomad_dns=$(get_nomad_alb_dns.sh) &&\
+export NOMAD_ADDR=http://$nomad_dns &&\
 echo ${NOMAD_ADDR}
+```
 
-# Show some commands
+## Wait until the nodes are available
+
+```bash
+# wait for servers and clients
+wait_for_servers.sh &&\
+wait_for_clients.sh
+```
+
+## (Optional) Show some commands
+
+```bash
 nomad-examples-helper.sh
 ```
 
@@ -58,14 +69,16 @@ xdg-open $(get_ui_albs.sh | awk '/fabio/ {print $3}')
 ## Test the service
 
 ```bash
-# 1. find the ip of one instance
-instance_ip=$(get_nomad_client_info.sh | awk '!/INSTANCE/{print $1}' | head -n 1)
-
-# call the service over instance directly
-watch -x curl -s http://$instance_ip:9999/ping
-
 # call the service over loadbalancer
-watch -x curl -s http://<name-of-loadbalancer>/ping
+ingress_alb_dns=$(get_ingress_alb_dns.sh) &&\
+watch -x curl -s http://$ingress_alb_dns/ping
+```
+
+## (Optional) Connect to the bastion using sshuttle
+
+```bash
+# call
+sshuttle_login.sh
 ```
 
 ## Destroy the infrastructure

@@ -1,5 +1,5 @@
 #!/bin/bash
-# A script that prints the public-ip of the nomad servers
+# A script that prints the dns of the nomad alb.
 
 set -e
 
@@ -11,16 +11,6 @@ function log {
   local readonly message="$2"
   local readonly timestamp=$(date +"%Y-%m-%d %H:%M:%S")
   >&2 echo -e "${timestamp} [${level}] [$SCRIPT_NAME] ${message}"
-}
-
-function log_info {
-  local readonly message="$1"
-  log "INFO" "$message"
-}
-
-function log_warn {
-  local readonly message="$1"
-  log "WARN" "$message"
 }
 
 function log_error {
@@ -51,12 +41,10 @@ function get_required_terraform_output {
   echo "$output_value"
 }
 
-
 function run {
   assert_is_installed "terraform"
-
-  cidr_block=$(get_required_terraform_output "vpc_cidr_block")
-  echo $cidr_block
+  local readonly ingress_alb_dns=$(get_required_terraform_output "ingress_alb_dns")
+  echo -e "$ingress_alb_dns"  
 }
 
 run "$@"

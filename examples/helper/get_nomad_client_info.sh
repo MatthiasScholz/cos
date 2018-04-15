@@ -84,19 +84,18 @@ function get_nomad_client_info {
   fi 
 
   aws_region=$(get_required_terraform_output "aws_region")
-  cluster_tag_value=$(get_required_terraform_output "nomad_clients_public_services_cluster_tag_value")
+  cluster_prefix=$(get_required_terraform_output "cluster_prefix")
 
-  if [ -z "$cluster_tag_value" ];then
-    cluster_tag_value="$(get_required_terraform_output "nomad_servers_cluster_tag_value")-client"
+  if [ -z "$cluster_prefix" ];then
+    log_error "Required terraform output 'cluster_prefix' not found"
+    exit 1
   fi
-
-  
 
   instances=$(aws ec2 describe-instances \
     --region "$aws_region" \
     $profile \
-    --filter "Name=tag:Name,Values=$cluster_tag_value" "Name=instance-state-name,Values=running")
-
+    --filter "Name=tag:Name,Values=\"$cluster_prefix*\"" "Name=instance-state-name,Values=running")
+  log_info "aws ec2 describe-instances --region $aws_region $profile --filter Name=tag:Name,Values=\"$cluster_prefix*\" Name=instance-state-name,Values=running"
   echo "$instances" | jq -r '.Reservations[].Instances[] | {id:.InstanceId,ip:.PublicIpAddress,pip:.PrivateIpAddress}'
 }
 
