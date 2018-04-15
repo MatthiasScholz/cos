@@ -61,15 +61,15 @@ module "nomad-infra" {
   # [Nomad] Required variables
   nomad_ami_id_servers                       = "${local.ami_id_server}"
   nomad_ami_id_clients                       = "${local.ami_id_clients}"
-  nomad_server_subnet_ids                    = "${module.networking.services_subnet_ids}"
+  nomad_server_subnet_ids                    = "${module.networking.backoffice_subnet_ids}"
   nomad_clients_public_services_subnet_ids   = "${module.networking.services_subnet_ids}"
   nomad_clients_private_services_subnet_ids  = "${module.networking.services_subnet_ids}"
-  nomad_clients_content_connector_subnet_ids = "${module.networking.services_subnet_ids}"
-  nomad_clients_backoffice_subnet_ids        = "${module.networking.services_subnet_ids}"
+  nomad_clients_content_connector_subnet_ids = "${module.networking.content_connector_subnet_ids}"
+  nomad_clients_backoffice_subnet_ids        = "${module.networking.backoffice_subnet_ids}"
 
   # [Consul] Required variables
   consul_ami_id            = "${local.ami_id_server}"
-  consul_server_subnet_ids = "${module.networking.services_subnet_ids}"
+  consul_server_subnet_ids = "${module.networking.backoffice_subnet_ids}"
 
   # [General] Optional variables
   stack_name              = "${local.stack_name}"
