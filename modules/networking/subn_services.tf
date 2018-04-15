@@ -1,11 +1,10 @@
 # SERVICES subnets
 resource "aws_subnet" "subn_services" {
   # one for each az
-  count                   = "${length(var.az_postfixes)}"
-  vpc_id                  = "${aws_vpc.vpc_main.id}"
-  cidr_block              = "${var.ip_prefix}.${0 + count.index * 32}.0/19"
-  availability_zone       = "${var.region}${element(var.az_postfixes,count.index)}"
-  map_public_ip_on_launch = true
+  count             = "${length(var.az_postfixes)}"
+  vpc_id            = "${aws_vpc.vpc_main.id}"
+  cidr_block        = "${var.ip_prefix}.${0 + count.index * 32}.0/19"
+  availability_zone = "${var.region}${element(var.az_postfixes,count.index)}"
 
   tags {
     Name = "${var.stack_name}-${var.region}${element(var.az_postfixes,count.index)}-SUBN-services"

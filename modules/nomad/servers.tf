@@ -12,15 +12,16 @@ locals {
 module "nomad_servers" {
   source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.1"
 
-  cluster_name            = "${local.cluster_name}"
-  cluster_tag_value       = "${local.cluster_name}"
-  instance_type           = "${var.instance_type}"
-  ami_id                  = "${var.ami_id}"
-  vpc_id                  = "${var.vpc_id}"
-  subnet_ids              = "${var.subnet_ids}"
-  allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
-  user_data               = "${data.template_file.user_data_server.rendered}"
-  ssh_key_name            = "${var.ssh_key_name}"
+  cluster_name                = "${local.cluster_name}"
+  cluster_tag_value           = "${local.cluster_name}"
+  instance_type               = "${var.instance_type}"
+  ami_id                      = "${var.ami_id}"
+  vpc_id                      = "${var.vpc_id}"
+  subnet_ids                  = "${var.subnet_ids}"
+  allowed_ssh_cidr_blocks     = "${var.allowed_ssh_cidr_blocks}"
+  user_data                   = "${data.template_file.user_data_server.rendered}"
+  ssh_key_name                = "${var.ssh_key_name}"
+  associate_public_ip_address = false
 
   # You should typically use a fixed size of 3 or 5 for your Nomad server cluster
   min_size         = "${local.min}"
@@ -31,6 +32,20 @@ module "nomad_servers" {
 
   # HACK: Still everything open for the nomad-servers. Has to be closed.
   allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
+
+  # propagate tags to the instances
+  tags = [
+    {
+      "key"                 = "datacenter"
+      "value"               = "${var.datacenter_name}"
+      "propagate_at_launch" = "true"
+    },
+    {
+      "key"                 = "node-type"
+      "value"               = "server"
+      "propagate_at_launch" = "true"
+    },
+  ]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
