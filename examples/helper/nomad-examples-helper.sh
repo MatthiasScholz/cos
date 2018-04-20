@@ -168,13 +168,12 @@ function print_instructions {
   instructions+=("Some commands for you to try:\n")
   instructions+=("Configure ip of nomad-server:\texport NOMAD_ADDR=http://$nomad_alb_dns")
   instructions+=("Open nomad ui:\t\t\tnomad ui")
-  instructions+=("Watch servers:\t\t\twatch -x nomad server-members")
-  instructions+=("Watch nodes:\t\t\twatch -x nomad node-status")
+  instructions+=("Watch servers:\t\t\twatch -x nomad server members")
   instructions+=("Deploy fabio-loadbalancer:\tnomad run $SCRIPT_DIR/fabio.nomad")
   instructions+=("Deploy ping_service:\t\tnomad run $SCRIPT_DIR/ping_service.nomad")
   instructions+=("Remove ping_service:\t\tnomad stop ping_service")
   instructions+=("Watch status of ping_service:\twatch -x nomad status ping_service\n")
-  instructions+=("Watch status of nomad-clients:\twatch -x nomad node-status\n")
+  instructions+=("Watch status of nomad-clients:\twatch -x nomad node status\n")
 
   local instructions_str
   instructions_str=$(join "\n" "${instructions[@]}")
