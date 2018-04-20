@@ -12,6 +12,7 @@ module "ui-access" {
   consul_server_asg_name = "${module.consul.asg_name_consul_servers}"
   nomad_server_asg_name  = "${module.nomad.asg_name_nomad_servers}"
   fabio_server_asg_name  = "${module.dc-public-services.asg_name}"
+  nomad_server_sg_id     = "${module.nomad.security_group_id_nomad_servers}"
 
   ## optional parameters
   aws_region     = "${var.aws_region}"

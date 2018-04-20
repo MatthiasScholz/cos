@@ -19,7 +19,7 @@ output "iam_role_id_nomad_servers" {
 }
 
 output "security_group_id_nomad_servers" {
-  value = "${module.nomad_servers.security_group_id}"
+  value = "${aws_security_group.sg_server.id}"
 }
 
 output "aws_region" {

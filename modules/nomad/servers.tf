@@ -30,8 +30,10 @@ module "nomad_servers" {
 
   security_groups = ["${aws_security_group.sg_server.id}"]
 
-  # HACK: Still everything open for the nomad-servers. Has to be closed.
-  allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
+  # Access over cidr blocks is disabled here.
+  # The need access for the nomad-server is granted over the
+  # aws_security_group.sg_nomad_server_access.id.
+  allowed_inbound_cidr_blocks = ["0.0.0.0/32"]
 
   # propagate tags to the instances
   tags = [
