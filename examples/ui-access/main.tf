@@ -88,6 +88,7 @@ module "ui-access" {
   nomad_server_asg_name  = "${aws_autoscaling_group.asg_sample.name}"
   consul_server_asg_name = "${aws_autoscaling_group.asg_sample.name}"
   fabio_server_asg_name  = "${aws_autoscaling_group.asg_sample.name}"
+  nomad_server_sg_id     = "${aws_security_group.sg_sample.id}"
 
   ## optional parameters
   aws_region     = "${local.aws_region}"
