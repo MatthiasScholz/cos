@@ -1,6 +1,6 @@
 locals {
-  ami_id_server  = "ami-58d07627"                        # nomad 0.8.0 ("ami-a23feadf" 0.7.1)
-  ami_id_clients = "ami-15de786a"                        # nomad 0.8.0 ("ami-e5e34798" 0.7.1)
+  ami_id_server  = "ami-ad5cf2d2"                        # nomad 0.8.1
+  ami_id_clients = "ami-8a5cf2f5"                        # nomad 0.8.1
   ami_id_bastion = "ami-1853ac65"                        # Amazon Linux AMI 2017.09.1 (HVM)
   env_name       = "playground"
   aws_region     = "us-east-1"
