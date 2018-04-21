@@ -1,31 +1,29 @@
-variable "nomad_ami_id_servers" {
+#### Required Variables ############################################
+variable "ami_id" {
   description = "The ID of the AMI to be used for the nomad server nodes."
-}
-
-variable "nomad_ami_id_clients" {
-  description = "The ID of the AMI to be used for the nomad client nodes."
-}
-
-variable "consul_ami_id" {
-  description = "The ID of the AMI to be used for the consul nodes."
-}
-
-variable "env_name" {
-  description = "name of the environment (i.e. prod)"
-}
-
-variable "stack_name" {
-  description = "shortcut for this stack"
-  default     = "NOMAD"
 }
 
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
 
-variable "nomad_server_subnet_ids" {
+variable "subnet_ids" {
   description = "Ids of the subnets to deploy the nomad servers into."
   type        = "list"
+}
+
+variable "consul_cluster_tag_key" {
+  description = "This variable defines the name of the tag that is used to find the consul-servers. On each nomad instance the consul-agent searches for EC2 instances tagged with this tag and having the value of consul_cluster_tag_value."
+}
+
+variable "consul_cluster_tag_value" {
+  description = "This variable defines the value of the tag defined by consul_cluster_tag_key. This is used to find the consul servers (see: consul_cluster_tag_key)."
+}
+
+#### Optional Variables ############################################
+variable "env_name" {
+  description = "name of the environment (i.e. prod)"
+  default     = "playground"
 }
 
 variable "aws_region" {
@@ -33,44 +31,14 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
-variable "nomad_cluster_name" {
-  description = "What to name the Nomad cluster and all of its associated resources"
-  default     = "nomad-example"
+variable "stack_name" {
+  description = "shortcut for this stack"
+  default     = "COS"
 }
 
-variable "consul_cluster_name" {
-  description = "What to name the Consul cluster and all of its associated resources"
-  default     = "consul-example"
-}
-
-variable "num_nomad_servers" {
-  description = "The number of Nomad server nodes to deploy. We strongly recommend using 3 or 5."
-  default     = 3
-}
-
-variable "num_nomad_clients" {
-  description = "The number of Nomad client nodes to deploy. You can deploy as many as you need to run your jobs."
-  default     = 3
-}
-
-variable "num_consul_servers" {
-  description = "The number of Consul server nodes to deploy. We strongly recommend using 3 or 5."
-  default     = 3
-}
-
-variable "instance_type_server" {
-  description = "The instance type for all nomad and consul server nodes."
+variable "instance_type" {
+  description = "The instance type for all nomad server nodes."
   default     = "t2.micro"
-}
-
-variable "instance_type_client" {
-  description = "The instance type for all nomad client nodes."
-  default     = "t2.micro"
-}
-
-variable "cluster_tag_key" {
-  description = "The tag the Consul EC2 Instances will look for to automatically discover each other and form a cluster."
-  default     = "consul-servers"
 }
 
 variable "ssh_key_name" {
@@ -83,18 +51,24 @@ variable "unique_postfix" {
   default     = ""
 }
 
-variable "alb_public_services_arn" {
-  description = "The arn of the alb for public-services access."
+variable "allowed_ssh_cidr_blocks" {
+  description = "A list of cidr block from which inbound ssh traffic should be allowed."
+  type        = "list"
+  default     = []
 }
 
-variable "alb_backoffice_nomad_arn" {
-  description = "The arn of the alb for backoffice access (nomad ui)."
+variable "datacenter_name" {
+  description = "The name for the nomad-servers (i.e. leader)."
+  default     = "leader"
 }
 
-variable "alb_backoffice_consul_arn" {
-  description = "The arn of the alb for backoffice access (consul ui)."
-}
+variable "node_scaling_cfg" {
+  description = "Scaling configuration for the nomad servers."
+  type        = "map"
 
-variable "alb_backoffice_fabio_arn" {
-  description = "The arn of the alb for backoffice access (fabio ui)."
+  default = {
+    "min"              = 3
+    "max"              = 3
+    "desired_capacity" = 3
+  }
 }

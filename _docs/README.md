@@ -1,2 +1,3 @@
 # Overview
-* [ ] TODO: Giving a detailed description for this module.
+
+Contains assets needed for documentation (i.e. images).

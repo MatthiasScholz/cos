@@ -1,0 +1,26 @@
+@startuml
+
+package "networking-stack"{
+  [vpc, subnets,\nacl, routes] as BNW
+  [peering]
+  [dns,\ningress alb\ningress alb-sg] as INGR
+}
+
+package "cos-stack"{
+  [**consul**] as CS
+  [**ui-access:**\ndns,\nui alb's,\nui alb-attachment,\n ui alb-targetgroup] as UI
+  [**nomad:**\ningress alb-attachment,\n ingress-alb-targetgroup\nnomad-servers] as NM
+  [**nomad-datacenter:**\npublic-services,\nprivate-services,\ncontent-connector,\nbackoffice] as DC
+}
+
+NM --> BNW
+CS --> BNW
+UI --> BNW
+UI --> NM: ASG of\nnomad-servers
+UI --> DC: ASG of\npublic-services nodes
+UI --> CS: ASG of\nconsul-servers
+DC --> NM: SG of Nomad Server
+DC --> BNW
+DC --> INGR: ARN of ingress alb
+
+@enduml

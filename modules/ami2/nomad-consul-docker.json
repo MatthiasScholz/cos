@@ -2,14 +2,14 @@
   "min_packer_version": "0.12.0",
   "variables": {
     "aws_region": "us-east-1",
-    "nomad_version": "0.7.1",
+    "nomad_version": "0.8.1",
     "consul_module_version": "v0.3.1",
     "consul_version": "1.0.6"
   },
   "builders": [
     {
       "ami_name": "nomad-consul-docker-amazon-linux2-{{isotime | clean_ami_name}}",
-      "ami_description": "An Amazon Linux 2 AMI that has Nomad, Consul and Docker installed.",
+      "ami_description": "An Amazon Linux 2 AMI that has Nomad {{`nomad_version`}}, Consul {{`consul_version`}} and Docker installed.",
       "instance_type": "t2.micro",
       "name": "amazon-linux-ami2",
       "region": "{{user `aws_region`}}",
@@ -18,7 +18,7 @@
         "filters": {
           "virtualization-type": "hvm",
           "architecture": "x86_64",
-          "name": "*amzn2-ami-hvm-*",
+          "name": "*amzn2-ami-hvm-*gp2",
           "block-device-mapping.volume-type": "gp2",
           "root-device-type": "ebs"
         },
@@ -40,15 +40,20 @@
     },
     {
       "type": "file",
+      "source": "{{template_dir}}/dnsmasq_10-consul.conf",
+      "destination": "/tmp/dnsmasq_10-consul.conf"
+    },
+    {
+      "type": "file",
       "source": "{{template_dir}}/install-nomad",
       "destination": "/tmp/install-nomad/",
-      "pause_before": "30s"
+      "pause_before": "10s"
     },
     {
       "type": "file",
       "source": "{{template_dir}}/run-nomad",
       "destination": "/tmp/run-nomad/",
-      "pause_before": "30s"
+      "pause_before": "10s"
     },
     {
       "type": "shell",

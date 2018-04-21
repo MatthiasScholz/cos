@@ -7,4 +7,13 @@
 
 # Plan files
 cos.plan
+consul.plan
+ui.plan
+dc.plan
+nm.plan
+bst.plan
 *.tfvars
+.terraform.tfstate.lock.info
+
+# folder with generated files
+out/

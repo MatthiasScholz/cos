@@ -5,167 +5,45 @@ terraform {
 }
 
 locals {
-  nomad_client_cluster_name = "${var.nomad_cluster_name}-client"
-  nomad_server_cluster_name = "${var.nomad_cluster_name}-server"
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY THE NOMAD SERVER NODES
-# ---------------------------------------------------------------------------------------------------------------------
-module "nomad_servers" {
-  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
-
-  cluster_name      = "${local.nomad_server_cluster_name}"
-  cluster_tag_value = "${local.nomad_server_cluster_name}"
-  instance_type     = "${var.instance_type_server}"
-
-  # You should typically use a fixed size of 3 or 5 for your Nomad server cluster
-  min_size         = "${var.num_nomad_servers}"
-  max_size         = "${var.num_nomad_servers}"
-  desired_capacity = "${var.num_nomad_servers}"
-
-  ami_id    = "${var.nomad_ami_id_servers}"
-  user_data = "${data.template_file.user_data_nomad_server.rendered}"
-
-  vpc_id     = "${var.vpc_id}"
-  subnet_ids = "${var.nomad_server_subnet_ids}"
-
-  # To make testing easier, we allow requests from any IP address here but in a production deployment, we strongly
-  # recommend you limit this to the IP address ranges of known, trusted servers inside your VPC.
-  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-
-  allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name                = "${var.ssh_key_name}"
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ATTACH IAM POLICIES FOR CONSUL
-# To allow our server Nodes to automatically discover the Consul servers, we need to give them the IAM permissions from
-# the Consul AWS Module's consul-iam-policies module.
-# ---------------------------------------------------------------------------------------------------------------------
-module "consul_iam_policies_servers" {
-  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
-  iam_role_id = "${module.nomad_servers.iam_role_id}"
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# THE USER DATA SCRIPT THAT WILL RUN ON EACH NOMAD SERVER NODE WHEN IT'S BOOTING
-# This script will configure and start Nomad
-# ---------------------------------------------------------------------------------------------------------------------
-data "template_file" "user_data_nomad_server" {
-  template = "${file("${path.module}/user-data-nomad-server.sh")}"
-
-  vars {
-    num_servers       = "${var.num_nomad_servers}"
-    cluster_tag_key   = "${var.cluster_tag_key}"
-    cluster_tag_value = "${var.consul_cluster_name}"
-    datacenter        = "backoffice"
-  }
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# DEPLOY THE CONSUL SERVER NODES
-# ---------------------------------------------------------------------------------------------------------------------
-module "consul_servers" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.1"
-
-  cluster_name   = "${var.consul_cluster_name}-server"
-  cluster_size   = "${var.num_consul_servers}"
-  instance_type  = "${var.instance_type_server}"
-
-  # The EC2 Instances will use these tags to automatically discover each other and form a cluster
-  cluster_tag_key   = "${var.cluster_tag_key}"
-  cluster_tag_value = "${var.consul_cluster_name}"
-
-  ami_id    = "${var.consul_ami_id}"
-  user_data = "${data.template_file.user_data_consul_server.rendered}"
-
-  vpc_id     = "${var.vpc_id}"
-  subnet_ids = "${var.nomad_server_subnet_ids}"
-
-  # To make testing easier, we allow Consul and SSH requests from any IP address here but in a production
-  # deployment, we strongly recommend you limit this to the IP address ranges of known, trusted servers inside your VPC.
-  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-
-  allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name                = "${var.ssh_key_name}"
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# THE USER DATA SCRIPT THAT WILL RUN ON EACH CONSUL SERVER EC2 INSTANCE WHEN IT'S BOOTING
-# This script will configure and start Consul
-# ---------------------------------------------------------------------------------------------------------------------
-data "template_file" "user_data_consul_server" {
-  template = "${file("${path.module}/user-data-consul-server.sh")}"
-
-  vars {
-    cluster_tag_key   = "${var.cluster_tag_key}"
-    cluster_tag_value = "${var.consul_cluster_name}"
-  }
+  short_dc_name     = "${format("%.10s",var.datacenter_name)}"
+  base_cluster_name = "${var.stack_name}-NMS-${local.short_dc_name}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # DEPLOY THE NOMAD CLIENT NODES
 # ---------------------------------------------------------------------------------------------------------------------
-module "nomad_clients" {
-  # source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
-  # HACK: Playing around with GlusterFS - additional EBS volume per client node needed.
-  source = "../../../terraform-aws-nomad/modules/nomad-cluster"
-
-  cluster_name      = "${local.nomad_client_cluster_name}"
-  cluster_tag_value = "${local.nomad_client_cluster_name}"
-  instance_type     = "${var.instance_type_client}"
-
-  # To keep the example simple, we are using a fixed-size cluster. In real-world usage, you could use auto scaling
-  # policies to dynamically resize the cluster in response to load.
-  min_size = "${var.num_nomad_clients}"
-
-  max_size         = "${var.num_nomad_clients}"
-  desired_capacity = "${var.num_nomad_clients}"
-  ami_id           = "${var.nomad_ami_id_clients}"
-  user_data        = "${data.template_file.user_data_nomad_client.rendered}"
-  vpc_id           = "${var.vpc_id}"
-  subnet_ids       = "${var.nomad_server_subnet_ids}"
-
-  # To make testing easier, we allow Consul and SSH requests from any IP address here but in a production
-  # deployment, we strongly recommend you limit this to the IP address ranges of known, trusted servers inside your VPC.
-  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-
-  allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name                = "${var.ssh_key_name}"
-
-  # HACK: Take the connected ALB configuration for the nomad client ui export.
-  # FIXME: This will open port: 80 as well, but this is negligible.
-  #    "${aws_security_group.sg_alb.id}",
-  security_groups = [
-    "${aws_security_group.sg_client.id}",
-    "${aws_security_group.sg_client_glusterfs.id}",
-  ]
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ATTACH IAM POLICIES FOR CONSUL
-# To allow our client Nodes to automatically discover the Consul servers, we need to give them the IAM permissions from
-# the Consul AWS Module's consul-iam-policies module.
-# ---------------------------------------------------------------------------------------------------------------------
-
-module "consul_iam_policies_clients" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
-
-  iam_role_id = "${module.nomad_clients.iam_role_id}"
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# THE USER DATA SCRIPT THAT WILL RUN ON EACH CLIENT NODE WHEN IT'S BOOTING
-# This script will configure and start Consul and Nomad
-# ---------------------------------------------------------------------------------------------------------------------
-
-data "template_file" "user_data_nomad_client" {
-  template = "${file("${path.module}/user-data-nomad-client.sh")}"
-
-  vars {
-    cluster_tag_key   = "${var.cluster_tag_key}"
-    cluster_tag_value = "${var.consul_cluster_name}"
-    datacenter        = "public-services"
-  }
-}
+# HACK module "nomad_clients" {
+# HACK   # source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.3.0"
+# HACK   # HACK: Playing around with GlusterFS - additional EBS volume per client node needed.
+# HACK   source = "../../../terraform-aws-nomad/modules/nomad-cluster"
+# HACK
+# HACK   cluster_name      = "${local.nomad_client_cluster_name}"
+# HACK   cluster_tag_value = "${local.nomad_client_cluster_name}"
+# HACK   instance_type     = "${var.instance_type_client}"
+# HACK
+# HACK   # To keep the example simple, we are using a fixed-size cluster. In real-world usage, you could use auto scaling
+# HACK   # policies to dynamically resize the cluster in response to load.
+# HACK   min_size = "${var.num_nomad_clients}"
+# HACK
+# HACK   max_size         = "${var.num_nomad_clients}"
+# HACK   desired_capacity = "${var.num_nomad_clients}"
+# HACK   ami_id           = "${var.nomad_ami_id_clients}"
+# HACK   user_data        = "${data.template_file.user_data_nomad_client.rendered}"
+# HACK   vpc_id           = "${var.vpc_id}"
+# HACK   subnet_ids       = "${var.nomad_server_subnet_ids}"
+# HACK
+# HACK   # To make testing easier, we allow Consul and SSH requests from any IP address here but in a production
+# HACK   # deployment, we strongly recommend you limit this to the IP address ranges of known, trusted servers inside your VPC.
+# HACK   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
+# HACK
+# HACK   allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
+# HACK   ssh_key_name                = "${var.ssh_key_name}"
+# HACK
+# HACK   # HACK: Take the connected ALB configuration for the nomad client ui export.
+# HACK   # FIXME: This will open port: 80 as well, but this is negligible.
+# HACK   #    "${aws_security_group.sg_alb.id}",
+# HACK   security_groups = [
+# HACK     "${aws_security_group.sg_client.id}",
+# HACK     "${aws_security_group.sg_client_glusterfs.id}",
+# HACK   ]
+# HACK }
