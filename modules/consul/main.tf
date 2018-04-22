@@ -26,7 +26,7 @@ module "consul_servers" {
 
   allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
 
-  allowed_inbound_cidr_blocks = ["0.0.0.0/0"]
+  allowed_inbound_cidr_blocks = ["0.0.0.0/32"]
   ssh_key_name                = "${var.ssh_key_name}"
 }
 

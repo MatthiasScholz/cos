@@ -20,6 +20,10 @@ variable "consul_cluster_tag_value" {
   description = "This variable defines the value of the tag defined by consul_cluster_tag_key. This is used to find the consul servers (see: consul_cluster_tag_key)."
 }
 
+variable "consul_cluster_security_group_id" {
+  description = "Id of the security-group of the consul server."
+}
+
 #### Optional Variables ############################################
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
