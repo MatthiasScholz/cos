@@ -23,16 +23,18 @@ script_dir=$(pwd)/../helper && export PATH=$PATH:$script_dir &&\
 export AWS_PROFILE=playground
 ```
 
-## Configure and check nomad
+## Nomad
+
+### Configure and check nomad
 
 ```bash
-# Wait for the servers getting ready and set the NOMAD_ADDR env variable
+# Set the NOMAD_ADDR env variable
 nomad_dns=$(get_nomad_alb_dns.sh) &&\
 export NOMAD_ADDR=http://$nomad_dns &&\
 echo ${NOMAD_ADDR}
 ```
 
-## Wait until the nodes are available
+### Wait until the nomad nodes are available
 
 ```bash
 # wait for servers and clients
@@ -40,10 +42,28 @@ wait_for_servers.sh &&\
 wait_for_clients.sh
 ```
 
-## (Optional) Show some commands
+### (Optional) Show some commands
 
 ```bash
 nomad-examples-helper.sh
+```
+
+## Consul
+
+### (Optional) Configure and check consul
+
+```bash
+# Set the CONSUL_HTTP_ADDR env variable
+consul_dns=$(get_consul_alb_dns.sh) &&\
+export CONSUL_HTTP_ADDR=http://$consul_dns &&\
+echo ${CONSUL_HTTP_ADDR}
+```
+
+### (Optional) Wait until the consul nodes are available
+
+```bash
+# wait for servers and clients
+## TBD
 ```
 
 ## Deploy sample services
@@ -74,12 +94,6 @@ ingress_alb_dns=$(get_ingress_alb_dns.sh) &&\
 watch -x curl -s http://$ingress_alb_dns/ping
 ```
 
-## (Optional) Connect to the bastion using sshuttle
-
-```bash
-# call
-sshuttle_login.sh
-```
 
 ## Destroy the infrastructure
 
@@ -88,6 +102,15 @@ sshuttle_login.sh
 
 # on playground
 terraform destroy -var deploy_profile=playground
+```
+
+## (Optional) Enable SSH access to instances
+
+Connect to the bastion using sshuttle
+
+```bash
+# call
+sshuttle_login.sh
 ```
 
 ## Architecture
