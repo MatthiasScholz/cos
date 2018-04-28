@@ -66,6 +66,16 @@ echo ${CONSUL_HTTP_ADDR}
 ## TBD
 ```
 
+### (Optional) Watch for services to be registered at consul
+
+```bash
+# watch ping-service
+watch -x consul watch -service=ping-service -type=service
+
+# watch fabio
+watch -x consul watch -service=fabio -type=service
+```
+
 ## Deploy sample services
 
 ```bash
