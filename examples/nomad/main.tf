@@ -49,11 +49,12 @@ module "nomad" {
   source = "../../modules/nomad"
 
   ## required parameters
-  vpc_id                   = "${data.aws_vpc.default.id}"
-  subnet_ids               = "${data.aws_subnet_ids.all.ids}"
-  ami_id                   = "${local.nomad_ami_id}"
-  consul_cluster_tag_key   = "${local.consul_cluster_tag_key}"
-  consul_cluster_tag_value = "${local.consul_cluster_tag_value}"
+  vpc_id                           = "${data.aws_vpc.default.id}"
+  subnet_ids                       = "${data.aws_subnet_ids.all.ids}"
+  ami_id                           = "${local.nomad_ami_id}"
+  consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
+  consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
+  consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
   aws_region              = "${local.aws_region}"
