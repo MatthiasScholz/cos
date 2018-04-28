@@ -16,6 +16,15 @@ terraform plan -out cos.plan -var deploy_profile=playground &&\
 terraform apply "cos.plan"
 ```
 
+Now you can either configure your shell using the bootstrap.sh script by calling:
+
+```bash
+source ./bootstrap.sh
+```
+
+Or you follow the preceding instructions.
+
+
 ## Setup helper scripts
 
 ```bash
@@ -29,7 +38,7 @@ export AWS_PROFILE=playground
 
 ```bash
 # Set the NOMAD_ADDR env variable
-nomad_dns=$(get_nomad_alb_dns.sh) &&\
+nomad_dns=$(terraform output nomad_ui_alb_dns) &&\
 export NOMAD_ADDR=http://$nomad_dns &&\
 echo ${NOMAD_ADDR}
 ```
@@ -54,7 +63,7 @@ nomad-examples-helper.sh
 
 ```bash
 # Set the CONSUL_HTTP_ADDR env variable
-consul_dns=$(get_consul_alb_dns.sh) &&\
+consul_dns=$(terraform output consul_ui_alb_dns) &&\
 export CONSUL_HTTP_ADDR=http://$consul_dns &&\
 echo ${CONSUL_HTTP_ADDR}
 ```
@@ -100,10 +109,9 @@ xdg-open $(get_ui_albs.sh | awk '/fabio/ {print $3}')
 
 ```bash
 # call the service over loadbalancer
-ingress_alb_dns=$(get_ingress_alb_dns.sh) &&\
+ingress_alb_dns=$(terraform output ingress_alb_dns) &&\
 watch -x curl -s http://$ingress_alb_dns/ping
 ```
-
 
 ## Destroy the infrastructure
 
