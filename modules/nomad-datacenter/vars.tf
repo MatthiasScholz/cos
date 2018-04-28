@@ -19,6 +19,10 @@ variable "consul_cluster_tag_value" {
   description = "This variable defines the value of the tag defined by consul_cluster_tag_key. This is used to find the consul servers (see: consul_cluster_tag_key)."
 }
 
+variable "consul_cluster_security_group_id" {
+  description = "Id of the security-group of the consul server."
+}
+
 variable "subnet_ids" {
   description = "Subnet id's for nomad client nodes providing this data-center."
   type        = "list"

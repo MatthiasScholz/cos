@@ -33,12 +33,13 @@ module "nomad-datacenter" {
   source = "../../modules/nomad-datacenter"
 
   ## required parameters
-  vpc_id                   = "${data.aws_vpc.default.id}"
-  subnet_ids               = "${data.aws_subnet_ids.all.ids}"
-  ami_id                   = "ami-a23feadf"
-  consul_cluster_tag_key   = "consul-servers"
-  consul_cluster_tag_value = "${local.stack_name}-${local.env_name}-consul-srv"
-  server_sg_id             = "${aws_security_group.sg_nomad_server.id}"
+  vpc_id                           = "${data.aws_vpc.default.id}"
+  subnet_ids                       = "${data.aws_subnet_ids.all.ids}"
+  ami_id                           = "ami-a23feadf"
+  consul_cluster_tag_key           = "consul-servers"
+  consul_cluster_tag_value         = "${local.stack_name}-${local.env_name}-consul-srv"
+  server_sg_id                     = "${aws_security_group.sg_nomad_server.id}"
+  consul_cluster_security_group_id = "${aws_security_group.sg_nomad_server.id}"
 
   ## optional parameters
   aws_region              = "${local.aws_region}"
