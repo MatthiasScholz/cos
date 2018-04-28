@@ -3,6 +3,10 @@
 Making use of terraform and nomad to setup a cluster orchestration system.
 This respository will provide an extended example from the main [nomad terraform module](https://github.com/hashicorp/terraform-aws-nomad/tree/master/examples/nomad-consul-separate-cluster)
 
+## Architecture
+
+![deps](_docs/Cluster_Orchestration_System_Stack.png)
+
 ## Structure
 
 ### _docs
