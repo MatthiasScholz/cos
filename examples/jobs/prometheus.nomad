@@ -22,7 +22,7 @@ job "prometheus" {
       driver = "docker"
       config {
         # AWS ECR playground:
-        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/prometheus:latest"
+        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/prometheus:2018-04-29_18-47-3483d0b97_dirty"
       }
 
       config {
