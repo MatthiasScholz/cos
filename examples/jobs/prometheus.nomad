@@ -1,7 +1,7 @@
 # job>group>task>service
 # container for tasks or task-groups that nomad should run
 job "prometheus" {
-  datacenters = ["public-services"]
+  datacenters = ["backoffice"]
   type = "service"
 
   # The group stanza defines a series of tasks that should be co-located on the same Nomad client.
