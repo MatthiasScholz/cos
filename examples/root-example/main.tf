@@ -1,6 +1,6 @@
 locals {
-  ami_id_server  = "ami-ad5cf2d2"                        # nomad 0.8.1
-  ami_id_clients = "ami-8a5cf2f5"                        # nomad 0.8.1
+  ami_id_server  = "ami-7c883403"                        # nomad 0.8.3
+  ami_id_clients = "ami-488e3237"                        # nomad 0.8.3
   ami_id_bastion = "ami-1853ac65"                        # Amazon Linux AMI 2017.09.1 (HVM)
   env_name       = "playground"
   aws_region     = "us-east-1"
@@ -9,7 +9,7 @@ locals {
 
   allowed_ssh_cidr_blocks = {
     "pcc_dev"  = "80.146.215.90/32"
-    "thomas"   = "95.90.215.115/32"
+    "thomas"   = "95.90.215.116/32"
     "matthias" = "89.247.74.78/32"
   }
 }
