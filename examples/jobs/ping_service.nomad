@@ -32,9 +32,10 @@ job "ping_service" {
       driver = "docker"
       config {
         # Docker Hub:
-        image = "thobe/ping_service:0.0.9"
+        #image = "thobe/ping_service:0.0.9"
         # AWS ECR playground: image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/ping-service:0.0.7"
         #args    = ["Hello, World!"]
+        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/ping-service:2018-04-15_11-16-11_0eaa8b1_dirty"
       }
 
       logs {
