@@ -13,3 +13,17 @@ scrape_configs:
     metrics_path: /v1/metrics
     params:
       format: ['prometheus']
+
+
+  - job_name: 'services'
+
+    consul_sd_configs:
+    - server: '172.17.0.1:8500'
+
+    relabel_configs:
+    - source_labels: ['__meta_consul_tags']
+      regex: '(.*)http(.*)'
+      action: drop
+
+    scrape_interval: 5s
+    metrics_path: /metrics
