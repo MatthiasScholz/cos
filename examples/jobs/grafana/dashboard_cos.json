@@ -1,4 +1,40 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_COS_METRICS",
+      "label": "COS Metrics",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "5.0.3"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "heatmap",
+      "name": "Heatmap",
+      "version": "5.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "5.0.0"
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -15,7 +51,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
+  "id": null,
   "links": [],
   "panels": [
     {
@@ -23,7 +59,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "COS Metrics",
+      "datasource": "${DS_COS_METRICS}",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -55,11 +91,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:669",
           "expr": "nomad_client_allocated_memory",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "{{datacenter}} {{instance}}",
           "refId": "A"
         }
       ],
@@ -83,7 +118,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "decmbytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -105,7 +140,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "COS Metrics",
+      "datasource": "${DS_COS_METRICS}",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -137,10 +172,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:512",
           "expr": "nomad_client_host_memory_available",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "{{datacenter}} {{instance}}",
           "refId": "A"
         }
       ],
@@ -163,7 +198,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "decbytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -185,7 +220,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "COS Metrics",
+      "datasource": "${DS_COS_METRICS}",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -217,7 +252,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:823",
           "expr": "nomad_uptime",
           "format": "time_series",
           "intervalFactor": 1,
@@ -265,7 +299,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "COS Metrics",
+      "datasource": "${DS_COS_METRICS}",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -297,7 +331,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:560",
           "expr": "nomad_client_consul_check_registrations",
           "format": "time_series",
           "intervalFactor": 2,
@@ -347,7 +380,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "COS Metrics",
+      "datasource": "${DS_COS_METRICS}",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -382,6 +415,7 @@
           "expr": "nomad_client_allocations_running",
           "format": "time_series",
           "intervalFactor": 2,
+          "legendFormat": "{{datacenter}} {{instance}}",
           "metric": "nomad_linux_client_allocations_running",
           "refId": "A",
           "step": 20
@@ -428,7 +462,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "COS Metrics",
+      "datasource": "${DS_COS_METRICS}",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -463,7 +497,7 @@
           "expr": "nomad_client_allocations_blocked",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "",
+          "legendFormat": "{{datacenter}} {{instance}}",
           "metric": "nomad_linux_client_allocations_blocked",
           "refId": "A",
           "step": 40
@@ -518,7 +552,7 @@
         "mode": "opacity"
       },
       "dataFormat": "timeseries",
-      "datasource": "COS Metrics",
+      "datasource": "${DS_COS_METRICS}",
       "gridPos": {
         "h": 7,
         "w": 12,
@@ -570,7 +604,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "COS Metrics",
+      "datasource": "${DS_COS_METRICS}",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -605,6 +639,7 @@
           "expr": "nomad_runtime_alloc_bytes",
           "format": "time_series",
           "intervalFactor": 2,
+          "legendFormat": "{{datacenter}} {{instance}}",
           "metric": "nomad_linux_runtime_alloc_bytes",
           "refId": "A",
           "step": 40
@@ -654,7 +689,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -685,5 +720,5 @@
   "timezone": "",
   "title": "Prometheus Nomad",
   "uid": "XCnI1Skmk",
-  "version": 2
+  "version": 3
 }
