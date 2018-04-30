@@ -38,7 +38,7 @@ job "logging" {
         network {
           mbits = 10
           port "http" {
-            static = "9200"
+            static = "29200"
           }
           port "node" {}
         }

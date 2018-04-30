@@ -11,7 +11,7 @@ job "fluentd_sys" {
     task "fluentd" {
       driver = "docker"
       config {
-        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/fluentd:2018-04-30_13-19-449c92843_dirty"
+        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/fluentd:2018-04-30_18-15-49abec258_dirty"
 
         port_map = {
           logstream = 8002
