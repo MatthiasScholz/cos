@@ -37,36 +37,102 @@ function assert_is_installed {
   fi
 }
 
-function get_required_terraform_output {
-  local readonly output_name="$1"
-  local output_value
-
-  output_value=$(terraform output -no-color "$output_name")
-
-  if [[ -z "$output_value" ]]; then
-    log_error "Unable to find a value for Terraform output $output_name"
-    exit 1
-  fi
-
-  echo "$output_value"
-}
-
-
-
 function gen_sshuttle_login {
-  local readonly ssh_key_name=$(get_required_terraform_output "ssh_key_name")
-  local readonly bastion_ip=$(get_required_terraform_output "bastion_ip")
-  local readonly vpc_cidr_block=$(get_required_terraform_output "vpc_cidr_block")
+  local readonly bastion_ip=$1
+  local readonly vpc_cidr_block=$2
+  local readonly ssh_key_name=$3
 
   echo "sshuttle -v -r ec2-user@"$bastion_ip" \
-   -e 'ssh -v -o StrictHostKeyChecking=false -i ~/.ssh/"$ssh_key_name".pem' \
+   -e 'ssh -v -o StrictHostKeyChecking=false -i "$ssh_key_name"' \
    -H "$vpc_cidr_block""
 }
 
+function print_usage {
+  echo "$SCRIPT_NAME:"
+  echo -e "\t-i,--bastion-ip:\t\tThe ip of the bastion-host."
+  echo -e "\t-c,--cidr-vpc:\t\tCIDR of the vpc."
+  echo -e "\t-k,--key:\t\tThe key-file to log into the bastion-instance."
+  echo -e "\n"
+  echo -e "\texample: $SCRIPT_NAME --bastion-ip 18.208.27.78 --cidr-vpc 10.128.0.0/16 --key ~/.ssh/kp-us-east-1-playground-instancekey.pem"
+}
+
 function run {
-  assert_is_installed "terraform"
   assert_is_installed "sshuttle"
-  cmd=$(gen_sshuttle_login)
+  assert_is_installed "getopt"
+
+  ########## Parse Arguments ###########################################################
+  OPTIONS=i:c:k:h
+  LONGOPTIONS=bastion-ip:,cidr-vpc:,key:,help
+
+  # -temporarily store output to be able to check for errors
+  # -e.g. use “--options” parameter by name to activate quoting/enhanced mode
+  # -pass arguments only via   -- "$@"   to separate them correctly
+  PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTIONS --name "$0" -- "$@")
+  if [[ $? -ne 0 ]]; then
+      # e.g. $? == 1
+      #  then getopt has complained about wrong arguments to stdout
+      exit 2
+  fi
+  # read getopt’s output this way to handle the quoting right:
+  eval set -- "$PARSED"
+
+  bastion_ip=""
+  cidr_vpc=""
+  key=""
+  print_help=false
+  while true; do
+      case "$1" in
+          -i|--bastion-ip)
+              bastion_ip="$2"
+              shift 2
+              ;;
+          -c|--cidr-vpc)
+              cidr_vpc="$2"
+              shift 2
+              ;;
+          -k|--key)
+              key="$2"
+              shift 2
+              ;;
+          -h|--help)
+              print_help=true
+              shift
+              ;;
+          --)
+              shift
+              break
+              ;;
+          *)
+              echo "Programming error"
+              exit 3
+              ;;
+      esac
+  done
+
+  if [ "$print_help" = true ];then
+    print_usage
+    exit 0
+  fi
+
+  if [ -z "$bastion_ip" ];then
+    echo "Parameter bastion-ip is missing."
+    print_usage
+    exit 1
+  fi
+
+  if [ -z "$cidr_vpc" ];then
+    echo "Parameter cidr-vpc is missing."
+    print_usage
+    exit 1
+  fi
+
+  if [ -z "$key" ];then
+    echo "Parameter key is missing."
+    print_usage
+    exit 1
+  fi
+
+  cmd=$(gen_sshuttle_login "$bastion_ip" "$cidr_vpc" "$key")
   echo "calling $cmd"
   eval $cmd
 }
