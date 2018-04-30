@@ -1,5 +1,5 @@
 job "logging" {
-  datacenters = ["public-services"]
+  datacenters = ["backoffice"]
   type = "service"
 
   group "logging_group" {
@@ -26,17 +26,20 @@ job "logging" {
           nofile = "65536:65536"
         }
 
+        # TODO: attach a persistent volume for indexes
         volumes = [
           "local/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
         ]
       }
 
       resources {
-        cpu    =  800 # MHz
-        memory = 1100 # MB
+        cpu    =  300 # MHz
+        memory = 500 # MB
         network {
           mbits = 10
-          port "http" {}
+          port "http" {
+            static = "9200"
+          }
           port "node" {}
         }
       }
@@ -69,8 +72,7 @@ cluster.name: "es-logging-cluster"
 network.host: 0.0.0.0
 
 discovery.zen.minimum_master_nodes: 1
-
-action.auto_create_index: fluentd*
+action.auto_create_index: true
 
 EOH
         destination = "local/elasticsearch.yml"
@@ -92,8 +94,8 @@ EOH
       }
 
       resources {
-        cpu    =  800 # MHz
-        memory = 1100 # MB
+        cpu    =  200 # MHz
+        memory = 300 # MB
         network {
           mbits = 10
           port "http" {}
@@ -102,7 +104,7 @@ EOH
 
       service {
         name = "kibana"
-        tags = ["urlprefix-/kibana"] # Fabio
+        tags = ["urlprefix-/app/kibana"] # Fabio
         port = "http"
         check {
           name = "Kibana Alive State"
