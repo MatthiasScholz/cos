@@ -12,14 +12,14 @@ job "fluentd_sys" {
       driver = "docker"
 
       env {
-        # Vars are used by fluentd.conf.tpl
+        # Vars are used by fluentd.conf
         LOGGING_ELASTICSEARCH_HOST = "elasticsearch.service.consul"
         LOGGING_ELASTICSEARCH_PORT = "29200"
         LOGGING_FLUENTD_PORT = "8002"
       }
 
       config {
-        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/fluentd:2018-04-30_18-15-49abec258_dirty"
+        image = "<aws_account_id>.dkr.ecr.eu-central-1.amazonaws.com/service/fluentd:2018-05-11_14-58-55d3d2634_dirty"
 
         port_map = {
           logstream = "${LOGGING_FLUENTD_PORT}"
@@ -29,28 +29,11 @@ job "fluentd_sys" {
           nofile = "65536:65536"
         }
 
-        volumes = [
-          "local/fluentd.yml:/fluentd/etc/fluentd.yml"
-        ]
-
-        dns_servers = ["${attr.unique.network.ip-address}"] # use local consul to allow own service resolution
+        dns_servers = ["${attr.unique.network.ip-address}"] # use local (nomad-client) consul to allow service resolution
 
         logging {
           type = "json-file" # So logs can be checked with `docker logs`
         }
-      }
-
-      artifact {
-        source      = "git::https://github.com/serkas/cos/examples/jobs/logging/fluentd/fluent.conf.tpl"
-        destination = "local/fluentd.conf.tpl"
-        mode        = "file"
-      }
-
-      template {
-        source        = "local/fluentd.conf.tpl"
-        destination   = "local/fluentd.conf"
-        change_mode   = "signal"
-        change_signal = "SIGINT"
       }
 
       resources {
@@ -59,7 +42,7 @@ job "fluentd_sys" {
         network {
           mbits = 10
           port "logstream" {
-            static = "${LOGGING_FLUENTD_PORT}"
+            static = 8002
           }
         }
       }
