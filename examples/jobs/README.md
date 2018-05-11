@@ -102,10 +102,11 @@ Make use of ElasticSearch, Fluentd and Kibana ( EFK ).
   * [Kibana Configuration Parameter](https://www.elastic.co/guide/en/kibana/current/settings.html) ( Check: `server.basePath` )
 * [Elastic Search Configuration via Nomad template](https://groups.google.com/forum/#!topic/nomad-tool/yEd9VLZvE7w) ( It was not fully working. )
 
+Example of running a service with fluentd logging: `logtestapp.nomad`
+
 ## TODO
-* [ ] Elasticsearch create index
-* [ ] Kibana use service discovery to find elasticsearch
-* [ ] Fluentd not setup at all yet. Check references above for a starting point.
+* [] ElasticSearch Persistence 
+* [] Kibana IU is accessible
 
 ## Notes
 ### Elasticsearch
