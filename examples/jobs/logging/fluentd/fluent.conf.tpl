@@ -1,7 +1,7 @@
 # fluentd/conf/fluent.conf
 <source>
   @type forward
-  port {{ env "logging.fluentd.port" }}
+  port {{ env "LOGGING_FLUENTD_PORT" }}
   bind 0.0.0.0
   max_retry_wait 3600
 </source>
@@ -105,8 +105,8 @@
   @type copy
   <store>
     @type elasticsearch
-    host {{ env "logging.elastichsearch.host" }}
-    port {{ env "logging.elastichsearch.port" }}
+    host {{ env "LOGGING_ELASTICSEARCH_HOST" }}
+    port {{ env "LOGGING_ELASTICSEARCH_PORT" }}
     logstash_format true
     logstash_prefix fluentd
     logstash_dateformat %Y%m%d
