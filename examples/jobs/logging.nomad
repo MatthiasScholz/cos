@@ -15,7 +15,7 @@ job "logging" {
     task "elasticsearch" {
       driver = "docker"
       config {
-        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/elasticsearch:2018-03-23_14-24-43c9c450b_dirty"
+        image = "<aws_account_id>.dkr.ecr.eu-central-1.amazonaws.com/service/elasticsearch:2018-05-11_15-31-52d3d2634_dirty"
 
         port_map = {
           http = 9200
@@ -83,7 +83,7 @@ EOH
     task "kibana" {
       driver = "docker"
       config {
-        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/kibana:2018-03-23_14-20-25c9c450b_dirty"
+        image = "<aws_account_id>.dkr.ecr.eu-central-1.amazonaws.com/service/kibana:2018-05-11_15-32-18d3d2634_dirty"
         port_map = {
           http = 5601
         }
@@ -121,8 +121,8 @@ EOH
         data = <<EOH
 server.name: logging-cluster-ui
 server.host: "0"
-# FIXME: HACK - this initial configuration might to be stable. Service Discovery should be used!
-elasticsearch.url: "http://{{ env "NOMAD_IP_elasticsearch_http" }}:{{ env "NOMAD_PORT_elasticsearch_http" }}/"
+
+elasticsearch.url: "http://elasticsearch.service.consul:{{ env "NOMAD_PORT_elasticsearch_http" }}/"
 
 EOH
         destination = "local/kibana.yml"
