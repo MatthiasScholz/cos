@@ -106,7 +106,7 @@ Example of running a service with fluentd logging: `logtestapp.nomad`
 
 ## TODO
 * [] ElasticSearch Persistence 
-* [] Kibana IU is accessible
+* [] Kibana UI is accessible
 
 ## Notes
 ### Elasticsearch
