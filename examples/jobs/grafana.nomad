@@ -1,32 +1,25 @@
-# job>group>task>service
-# container for tasks or task-groups that nomad should run
 job "grafana" {
   datacenters = ["public-services"]
+
   type = "service"
 
-  # The group stanza defines a series of tasks that should be co-located on the same Nomad client.
-  # Any task within a group will be placed on the same client.
-  group "grafana_group" {
-    count = 1
+  update {
+    # Stagger updates every 10 seconds
+    stagger = "10s"
 
-    # restart-policy
-    restart {
-      attempts = 10
-      interval = "5m"
-      delay = "25s"
-      mode = "delay"
-    }
+    # Update a single task at a time
+    max_parallel = 1
+  }
 
-    # The task stanza creates an individual unit of work, such as a Docker container, web application, or batch processing.
-    task "grafana_task" {
+  group "grafana" {
+
+    task "grafana-ui" {
       driver = "docker"
-      config {
-        # AWS ECR playground:
-        image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/grafana:latest"
-      }
 
       config {
-        port_map = {
+        image = "<aws_account_id>.dkr.ecr.eu-central-1.amazonaws.com/service/grafana:2018-06-29_11-15-06_7ef8eb5_dirty"
+
+        port_map {
           http = 3000
         }
       }
@@ -41,11 +34,16 @@ job "grafana" {
         }
       }
 
-      # The service stanza instructs Nomad to register the task as a service using the service discovery integration
+      env {
+        GF_SERVER_DOMAIN = "backoffice.nomadpoc"
+        GF_SERVER_ROOT_URL = "http://backoffice.nomadpoc/grafana/"
+      }
+
       service {
-        name = "grafana"
-        tags = ["urlprefix-/grafana"] # fabio
+        name = "${TASKGROUP}-${TASK}-service"
+        tags = ["global", "grafanaui"]
         port = "http"
+
         check {
           name     = "Grafana Alive State"
           port     = "http"
@@ -55,7 +53,49 @@ job "grafana" {
           interval = "10s"
           timeout  = "2s"
         }
-       }
+      }
+    }
+
+    task "haproxy" {
+      # Use Docker to run the task.
+      driver = "docker"
+
+      # Configure Docker driver with the image
+      config {
+        image = "<aws_account_id>.dkr.ecr.eu-central-1.amazonaws.com/service/grafanahaproxy:2018-06-29_10-05-39_ea68d7c_dirty"
+
+        port_map {
+          http = 80
+        }
+      }
+
+      resources {
+        cpu    = 100 # MHz
+        memory = 100 # MB
+        network {
+          mbits = 10
+          port "http" {}
+        }
+      }
+
+      env {
+        SUBPATH = "grafana"
+        GRAFANAADDR = "${NOMAD_ADDR_grafana-ui_http}"
+      }
+
+      service {
+        name = "${TASKGROUP}-${TASK}-service"
+        tags = ["global", "grafanahaproxy", "urlprefix-/grafana"]
+        port = "http"
+
+        check {
+          name     = "HAProxy Alive State"
+          type     = "http"
+          interval = "10s"
+          timeout  = "3s"
+          path     = "/health"
+        }
+      }
     }
   }
 }
