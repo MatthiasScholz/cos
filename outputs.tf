@@ -41,3 +41,16 @@ output "ssh_key_name" {
 output "cluster_prefix" {
   value = "${module.dc-public-services.cluster_prefix}"
 }
+
+output "dc-public-services_sg_id" {
+  value = "${module.dc-public-services.sg_datacenter_id}"
+}
+
+output "dc-private-services_sg_id" {
+  value = "${module.dc-private-services.sg_datacenter_id}"
+}
+
+output "dc-backoffice_sg_id" {
+  value = "${module.dc-backoffice.sg_datacenter_id}"
+}
+
