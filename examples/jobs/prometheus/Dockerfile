@@ -7,3 +7,10 @@ CMD        [ "--config.file=/etc/prometheus/prometheus.yml", \
 "--web.console.libraries=/usr/share/prometheus/console_libraries", \
 "--web.console.templates=/usr/share/prometheus/consoles", \
 "--web.external-url=/prometheus/" ]
+
+#################################################
+# NOTE: The following lines can keep untouched. #
+#################################################
+ARG   VERSION=unknown
+LABEL version=$VERSION
+COPY  version /IMAGE_VERSION
