@@ -1,6 +1,6 @@
 category := service
 name     := elasticsearch
-aws_reg  		:= us-east-1
+aws_reg  	:= eu-central-1
 aws_profile := playground
 
 #################################################################################################################
