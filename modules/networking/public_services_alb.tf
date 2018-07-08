@@ -15,31 +15,32 @@ resource "aws_alb" "alb_public_services" {
   }
 }
 
-# Listener with empty dummy target group
-resource "aws_alb_target_group" "tgr_dummy_public_services" {
-  name     = "${var.stack_name}-dummy${var.unique_postfix}"
-  port     = "${local.dummy_port}"
-  protocol = "HTTP"
-  vpc_id   = "${aws_vpc.vpc_main.id}"
-
-  tags {
-    Name = "${var.stack_name}-dummy${var.unique_postfix}"
-  }
-}
-
-# listener for https with one default action to a dummy target group
-resource "aws_alb_listener" "alb_dummy-public-services" {
+# listener for http with one default action to a fabio target group
+# FIXME: Why is it named: "albl..." ?
+resource "aws_alb_listener" "albl_http_ingress_controller" {
+  count             = "${var.attach_ingress_alb}"
   load_balancer_arn = "${aws_alb.alb_public_services.arn}"
-  protocol          = "HTTP"
-  port              = "${local.dummy_port}"
 
-  #TODO: add support for https
-  #protocol        = "HTTPS"
-  #port            = "443"
-  #certificate_arn = "${var.dummy_listener_certificate_arn}"
+  protocol = "HTTP"
+  port     = "80"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.tgr_dummy_public_services.arn}"
+    # FIXME: What to do here??? - this is defined in module/nomad-datacenter/alb_ingress_attachment.tf
+    target_group_arn = "${aws_alb_target_group.tgr_ingress_controller.arn}"
     type             = "forward"
   }
 }
+
+# NOT YET WORKING resource "aws_alb_listener" "albl_https_ingress_controller" {
+# NOT YET WORKING   count             = "${var.attach_ingress_alb}"
+# NOT YET WORKING   load_balancer_arn = "${aws_alb.alb_public_services.arn}"
+# NOT YET WORKING 
+# NOT YET WORKING   protocol = "HTTPS"
+# NOT YET WORKING   port     = "443"
+# NOT YET WORKING   certificate_arn = "${var.dummy_listener_certificate_arn}"
+# NOT YET WORKING 
+# NOT YET WORKING   default_action {
+# NOT YET WORKING     target_group_arn = "${aws_alb_target_group.tgr_ingress_controller.arn}"
+# NOT YET WORKING     type             = "forward"
+# NOT YET WORKING   }
+# NOT YET WORKING }

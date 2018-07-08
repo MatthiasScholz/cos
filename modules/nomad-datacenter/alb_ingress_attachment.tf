@@ -32,22 +32,3 @@ resource "aws_alb_target_group" "tgr_ingress_controller" {
     Name = "${var.stack_name}-${var.datacenter_name}-ingress-controller${var.unique_postfix}"
   }
 }
-
-# listener for http with one default action to a fabio target group
-resource "aws_alb_listener" "albl_http_ingress_controller" {
-  count             = "${var.attach_ingress_alb}"
-  load_balancer_arn = "${var.alb_ingress_arn}"
-
-  protocol = "HTTP"
-  port     = "80"
-
-  #TODO: add support for https
-  #protocol        = "HTTPS"
-  #port            = "443"
-  #certificate_arn = "${var.dummy_listener_certificate_arn}"
-
-  default_action {
-    target_group_arn = "${aws_alb_target_group.tgr_ingress_controller.arn}"
-    type             = "forward"
-  }
-}
