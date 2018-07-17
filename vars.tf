@@ -3,8 +3,8 @@ variable "aws_region" {
   description = "region this stack should be applied to"
 }
 
-variable "alb_public_services_arn" {
-  description = "The arn of the alb for public-services access."
+variable "alb_ingress_http_listener_arn" {
+  description = "The arn of the http alb listener for ingress data."
 }
 
 variable "vpc_id" {

@@ -27,16 +27,16 @@ resource "aws_alb_target_group" "tgr_dummy_public_services" {
   }
 }
 
-# listener for https with one default action to a dummy target group
-resource "aws_alb_listener" "alb_dummy-public-services" {
+#TODO: add support for https
+#protocol        = "HTTPS"
+#port            = "443"
+#certificate_arn = "${var.dummy_listener_certificate_arn}"
+
+# listener for http with one default action to a dummy target group
+resource "aws_alb_listener" "alb_ingress_http" {
   load_balancer_arn = "${aws_alb.alb_public_services.arn}"
   protocol          = "HTTP"
-  port              = "${local.dummy_port}"
-
-  #TODO: add support for https
-  #protocol        = "HTTPS"
-  #port            = "443"
-  #certificate_arn = "${var.dummy_listener_certificate_arn}"
+  port              = "80"
 
   default_action {
     target_group_arn = "${aws_alb_target_group.tgr_dummy_public_services.arn}"
