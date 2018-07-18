@@ -56,16 +56,16 @@ module "dc-public-services" {
   consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
-  env_name                         = "${var.env_name}"
-  stack_name                       = "${var.stack_name}"
-  aws_region                       = "${var.aws_region}"
-  instance_type                    = "${var.instance_type_client}"
-  allowed_ssh_cidr_blocks          = "${var.allowed_ssh_cidr_blocks}"
-  ssh_key_name                     = "${var.ssh_key_name}"
-  datacenter_name                  = "public-services"
-  unique_postfix                   = "${var.unique_postfix}"
-  alb_ingress_http_listener_arn    = "${var.alb_ingress_http_listener_arn}"
-  attach_http_ingress_alb_listener = true
+  env_name                      = "${var.env_name}"
+  stack_name                    = "${var.stack_name}"
+  aws_region                    = "${var.aws_region}"
+  instance_type                 = "${var.instance_type_client}"
+  allowed_ssh_cidr_blocks       = "${var.allowed_ssh_cidr_blocks}"
+  ssh_key_name                  = "${var.ssh_key_name}"
+  datacenter_name               = "public-services"
+  unique_postfix                = "${var.unique_postfix}"
+  alb_ingress_http_listener_arn = "${var.alb_ingress_http_listener_arn}"
+  attach_ingress_alb_listener   = true
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
