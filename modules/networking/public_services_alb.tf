@@ -30,8 +30,10 @@ resource "aws_alb_target_group" "tgr_dummy_public_services" {
 # listener for https with one default action to a dummy target group
 resource "aws_alb_listener" "alb_ingress_https" {
   load_balancer_arn = "${aws_alb.alb_public_services.arn}"
-  protocol          = "HTTP"
-  port              = "443"
+
+  # HACK: currently protocol is https although this is the https listener.
+  protocol = "HTTP"
+  port     = "443"
 
   #TODO: add support for https
   #protocol        = "HTTPS"
