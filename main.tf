@@ -161,3 +161,9 @@ module "nomad" {
   node_scaling_cfg        = "${var.nomad_server_scaling_cfg}"
   unique_postfix          = "${var.unique_postfix}"
 }
+
+module "ecr" {
+  source = "modules/ecr"
+  
+  ecr_repositories = "${var.ecr_repositories}"
+}
