@@ -7,6 +7,10 @@ variable "alb_ingress_http_listener_arn" {
   description = "The arn of the http alb listener for ingress data."
 }
 
+variable "alb_ingress_https_listener_arn" {
+  description = "The arn of the https alb listener for ingress data."
+}
+
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
