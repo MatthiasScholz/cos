@@ -18,17 +18,31 @@ output "nomad_clients_public_services_cluster_tag_value" {
   value = "${module.dc-public-services.cluster_tag_value}"
 }
 
-output "nomad_ui_alb_dns" {
-  value = "${module.ui-access.nomad_ui_alb_dns}"
+
+output "nomad_ui_alb_dns_name" {
+  value = "${module.ui-access.nomad_ui_alb_dns_name}"
 }
 
-output "consul_ui_alb_dns" {
-  value = "${module.ui-access.consul_ui_alb_dns}"
+output "consul_ui_alb_dns_name" {
+  value = "${module.ui-access.consul_ui_alb_dns_name}"
 }
 
-output "fabio_ui_alb_dns" {
-  value = "${module.ui-access.fabio_ui_alb_dns}"
+output "fabio_ui_alb_dns_name" {
+  value = "${module.ui-access.fabio_ui_alb_dns_name}"
 }
+
+output "nomad_ui_alb_zone_id" {
+  value = "${module.ui-access.nomad_ui_alb_zone_id}"
+}
+
+output "consul_ui_alb_zone_id" {
+  value = "${module.ui-access.consul_ui_alb_zone_id}"
+}
+
+output "fabio_ui_alb_zone_id" {
+  value = "${module.ui-access.fabio_ui_alb_zone_id}"
+}
+
 
 output "vpc_id" {
   value = "${var.vpc_id}"
