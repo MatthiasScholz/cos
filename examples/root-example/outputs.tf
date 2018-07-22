@@ -26,6 +26,10 @@ output "curl_nomad_ui" {
   value = "curl http://${module.nomad-infra.nomad_ui_alb_dns_name}/ui/jobs"
 }
 
+output "export_nomad_cmd" {
+  value = "export NOMAD_ADDR=\"http://${module.nomad-infra.nomad_ui_alb_dns_name}\""
+}
+
 output "consul_ui_alb_dns" {
   value = "${module.nomad-infra.consul_ui_alb_dns_name}"
 }
