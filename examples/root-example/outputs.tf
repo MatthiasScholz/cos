@@ -1,5 +1,5 @@
 output "aws_region" {
-  value = "${local.aws_region}"
+  value = "${var.aws_region}"
 }
 
 output "nomad_servers_cluster_tag_key" {
