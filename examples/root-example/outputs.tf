@@ -19,27 +19,27 @@ output "nomad_clients_public_services_cluster_tag_value" {
 }
 
 output "nomad_ui_alb_dns" {
-  value = "${module.nomad-infra.nomad_ui_alb_dns}"
+  value = "${module.nomad-infra.nomad_ui_alb_dns_name}"
 }
 
 output "curl_nomad_ui" {
-  value = "curl http://${module.nomad-infra.nomad_ui_alb_dns}/ui/jobs"
+  value = "curl http://${module.nomad-infra.nomad_ui_alb_dns_name}/ui/jobs"
 }
 
 output "consul_ui_alb_dns" {
-  value = "${module.nomad-infra.consul_ui_alb_dns}"
+  value = "${module.nomad-infra.consul_ui_alb_dns_name}"
 }
 
 output "curl_consul_ui" {
-  value = "curl http://${module.nomad-infra.consul_ui_alb_dns}/ui"
+  value = "curl http://${module.nomad-infra.consul_ui_alb_dns_name}/ui"
 }
 
 output "fabio_ui_alb_dns" {
-  value = "${module.nomad-infra.fabio_ui_alb_dns}"
+  value = "${module.nomad-infra.fabio_ui_alb_dns_name}"
 }
 
 output "curl_fabio_ui" {
-  value = "curl http://${module.nomad-infra.fabio_ui_alb_dns}"
+  value = "curl http://${module.nomad-infra.fabio_ui_alb_dns_name}"
 }
 
 output "curl_ping_service" {
