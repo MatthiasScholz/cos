@@ -67,6 +67,7 @@ module "dc-public-services" {
   alb_ingress_http_listener_arn  = "${var.alb_ingress_http_listener_arn}"
   alb_ingress_https_listener_arn = "${var.alb_ingress_https_listener_arn}"
   attach_ingress_alb_listener    = true
+  node_scaling_cfg               = "${var.nomad_client_scaling_cfg}"
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
@@ -91,6 +92,7 @@ module "dc-private-services" {
   ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "private-services"
   unique_postfix          = "${var.unique_postfix}"
+  node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
 }
 
 #### DC: BACKOFFICE ###################################################
@@ -115,6 +117,7 @@ module "dc-backoffice" {
   ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "backoffice"
   unique_postfix          = "${var.unique_postfix}"
+  node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
 }
 
 #### DC: CONTENT-CONNECTOR ###################################################
@@ -139,6 +142,7 @@ module "dc-content-connector" {
   ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "content-connector"
   unique_postfix          = "${var.unique_postfix}"
+  node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
 }
 
 module "nomad" {
