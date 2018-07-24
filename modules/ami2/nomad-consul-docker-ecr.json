@@ -26,7 +26,8 @@
         ],
         "most_recent": true
       },
-      "ssh_username": "ec2-user"
+      "ssh_username": "ec2-user",
+      "ami_users": ["{{.aws_account_id}}"]
     }
   ],
   "provisioners": [
