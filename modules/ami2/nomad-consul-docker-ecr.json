@@ -4,7 +4,8 @@
     "nomad_version": "0.8.4",
     "consul_module_version": "v0.3.5",
     "consul_version": "1.2.1",
-    "aws_account_id": ""
+    "aws_account_id": "",
+    "aws_region": ""
   },
   "builders": [
     {
