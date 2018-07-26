@@ -5,7 +5,8 @@
     "consul_module_version": "v0.3.5",
     "consul_version": "1.2.1",
     "aws_account_id": "",
-    "aws_region": ""
+    "aws_region": "eu-central-1",
+    "ami_regions": "eu-central-1,us-east-2"
   },
   "builders": [
     {
@@ -14,6 +15,7 @@
       "instance_type": "t2.micro",
       "name": "amazon-linux-ami2",
       "region": "{{user `aws_region`}}",
+      "ami_regions": "{{user `aws_regions`}}",
       "type": "amazon-ebs",
       "source_ami_filter": {
         "filters": {
