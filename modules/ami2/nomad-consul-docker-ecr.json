@@ -15,7 +15,7 @@
       "instance_type": "t2.micro",
       "name": "amazon-linux-ami2",
       "region": "{{user `aws_region`}}",
-      "ami_regions": "{{user `aws_regions`}}",
+      "ami_regions": "{{user `ami_regions`}}",
       "type": "amazon-ebs",
       "source_ami_filter": {
         "filters": {
