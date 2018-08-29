@@ -31,7 +31,9 @@
         "most_recent": true
       },
       "ssh_username": "ec2-user",
-      "ami_users": ["{{user `aws_account_id`}}"]
+      "ami_users": [
+        "{{user `aws_account_id`}}"
+      ]
     }
   ],
   "provisioners": [
@@ -97,6 +99,30 @@
         "cp /etc/sysctl.conf /tmp/sysctl.conf",
         "echo 'vm.max_map_count=262144' >> /tmp/sysctl.conf",
         "sudo cp /tmp/sysctl.conf /etc/sysctl.conf"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "mount_efs.sh",
+      "destination": "/tmp/mount_efs.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo mv /tmp/mount_efs.sh /usr/bin",
+        "sudo chmod u+x /usr/bin/mount_efs.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "copy_map_efs.sh",
+      "destination": "/tmp/copy_map_efs.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo mv /tmp/copy_map_efs.sh /usr/bin",
+        "sudo chmod u+x /usr/bin/copy_map_efs.sh"
       ]
     }
   ]
