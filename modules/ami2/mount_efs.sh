@@ -39,7 +39,7 @@ function usage {
   echo -e "call:"
   echo -e "\t$SCRIPT_NAME [optional <efs_mount_target>]"
   echo -e "optional parameters:"
-  echo -e "\tefs_mount_target ... The DNS name of the EFS mount, default: ${efs_dns}"
+  echo -e "\tefs_mount_target ... The DNS name of the EFS mount, default: ${EFS_DNS_NAME}"
   echo -e "example:"
   echo -e "\t$SCRIPT_NAME fs-f604d78f.efs.us-east-2.amazonaws.com"
 }
@@ -81,7 +81,7 @@ function run {
 
   if [ -z "$efs_mount_target" ];
   then
-    efs_mount_target="${efs_dns}"
+    efs_mount_target="${EFS_DNS_NAME}"
   fi
 
   mount_efs $efs_mount_target
