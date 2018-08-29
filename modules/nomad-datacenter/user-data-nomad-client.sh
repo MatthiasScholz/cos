@@ -14,3 +14,5 @@ exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 /opt/consul/bin/run-consul --client --cluster-tag-key "${cluster_tag_key}" --cluster-tag-value "${cluster_tag_value}"
 /opt/nomad/bin/run-nomad --client --datacenter "${datacenter}"
 
+# Set envar for DNS name for EFS
+echo -e "echo -e '\n# set envar for DNS name for EFS\nexport EFS_DNS_NAME=\"${efs_dns_name}\"' >> /etc/profile" | sudo sh

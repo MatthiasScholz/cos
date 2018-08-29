@@ -68,5 +68,6 @@ data "template_file" "user_data_data_center" {
     cluster_tag_key   = "${var.consul_cluster_tag_key}"
     cluster_tag_value = "${var.consul_cluster_tag_value}"
     datacenter        = "${var.datacenter_name}"
+    efs_dns_name      = "${var.efs_dns_name}"
   }
 }

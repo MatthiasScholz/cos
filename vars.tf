@@ -133,6 +133,11 @@ variable "nomad_client_scaling_cfg" {
   }
 }
 
+variable "efs_dns_name" {
+  description = "DNS name of the efs this nodes should have access to."
+  default     = ""
+}
+
 #### [Consul] Optional Variables ##################################################################
 variable "consul_num_servers" {
   description = "The number of Consul server nodes to deploy. We strongly recommend using 3 or 5."
@@ -146,6 +151,6 @@ variable "consul_instance_type" {
 
 variable "ecr_repositories" {
   description = "List of names for the ECR repositories to be created. Nomad will use them to get docker images from it in the job files."
-  type    = "list"
-  default = []
+  type        = "list"
+  default     = []
 }

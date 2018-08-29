@@ -68,6 +68,7 @@ module "dc-public-services" {
   alb_ingress_https_listener_arn = "${var.alb_ingress_https_listener_arn}"
   attach_ingress_alb_listener    = true
   node_scaling_cfg               = "${var.nomad_client_scaling_cfg}"
+  efs_dns_name                   = "${var.efs_dns_name}"
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
@@ -93,6 +94,7 @@ module "dc-private-services" {
   datacenter_name         = "private-services"
   unique_postfix          = "${var.unique_postfix}"
   node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
+  efs_dns_name            = "${var.efs_dns_name}"
 }
 
 #### DC: BACKOFFICE ###################################################
@@ -118,6 +120,7 @@ module "dc-backoffice" {
   datacenter_name         = "backoffice"
   unique_postfix          = "${var.unique_postfix}"
   node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
+  efs_dns_name            = "${var.efs_dns_name}"
 }
 
 #### DC: CONTENT-CONNECTOR ###################################################
@@ -143,6 +146,7 @@ module "dc-content-connector" {
   datacenter_name         = "content-connector"
   unique_postfix          = "${var.unique_postfix}"
   node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
+  efs_dns_name            = "${var.efs_dns_name}"
 }
 
 module "nomad" {
@@ -169,6 +173,6 @@ module "nomad" {
 
 module "ecr" {
   source = "modules/ecr"
-  
+
   ecr_repositories = "${var.ecr_repositories}"
 }
