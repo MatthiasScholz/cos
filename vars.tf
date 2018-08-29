@@ -138,6 +138,11 @@ variable "efs_dns_name" {
   default     = ""
 }
 
+variable "map_bucket_name" {
+  description = "name of the s3 bucket carrying the maps."
+  default     = ""
+}
+
 #### [Consul] Optional Variables ##################################################################
 variable "consul_num_servers" {
   description = "The number of Consul server nodes to deploy. We strongly recommend using 3 or 5."

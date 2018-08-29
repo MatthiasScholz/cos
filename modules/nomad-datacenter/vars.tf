@@ -105,3 +105,8 @@ variable "efs_dns_name" {
   description = "DNS name of the efs this nodes should have access to."
   default     = ""
 }
+
+variable "map_bucket_name" {
+  description = "name of the s3 bucket carrying the maps."
+  default     = ""
+}

@@ -16,3 +16,5 @@ exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 
 # Set envar for DNS name for EFS
 echo -e "echo -e '\n# set envar for DNS name for EFS\nexport EFS_DNS_NAME=\"${efs_dns_name}\"' >> /etc/profile" | sudo sh
+# Set envar for name of map bucket
+echo -e "echo -e '\n# set envar for name of the mab bucket\nexport MAP_BUCKET_NAME=\"${map_bucket_name}\"' >> /etc/profile" | sudo sh

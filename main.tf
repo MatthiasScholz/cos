@@ -69,6 +69,7 @@ module "dc-public-services" {
   attach_ingress_alb_listener    = true
   node_scaling_cfg               = "${var.nomad_client_scaling_cfg}"
   efs_dns_name                   = "${var.efs_dns_name}"
+  map_bucket_name                = "${var.map_bucket_name}"
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
@@ -95,6 +96,7 @@ module "dc-private-services" {
   unique_postfix          = "${var.unique_postfix}"
   node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
   efs_dns_name            = "${var.efs_dns_name}"
+  map_bucket_name         = "${var.map_bucket_name}"
 }
 
 #### DC: BACKOFFICE ###################################################
@@ -121,6 +123,7 @@ module "dc-backoffice" {
   unique_postfix          = "${var.unique_postfix}"
   node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
   efs_dns_name            = "${var.efs_dns_name}"
+  map_bucket_name         = "${var.map_bucket_name}"
 }
 
 #### DC: CONTENT-CONNECTOR ###################################################
@@ -147,6 +150,7 @@ module "dc-content-connector" {
   unique_postfix          = "${var.unique_postfix}"
   node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
   efs_dns_name            = "${var.efs_dns_name}"
+  map_bucket_name         = "${var.map_bucket_name}"
 }
 
 module "nomad" {
