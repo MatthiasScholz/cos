@@ -42,8 +42,8 @@ function usage {
   echo -e "\tmap_name ... The name of the map (i.e. EUR_18CW30_Sprint52)"
   echo -e "\tmap_zip_folder ... The name of the Folder containing the ROOT.NDS which usually ends in .zip (i.e.EUR_1CS052_FCT3WS-18118_FULLMAP.zip)"
   echo -e "optional parameters"
-  echo -e "\tefs_mount_target ... The DNS name of the EFS mount target where to copy the map to, default: ${efs_dns}"
-  echo -e "\ts3_bucket ... The name of the S3-Bucket where the map is located, default: ${map_bucket}"
+  echo -e "\tefs_mount_target ... The DNS name of the EFS mount target where to copy the map to, default: ${EFS_DNS_NAME}"
+  echo -e "\ts3_bucket ... The name of the S3-Bucket where the map is located, default: ${MAP_BUCKET_NAME}"
   echo -e "example:"
   echo -e "\t$SCRIPT_NAME EUR_18CW30_Sprint52 EUR_1CS052_FCT3WS-18118_FULLMAP.zip fs-f604d78f.efs.us-east-2.amazonaws.com"
 }
@@ -127,8 +127,8 @@ function run {
 
   local readonly map_name=$1
   local readonly map_zip_folder=$2
-  local efs_mount_target="${efs_dns}"
-  local s3_bucket="${map_bucket}"
+  local efs_mount_target="${EFS_DNS_NAME}"
+  local s3_bucket="${MAP_BUCKET_NAME}"
 
   if [ "$#" -eq 3 ]; then
     log_info "testing what the third argument is"
