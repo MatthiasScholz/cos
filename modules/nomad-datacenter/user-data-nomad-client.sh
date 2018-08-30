@@ -20,10 +20,11 @@ echo -e "echo -e '\n# set envar for DNS name for EFS\nexport EFS_DNS_NAME=\"${ef
 echo -e "echo -e '\n# set envar for name of the mab bucket\nexport MAP_BUCKET_NAME=\"${map_bucket_name}\"' >> /etc/profile" | sudo sh
 
 # Do the efs mount in case we know the EFS_DNS_NAME
-if [ -n "${efs_dns_name}" ];then
-  echo "Mount efs target at: ${efs_dns_name}..."
+EFS_DNS_NAME="${efs_dns_name}"
+if [ -n "${EFS_DNS_NAME}" ];then
+  echo "Mount efs target at: ${EFS_DNS_NAME}..."
   /usr/bin/mount_efs.sh
-  echo "Mount efs target at: ${efs_dns_name}...done"
+  echo "Mount efs target at: ${EFS_DNS_NAME}...done"
 else
   echo "Don't mount efs on this machine, since no efs target is given (env-var EFS_DNS_NAME is not set)."
 fi
