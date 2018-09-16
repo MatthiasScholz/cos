@@ -44,14 +44,16 @@ variable "server_scaling_cfg" {
   }
 }
 
-variable "client_scaling_cfg" {
-  description = "Number of nomad nodes"
-  type        = "integer"
+variable "nomad_dc_node_cfg" {
+  description = "Configuration for the private data-center nodes"
   type        = "map"
 
   default = {
-    "min"              = 3
-    "max"              = 3
-    "desired_capacity" = 3
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+    "instance_type"    = "t2.micro"
   }
 }
+
+
