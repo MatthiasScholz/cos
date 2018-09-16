@@ -85,11 +85,6 @@ variable "instance_type_server" {
   default     = "t2.micro"
 }
 
-variable "instance_type_client" {
-  description = "The instance type for all nomad client nodes."
-  default     = "t2.micro"
-}
-
 variable "stack_name" {
   description = "Shortcut for this stack."
   default     = "COS"
@@ -122,14 +117,51 @@ variable "nomad_server_scaling_cfg" {
   }
 }
 
-variable "nomad_client_scaling_cfg" {
-  description = "Scaling configuration for the nomad nodes to deploy for this datacenter. You can deploy as many as you need to run your jobs."
+variable "nomad_private_services_dc_node_cfg" {
+  description = "Node configuration for the nomad nodes of the private-services data center."
   type        = "map"
 
   default = {
     "min"              = 1
     "max"              = 1
     "desired_capacity" = 1
+    "instance_type"    = "t2.micro"
+  }
+}
+
+variable "nomad_public_services_dc_node_cfg" {
+  description = "Node configuration for the nomad nodes of the public-services data center."
+  type        = "map"
+
+  default = {
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+    "instance_type"    = "t2.micro"
+  }
+}
+
+variable "nomad_backoffice_dc_node_cfg" {
+  description = "Node configuration for the nomad nodes of the backoffice data center."
+  type        = "map"
+
+  default = {
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+    "instance_type"    = "t2.micro"
+  }
+}
+
+variable "nomad_content_connector_dc_node_cfg" {
+  description = "Node configuration for the nomad nodes of the content-connetor data center."
+  type        = "map"
+
+  default = {
+    "min"              = 1
+    "max"              = 1
+    "desired_capacity" = 1
+    "instance_type"    = "t2.micro"
   }
 }
 

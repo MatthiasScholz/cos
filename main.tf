@@ -59,7 +59,7 @@ module "dc-public-services" {
   env_name                       = "${var.env_name}"
   stack_name                     = "${var.stack_name}"
   aws_region                     = "${var.aws_region}"
-  instance_type                  = "${var.instance_type_client}"
+  instance_type                  = "${lookup(var.nomad_public_services_dc_node_cfg,"instance_type","INVALID")}"
   allowed_ssh_cidr_blocks        = "${var.allowed_ssh_cidr_blocks}"
   ssh_key_name                   = "${var.ssh_key_name}"
   datacenter_name                = "public-services"
@@ -67,7 +67,7 @@ module "dc-public-services" {
   alb_ingress_http_listener_arn  = "${var.alb_ingress_http_listener_arn}"
   alb_ingress_https_listener_arn = "${var.alb_ingress_https_listener_arn}"
   attach_ingress_alb_listener    = true
-  node_scaling_cfg               = "${var.nomad_client_scaling_cfg}"
+  node_scaling_cfg               = "${var.nomad_public_services_dc_node_cfg}"
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
@@ -87,12 +87,12 @@ module "dc-private-services" {
   env_name                = "${var.env_name}"
   stack_name              = "${var.stack_name}"
   aws_region              = "${var.aws_region}"
-  instance_type           = "${var.instance_type_client}"
+  instance_type           = "${lookup(var.nomad_private_services_dc_node_cfg,"instance_type","INVALID")}"
   allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
   ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "private-services"
   unique_postfix          = "${var.unique_postfix}"
-  node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
+  node_scaling_cfg        = "${var.nomad_private_services_dc_node_cfg}"
   efs_dns_name            = "${var.efs_dns_name}"
   map_bucket_name         = "${var.map_bucket_name}"
 }
@@ -114,12 +114,12 @@ module "dc-backoffice" {
   env_name                = "${var.env_name}"
   stack_name              = "${var.stack_name}"
   aws_region              = "${var.aws_region}"
-  instance_type           = "${var.instance_type_client}"
+  instance_type           = "${lookup(var.nomad_backoffice_dc_node_cfg,"instance_type","INVALID")}"
   allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
   ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "backoffice"
   unique_postfix          = "${var.unique_postfix}"
-  node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
+  node_scaling_cfg        = "${var.nomad_backoffice_dc_node_cfg}"
 }
 
 #### DC: CONTENT-CONNECTOR ###################################################
@@ -139,12 +139,12 @@ module "dc-content-connector" {
   env_name                = "${var.env_name}"
   stack_name              = "${var.stack_name}"
   aws_region              = "${var.aws_region}"
-  instance_type           = "${var.instance_type_client}"
+  instance_type           = "${lookup(var.nomad_content_connector_dc_node_cfg,"instance_type","INVALID")}"
   allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
   ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "content-connector"
   unique_postfix          = "${var.unique_postfix}"
-  node_scaling_cfg        = "${var.nomad_client_scaling_cfg}"
+  node_scaling_cfg        = "${var.nomad_content_connector_dc_node_cfg}"
 }
 
 module "nomad" {

@@ -1,10 +1,10 @@
 locals {
-  ami_id_bastion = "ami-1853ac65"                        # Amazon Linux AMI 2017.09.1 (HVM)
+  ami_id_bastion = "ami-1853ac65" # Amazon Linux AMI 2017.09.1 (HVM)
 
   allowed_ssh_cidr_blocks = {
-    "pcc_dev"  = "80.146.215.90/32"
-    "thomas"   = "95.90.215.116/32"
-    "shared"   = "10.49.0.0/16"
+    "pcc_dev" = "80.146.215.90/32"
+    "thomas"  = "95.90.215.116/32"
+    "shared"  = "10.49.0.0/16"
   }
 }
 
@@ -71,15 +71,17 @@ module "nomad-infra" {
   env_name                = "${var.env_name}"
   unique_postfix          = "-${random_pet.unicorn.id}"
   instance_type_server    = "t2.micro"
-  instance_type_client    = "t2.small"
   ssh_key_name            = "${var.ssh_key_name}"
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
 
   allowed_cidr_blocks_for_ui_alb = "${local.allowed_ssh_cidr_blocks}"
 
   # [Nomad] Optional variables
-  nomad_server_scaling_cfg = "${var.server_scaling_cfg}"
-  nomad_client_scaling_cfg = "${var.client_scaling_cfg}"
+  nomad_server_scaling_cfg            = "${var.server_scaling_cfg}"
+  nomad_private_services_dc_node_cfg  = "${var.nomad_dc_node_cfg}"
+  nomad_public_services_dc_node_cfg   = "${var.nomad_dc_node_cfg}"
+  nomad_content_connector_dc_node_cfg = "${var.nomad_dc_node_cfg}"
+  nomad_backoffice_dc_node_cfg        = "${var.nomad_dc_node_cfg}"
 
   # [Consul] Optional variables
   consul_num_servers   = 3
