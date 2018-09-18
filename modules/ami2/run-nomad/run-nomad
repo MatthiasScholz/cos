@@ -230,6 +230,13 @@ user=$nomad_user
 EOF
 }
 
+# Cleaning up temporary data created by nomad, which should be unique.
+# Using snapshots will break this assumption.
+function cleanup {
+    sudo rm -rf "$SCRIPT_DIR/../data/*"
+    sudo rm -rf "$SCRIPT_DIR/../data/.*"
+}
+
 function start_nomad {
    log_info "Starting Nomad as systemd service"
    sudo systemctl start nomad.service
@@ -352,6 +359,9 @@ function run {
       use_sudo="false"
     fi
   fi
+
+  # Starting cleanup of the data on the instance ( snapshot )
+  cleanup
 
   assert_is_installed "supervisorctl"
   assert_is_installed "aws"
