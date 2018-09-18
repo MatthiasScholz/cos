@@ -235,6 +235,10 @@ EOF
 function cleanup {
     sudo rm -rf "$SCRIPT_DIR/../data/*"
     sudo rm -rf "$SCRIPT_DIR/../data/.*"
+
+    # HACK: Cleanup temporary consul data as well
+    sudo rm -rf /opt/consul/data/*
+    sudo rm -rf /opt/consul/data/.*
 }
 
 function start_nomad {
