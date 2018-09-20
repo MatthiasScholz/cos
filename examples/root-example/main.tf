@@ -83,6 +83,11 @@ module "nomad-infra" {
   nomad_content_connector_dc_node_cfg = "${var.nomad_dc_node_cfg}"
   nomad_backoffice_dc_node_cfg        = "${var.nomad_dc_node_cfg}"
 
+  ebs_block_devices_private_services_dc  = "${var.ebs_block_devices_sample}"
+  ebs_block_devices_public_services_dc   = "${var.ebs_block_devices_sample}"
+  ebs_block_devices_backoffice_dc        = "${var.ebs_block_devices_sample}"
+  ebs_block_devices_content_connector_dc = "${var.ebs_block_devices_sample}"
+
   # [Consul] Optional variables
   consul_num_servers   = 3
   consul_instance_type = "t2.micro"

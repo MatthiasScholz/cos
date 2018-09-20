@@ -56,4 +56,11 @@ variable "nomad_dc_node_cfg" {
   }
 }
 
+variable "ebs_block_devices_sample" {
+  type = "list"
 
+  default = [{
+    "device_name" = "/dev/xvde"
+    "volume_size" = "50"
+  }]
+}

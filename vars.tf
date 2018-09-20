@@ -129,6 +129,22 @@ variable "nomad_private_services_dc_node_cfg" {
   }
 }
 
+# Example for a ebs_block_device created from a snapshot and one with a certain size.
+# ebs_block_devices = [{
+#    "device_name" = "/dev/xvdf"
+#    "snapshot_id" = "snap-XYZ"
+#  },
+#  {
+#    "device_name" = "/dev/xvde"
+#    "volume_size" = "50"
+#  }]
+variable "ebs_block_devices_private_services_dc" {
+  description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances created with the EC2 launch-configurationd. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
+  type        = "list"
+
+  default = []
+}
+
 variable "nomad_public_services_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the public-services data center."
   type        = "map"
@@ -139,6 +155,22 @@ variable "nomad_public_services_dc_node_cfg" {
     "desired_capacity" = 1
     "instance_type"    = "t2.micro"
   }
+}
+
+# Example for a ebs_block_device created from a snapshot and one with a certain size.
+# ebs_block_devices = [{
+#    "device_name" = "/dev/xvdf"
+#    "snapshot_id" = "snap-XYZ"
+#  },
+#  {
+#    "device_name" = "/dev/xvde"
+#    "volume_size" = "50"
+#  }]
+variable "ebs_block_devices_public_services_dc" {
+  description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances of the public-services dc. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
+  type        = "list"
+
+  default = []
 }
 
 variable "nomad_backoffice_dc_node_cfg" {
@@ -153,6 +185,22 @@ variable "nomad_backoffice_dc_node_cfg" {
   }
 }
 
+# Example for a ebs_block_device created from a snapshot and one with a certain size.
+# ebs_block_devices = [{
+#    "device_name" = "/dev/xvdf"
+#    "snapshot_id" = "snap-XYZ"
+#  },
+#  {
+#    "device_name" = "/dev/xvde"
+#    "volume_size" = "50"
+#  }]
+variable "ebs_block_devices_backoffice_dc" {
+  description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances of the backoffice dc. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
+  type        = "list"
+
+  default = []
+}
+
 variable "nomad_content_connector_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the content-connetor data center."
   type        = "map"
@@ -163,6 +211,22 @@ variable "nomad_content_connector_dc_node_cfg" {
     "desired_capacity" = 1
     "instance_type"    = "t2.micro"
   }
+}
+
+# Example for a ebs_block_device created from a snapshot and one with a certain size.
+# ebs_block_devices = [{
+#    "device_name" = "/dev/xvdf"
+#    "snapshot_id" = "snap-XYZ"
+#  },
+#  {
+#    "device_name" = "/dev/xvde"
+#    "volume_size" = "50"
+#  }]
+variable "ebs_block_devices_content_connector_dc" {
+  description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances of the content-connector dc. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
+  type        = "list"
+
+  default = []
 }
 
 variable "efs_dns_name" {

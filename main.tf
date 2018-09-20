@@ -68,6 +68,7 @@ module "dc-public-services" {
   alb_ingress_https_listener_arn = "${var.alb_ingress_https_listener_arn}"
   attach_ingress_alb_listener    = true
   node_scaling_cfg               = "${var.nomad_public_services_dc_node_cfg}"
+  ebs_block_devices              = "${var.ebs_block_devices_public_services_dc}"
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
@@ -95,6 +96,7 @@ module "dc-private-services" {
   node_scaling_cfg        = "${var.nomad_private_services_dc_node_cfg}"
   efs_dns_name            = "${var.efs_dns_name}"
   map_bucket_name         = "${var.map_bucket_name}"
+  ebs_block_devices       = "${var.ebs_block_devices_private_services_dc}"
 }
 
 #### DC: BACKOFFICE ###################################################
@@ -120,6 +122,7 @@ module "dc-backoffice" {
   datacenter_name         = "backoffice"
   unique_postfix          = "${var.unique_postfix}"
   node_scaling_cfg        = "${var.nomad_backoffice_dc_node_cfg}"
+  ebs_block_devices       = "${var.ebs_block_devices_backoffice_dc}"
 }
 
 #### DC: CONTENT-CONNECTOR ###################################################
@@ -145,6 +148,7 @@ module "dc-content-connector" {
   datacenter_name         = "content-connector"
   unique_postfix          = "${var.unique_postfix}"
   node_scaling_cfg        = "${var.nomad_content_connector_dc_node_cfg}"
+  ebs_block_devices       = "${var.ebs_block_devices_content_connector_dc}"
 }
 
 module "nomad" {
