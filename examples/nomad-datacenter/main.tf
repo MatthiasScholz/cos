@@ -59,4 +59,9 @@ module "nomad-datacenter" {
     "max"              = 1
     "desired_capacity" = 1
   }
+
+  ebs_block_devices = [{
+    "device_name" = "/dev/xvdf"
+    "volume_size" = "50"
+  }]
 }

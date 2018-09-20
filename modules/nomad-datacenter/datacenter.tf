@@ -47,6 +47,8 @@ module "data_center" {
       "propagate_at_launch" = "true"
     },
   ]
+  # Configuration for additional ebs_block devices
+  ebs_block_devices = "${var.ebs_block_devices}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
