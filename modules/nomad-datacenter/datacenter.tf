@@ -7,7 +7,7 @@ locals {
 }
 
 module "data_center" {
-  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.4.2"
+  source = "git::https://github.com/ThomasObenaus/terraform-aws-nomad.git//modules/nomad-cluster?ref=master"
 
   cluster_name                = "${local.cluster_name}"
   cluster_tag_value           = "${local.cluster_name}"
@@ -47,6 +47,8 @@ module "data_center" {
       "propagate_at_launch" = "true"
     },
   ]
+  # Configuration for additional ebs_block devices
+  ebs_block_devices = "${var.ebs_block_devices}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -65,10 +67,12 @@ data "template_file" "user_data_data_center" {
   template = "${file("${path.module}/user-data-nomad-client.sh")}"
 
   vars {
-    cluster_tag_key   = "${var.consul_cluster_tag_key}"
-    cluster_tag_value = "${var.consul_cluster_tag_value}"
-    datacenter        = "${var.datacenter_name}"
-    efs_dns_name      = "${var.efs_dns_name}"
-    map_bucket_name   = "${var.map_bucket_name}"
+    cluster_tag_key            = "${var.consul_cluster_tag_key}"
+    cluster_tag_value          = "${var.consul_cluster_tag_value}"
+    datacenter                 = "${var.datacenter_name}"
+    efs_dns_name               = "${var.efs_dns_name}"
+    map_bucket_name            = "${var.map_bucket_name}"
+    device_to_mount_target_map = "${join(" ", var.device_to_mount_target_map)}"
+    fs_type                    = "${var.fs_type}"
   }
 }

@@ -110,3 +110,35 @@ variable "map_bucket_name" {
   description = "name of the s3 bucket carrying the maps."
   default     = ""
 }
+
+# Example for a ebs_block_device created from a snapshot and one with a certain size.
+# ebs_block_devices = [{
+#    "device_name" = "/dev/xvdf"
+#    "snapshot_id" = "snap-XYZ"
+#  },
+#  {
+#    "device_name" = "/dev/xvde"
+#    "volume_size" = "50"
+#  }]
+variable "ebs_block_devices" {
+  description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances created with the EC2 launch-configurationd. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
+  type        = "list"
+
+  default = []
+}
+
+# List of device to mount target entries.
+# A device to mount target entry is a key value pair (separated by ' ').
+# key ... is the name of the device (i.e. /dev/xvdf)
+# value ... is the name of the mount target (i.e. /mnt/map1)
+# Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
+variable "device_to_mount_target_map" {
+  description = "List of device to mount target entries."
+  type        = "list"
+  default     = []
+}
+
+variable "fs_type" {
+  description = "The file system type to be created for devices which have no file-system yet."
+  default     = "xfs"
+}

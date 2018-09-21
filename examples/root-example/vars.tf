@@ -56,4 +56,22 @@ variable "nomad_dc_node_cfg" {
   }
 }
 
+variable "ebs_block_devices_sample" {
+  type = "list"
 
+  default = [{
+    "device_name" = "/dev/xvde"
+    "volume_size" = "50"
+  },
+    {
+      "device_name" = "/dev/xvdf"
+      "volume_size" = "80"
+    },
+  ]
+}
+
+variable "device_to_mount_target_map_sample" {
+  type = "list"
+
+  default = ["/dev/xvde:/mnt/map1", "/dev/xvdf:/mnt/map2"]
+}
