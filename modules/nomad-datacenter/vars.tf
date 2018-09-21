@@ -127,14 +127,15 @@ variable "ebs_block_devices" {
   default = []
 }
 
-# Space list of device to mount target entries.
+# List of device to mount target entries.
 # A device to mount target entry is a key value pair (separated by '.').
 # key ... is the name of the device (i.e. /dev/xvdf)
 # value ... is the name of the mount target (i.e. /mnt/map1)
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
 variable "device_to_mount_target_map" {
-  type    = "list"
-  default = ["/dev/xvde:/mnt/map1", "/dev/xvdf:/mnt/map2"]
+  description = "List of device to mount target entries."
+  type        = "list"
+  default     = []
 }
 
 variable "fs_type" {

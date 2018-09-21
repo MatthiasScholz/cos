@@ -69,6 +69,7 @@ module "dc-public-services" {
   attach_ingress_alb_listener    = true
   node_scaling_cfg               = "${var.nomad_public_services_dc_node_cfg}"
   ebs_block_devices              = "${var.ebs_block_devices_public_services_dc}"
+  device_to_mount_target_map     = "${var.device_to_mount_target_map_public_services_dc}"
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
@@ -85,18 +86,19 @@ module "dc-private-services" {
   consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
-  env_name                = "${var.env_name}"
-  stack_name              = "${var.stack_name}"
-  aws_region              = "${var.aws_region}"
-  instance_type           = "${lookup(var.nomad_private_services_dc_node_cfg,"instance_type","INVALID")}"
-  allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
-  ssh_key_name            = "${var.ssh_key_name}"
-  datacenter_name         = "private-services"
-  unique_postfix          = "${var.unique_postfix}"
-  node_scaling_cfg        = "${var.nomad_private_services_dc_node_cfg}"
-  efs_dns_name            = "${var.efs_dns_name}"
-  map_bucket_name         = "${var.map_bucket_name}"
-  ebs_block_devices       = "${var.ebs_block_devices_private_services_dc}"
+  env_name                   = "${var.env_name}"
+  stack_name                 = "${var.stack_name}"
+  aws_region                 = "${var.aws_region}"
+  instance_type              = "${lookup(var.nomad_private_services_dc_node_cfg,"instance_type","INVALID")}"
+  allowed_ssh_cidr_blocks    = "${var.allowed_ssh_cidr_blocks}"
+  ssh_key_name               = "${var.ssh_key_name}"
+  datacenter_name            = "private-services"
+  unique_postfix             = "${var.unique_postfix}"
+  node_scaling_cfg           = "${var.nomad_private_services_dc_node_cfg}"
+  efs_dns_name               = "${var.efs_dns_name}"
+  map_bucket_name            = "${var.map_bucket_name}"
+  ebs_block_devices          = "${var.ebs_block_devices_private_services_dc}"
+  device_to_mount_target_map = "${var.device_to_mount_target_map_private_services_dc}"
 }
 
 #### DC: BACKOFFICE ###################################################
@@ -113,16 +115,17 @@ module "dc-backoffice" {
   consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
-  env_name                = "${var.env_name}"
-  stack_name              = "${var.stack_name}"
-  aws_region              = "${var.aws_region}"
-  instance_type           = "${lookup(var.nomad_backoffice_dc_node_cfg,"instance_type","INVALID")}"
-  allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
-  ssh_key_name            = "${var.ssh_key_name}"
-  datacenter_name         = "backoffice"
-  unique_postfix          = "${var.unique_postfix}"
-  node_scaling_cfg        = "${var.nomad_backoffice_dc_node_cfg}"
-  ebs_block_devices       = "${var.ebs_block_devices_backoffice_dc}"
+  env_name                   = "${var.env_name}"
+  stack_name                 = "${var.stack_name}"
+  aws_region                 = "${var.aws_region}"
+  instance_type              = "${lookup(var.nomad_backoffice_dc_node_cfg,"instance_type","INVALID")}"
+  allowed_ssh_cidr_blocks    = "${var.allowed_ssh_cidr_blocks}"
+  ssh_key_name               = "${var.ssh_key_name}"
+  datacenter_name            = "backoffice"
+  unique_postfix             = "${var.unique_postfix}"
+  node_scaling_cfg           = "${var.nomad_backoffice_dc_node_cfg}"
+  ebs_block_devices          = "${var.ebs_block_devices_backoffice_dc}"
+  device_to_mount_target_map = "${var.device_to_mount_target_map_backoffice_dc}"
 }
 
 #### DC: CONTENT-CONNECTOR ###################################################
@@ -139,16 +142,17 @@ module "dc-content-connector" {
   consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
-  env_name                = "${var.env_name}"
-  stack_name              = "${var.stack_name}"
-  aws_region              = "${var.aws_region}"
-  instance_type           = "${lookup(var.nomad_content_connector_dc_node_cfg,"instance_type","INVALID")}"
-  allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
-  ssh_key_name            = "${var.ssh_key_name}"
-  datacenter_name         = "content-connector"
-  unique_postfix          = "${var.unique_postfix}"
-  node_scaling_cfg        = "${var.nomad_content_connector_dc_node_cfg}"
-  ebs_block_devices       = "${var.ebs_block_devices_content_connector_dc}"
+  env_name                   = "${var.env_name}"
+  stack_name                 = "${var.stack_name}"
+  aws_region                 = "${var.aws_region}"
+  instance_type              = "${lookup(var.nomad_content_connector_dc_node_cfg,"instance_type","INVALID")}"
+  allowed_ssh_cidr_blocks    = "${var.allowed_ssh_cidr_blocks}"
+  ssh_key_name               = "${var.ssh_key_name}"
+  datacenter_name            = "content-connector"
+  unique_postfix             = "${var.unique_postfix}"
+  node_scaling_cfg           = "${var.nomad_content_connector_dc_node_cfg}"
+  ebs_block_devices          = "${var.ebs_block_devices_content_connector_dc}"
+  device_to_mount_target_map = "${var.device_to_mount_target_map_content_connector_dc}"
 }
 
 module "nomad" {

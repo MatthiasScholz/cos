@@ -145,6 +145,17 @@ variable "ebs_block_devices_private_services_dc" {
   default = []
 }
 
+# Space list of device to mount target entries for the private_services dc
+# A device to mount target entry is a key value pair (separated by '.').
+# key ... is the name of the device (i.e. /dev/xvdf)
+# value ... is the name of the mount target (i.e. /mnt/map1)
+# Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
+variable "device_to_mount_target_map_private_services_dc" {
+  description = "List of device to mount target entries."
+  type        = "list"
+  default     = []
+}
+
 variable "nomad_public_services_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the public-services data center."
   type        = "map"
@@ -171,6 +182,17 @@ variable "ebs_block_devices_public_services_dc" {
   type        = "list"
 
   default = []
+}
+
+# Space list of device to mount target entries for the public_services dc
+# A device to mount target entry is a key value pair (separated by '.').
+# key ... is the name of the device (i.e. /dev/xvdf)
+# value ... is the name of the mount target (i.e. /mnt/map1)
+# Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
+variable "device_to_mount_target_map_public_services_dc" {
+  description = "List of device to mount target entries."
+  type        = "list"
+  default     = []
 }
 
 variable "nomad_backoffice_dc_node_cfg" {
@@ -201,6 +223,17 @@ variable "ebs_block_devices_backoffice_dc" {
   default = []
 }
 
+# Space list of device to mount target entries for the backoffice dc
+# A device to mount target entry is a key value pair (separated by '.').
+# key ... is the name of the device (i.e. /dev/xvdf)
+# value ... is the name of the mount target (i.e. /mnt/map1)
+# Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
+variable "device_to_mount_target_map_backoffice_dc" {
+  description = "List of device to mount target entries."
+  type        = "list"
+  default     = []
+}
+
 variable "nomad_content_connector_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the content-connetor data center."
   type        = "map"
@@ -227,6 +260,17 @@ variable "ebs_block_devices_content_connector_dc" {
   type        = "list"
 
   default = []
+}
+
+# Space list of device to mount target entries for the content-connector dc
+# A device to mount target entry is a key value pair (separated by '.').
+# key ... is the name of the device (i.e. /dev/xvdf)
+# value ... is the name of the mount target (i.e. /mnt/map1)
+# Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
+variable "device_to_mount_target_map_content_connector_dc" {
+  description = "List of device to mount target entries."
+  type        = "list"
+  default     = []
 }
 
 variable "efs_dns_name" {
