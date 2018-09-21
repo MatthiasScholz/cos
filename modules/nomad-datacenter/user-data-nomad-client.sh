@@ -10,14 +10,14 @@ set -e
 # From: https://alestic.com/2010/12/ec2-user-data-output/
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
 
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly SCRIPT_DIR="$(cd "$(dirname $${BASH_SOURCE[0]}")" && pwd)"
 readonly SCRIPT_NAME="$(basename "$0")"
 
 function log {
   local readonly level="$1"
   local readonly message="$2"
   local readonly timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-  >&2 echo -e "${timestamp} [${level}] [$SCRIPT_NAME] ${message}"
+  >&2 echo -e "$${timestamp} [$${level}] [$SCRIPT_NAME] $${message}"
 }
 
 function log_info {
@@ -72,10 +72,10 @@ declare -A device_map
 # is the mount-target (i.e. /mnt/map).
 # After Parsing the map of device -> mount-target is stored in device_map
 function parse_device_map () {
-  for device_kv in ${device_to_mount_target[*]}
+  for device_kv in $${device_to_mount_target[*]}
   do
     while IFS=':' read device mount_target; do
-        device_map["${device}"]="${mount_target}"
+        device_map["$${device}"]="$${mount_target}"
     done <<<"$device_kv"
   done
 }
@@ -83,9 +83,9 @@ function parse_device_map () {
 # Function that prints the parameter device_map.
 function print_device_map () {
   log_info "Available device to mount-target entries:"
-  for device in ${!device_map[@]}
+  for device in $${!device_map[@]}
   do
-    log_info "\tDevice: $device will be mounted to ${device_map[${device}]}"
+    log_info "\tDevice: $device will be mounted to $${device_map[$${device}]}"
   done
 }
 
@@ -93,9 +93,9 @@ function print_device_map () {
 # If needed a file-system is created on them as well.
 function prepare_and_mount_device () {
 
-  for device in ${!device_map[@]}
+  for device in $${!device_map[@]}
   do
-    mount_target="${device_map[${device}]}"
+    mount_target="$${device_map[$${device}]}"
     log_info "Processing $device -> $mount_target"
 
     log_info "\tCreate mount_target $mount_target"

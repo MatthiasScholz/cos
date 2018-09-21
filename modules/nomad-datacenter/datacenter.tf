@@ -67,12 +67,12 @@ data "template_file" "user_data_data_center" {
   template = "${file("${path.module}/user-data-nomad-client.sh")}"
 
   vars {
-    cluster_tag_key        = "${var.consul_cluster_tag_key}"
-    cluster_tag_value      = "${var.consul_cluster_tag_value}"
-    datacenter             = "${var.datacenter_name}"
-    efs_dns_name           = "${var.efs_dns_name}"
-    map_bucket_name        = "${var.map_bucket_name}"
-    device_to_mount_target = "/dev/xvde:/mnt/map1 /dev/xvdf:/mnt/map2"
-    fs_type                = "xfs"
+    cluster_tag_key            = "${var.consul_cluster_tag_key}"
+    cluster_tag_value          = "${var.consul_cluster_tag_value}"
+    datacenter                 = "${var.datacenter_name}"
+    efs_dns_name               = "${var.efs_dns_name}"
+    map_bucket_name            = "${var.map_bucket_name}"
+    device_to_mount_target_map = "/dev/xvde:/mnt/map1 /dev/xvdf:/mnt/map2"
+    fs_type                    = "xfs"
   }
 }
