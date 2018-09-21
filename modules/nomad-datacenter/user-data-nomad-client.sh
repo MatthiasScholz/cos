@@ -53,12 +53,13 @@ function configure_efs() {
 
 
 ############### Mounting of devices (i.e. EBS volumes) #############################################
-# space separated list of device names
-# TODO inject tf var
-device_names=("/dev/xvde:/mnt/map1" "/dev/xvdf:/mnt/map2")
-
-# TODO inject tf var
-fs_type="xfs"
+# Space separated list of device to mount target entries.
+# A device to mount target entry is a key value pair (separated by '.').
+# key ... is the name of the device (i.e. /dev/xvdf)
+# value ... is the name of the mount target (i.e. /mnt/map1)
+# Example: "/dev/xvde:/mnt/map1 /dev/xvdf:/mnt/map2"
+device_to_mount_target=("${device_to_mount_target_map}")
+fs_type="${fs_type}"
 
 # map containing the device to mount-target mapping.
 declare -A device_map
@@ -71,7 +72,7 @@ declare -A device_map
 # is the mount-target (i.e. /mnt/map).
 # After Parsing the map of device -> mount-target is stored in device_map
 function parse_device_map () {
-  for device_kv in ${device_names[*]}
+  for device_kv in ${device_to_mount_target[*]}
   do
     while IFS=':' read device mount_target; do
         device_map["${device}"]="${mount_target}"
