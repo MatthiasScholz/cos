@@ -72,7 +72,7 @@ data "template_file" "user_data_data_center" {
     datacenter                 = "${var.datacenter_name}"
     efs_dns_name               = "${var.efs_dns_name}"
     map_bucket_name            = "${var.map_bucket_name}"
-    device_to_mount_target_map = "/dev/xvde:/mnt/map1 /dev/xvdf:/mnt/map2"
-    fs_type                    = "xfs"
+    device_to_mount_target_map = "${join(" ", var.device_to_mount_target_map)}"
+    fs_type                    = "${var.fs_type}"
   }
 }
