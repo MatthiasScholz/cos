@@ -109,7 +109,7 @@ function prepare_and_mount_device () {
       log_info "\t\tFile system exists"
     else
       log_info "\t\tFile system does not exist ... will be created."
-      sudo mkfs -t $fs_type $device -V -V
+      sudo mkfs -t $fs_type $device -V
     fi
 
     if grep -q $mount_target /etc/fstab
