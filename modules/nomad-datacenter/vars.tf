@@ -128,7 +128,7 @@ variable "ebs_block_devices" {
 }
 
 # List of device to mount target entries.
-# A device to mount target entry is a key value pair (separated by '.').
+# A device to mount target entry is a key value pair (separated by ' ').
 # key ... is the name of the device (i.e. /dev/xvdf)
 # value ... is the name of the mount target (i.e. /mnt/map1)
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]

@@ -146,7 +146,7 @@ variable "ebs_block_devices_private_services_dc" {
 }
 
 # Space list of device to mount target entries for the private_services dc
-# A device to mount target entry is a key value pair (separated by '.').
+# A device to mount target entry is a key value pair (separated by ' ').
 # key ... is the name of the device (i.e. /dev/xvdf)
 # value ... is the name of the mount target (i.e. /mnt/map1)
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
@@ -185,7 +185,7 @@ variable "ebs_block_devices_public_services_dc" {
 }
 
 # Space list of device to mount target entries for the public_services dc
-# A device to mount target entry is a key value pair (separated by '.').
+# A device to mount target entry is a key value pair (separated by ' ').
 # key ... is the name of the device (i.e. /dev/xvdf)
 # value ... is the name of the mount target (i.e. /mnt/map1)
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
@@ -224,7 +224,7 @@ variable "ebs_block_devices_backoffice_dc" {
 }
 
 # Space list of device to mount target entries for the backoffice dc
-# A device to mount target entry is a key value pair (separated by '.').
+# A device to mount target entry is a key value pair (separated by ' ').
 # key ... is the name of the device (i.e. /dev/xvdf)
 # value ... is the name of the mount target (i.e. /mnt/map1)
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
@@ -263,7 +263,7 @@ variable "ebs_block_devices_content_connector_dc" {
 }
 
 # Space list of device to mount target entries for the content-connector dc
-# A device to mount target entry is a key value pair (separated by '.').
+# A device to mount target entry is a key value pair (separated by ' ').
 # key ... is the name of the device (i.e. /dev/xvdf)
 # value ... is the name of the mount target (i.e. /mnt/map1)
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
