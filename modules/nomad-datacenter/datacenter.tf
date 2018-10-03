@@ -7,7 +7,7 @@ locals {
 }
 
 module "data_center" {
-  source = "git::https://github.com/ThomasObenaus/terraform-aws-nomad.git//modules/nomad-cluster?ref=master"
+  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.4.5"
 
   cluster_name                = "${local.cluster_name}"
   cluster_tag_value           = "${local.cluster_name}"
