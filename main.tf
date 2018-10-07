@@ -16,10 +16,11 @@ module "ui-access" {
   consul_server_sg_id    = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
-  aws_region     = "${var.aws_region}"
-  env_name       = "${var.env_name}"
-  stack_name     = "${var.stack_name}"
-  unique_postfix = "${var.unique_postfix}"
+  aws_region                     = "${var.aws_region}"
+  env_name                       = "${var.env_name}"
+  stack_name                     = "${var.stack_name}"
+  unique_postfix                 = "${var.unique_postfix}"
+  allowed_cidr_blocks_for_ui_alb = "${var.allowed_cidr_blocks_for_ui_alb}"
 }
 
 module "consul" {
