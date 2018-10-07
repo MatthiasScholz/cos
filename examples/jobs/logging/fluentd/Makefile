@@ -31,7 +31,7 @@ credentials: delim
 	@echo "[INFO] Login to AWS ECR"
 	@$(creds)
 
-build: delim
+build: version delim
 	@echo "[INFO] Building and tagging image"
 	docker build -t $(category)/$(name) --build-arg VERSION=$(tag) .
 	@docker tag $(category)/$(name):latest $(ecr_url)/$(category)/$(name):$(tag)
