@@ -7,6 +7,7 @@ RUN apk add --update --virtual .build-deps \
   fluent-plugin-elasticsearch \
   fluent-plugin-grok-parser:2.1.4 \
   fluent-plugin-kv-parser:1.0.0 \
+  fluent-plugin-prometheus:0.4.0 \
   && sudo gem sources --clear-all \
   && apk del .build-deps \
   && rm -rf /var/cache/apk/* \
