@@ -54,7 +54,6 @@ module "dc-public-services" {
   consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
   consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
   server_sg_id                     = "${module.nomad.security_group_id_nomad_servers}"
-  consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
   env_name                       = "${var.env_name}"
@@ -84,7 +83,6 @@ module "dc-private-services" {
   consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
   consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
   server_sg_id                     = "${module.nomad.security_group_id_nomad_servers}"
-  consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
   env_name                   = "${var.env_name}"
@@ -113,7 +111,6 @@ module "dc-backoffice" {
   consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
   consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
   server_sg_id                     = "${module.nomad.security_group_id_nomad_servers}"
-  consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
   env_name                   = "${var.env_name}"
@@ -140,7 +137,6 @@ module "dc-content-connector" {
   consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
   consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
   server_sg_id                     = "${module.nomad.security_group_id_nomad_servers}"
-  consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
   env_name                   = "${var.env_name}"
@@ -184,6 +180,7 @@ module "sgrules" {
   sg_id_private_services_dc  = "${module.dc-private-services.sg_datacenter_id}"
   sg_id_content_connector_dc = "${module.dc-content-connector.sg_datacenter_id}"
   sg_id_backoffice_dc        = "${module.dc-backoffice.sg_datacenter_id}"
+  sg_id_consul               = "${module.consul.security_group_id_consul_servers}"
 }
 
 module "ecr" {

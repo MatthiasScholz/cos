@@ -155,3 +155,5 @@ resource "aws_security_group_rule" "sgr_private_to_backoffice_http_rcp" {
   source_security_group_id = "${var.sg_id_private_services_dc}"
   security_group_id        = "${var.sg_id_backoffice_dc}"
 }
+
+

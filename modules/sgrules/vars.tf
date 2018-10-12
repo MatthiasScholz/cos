@@ -11,3 +11,7 @@ variable "sg_id_content_connector_dc" {
 variable "sg_id_backoffice_dc" {
   description = "Security-Group ID of the backoffice dc."
 }
+
+variable "sg_id_consul" {
+  description = "Security-Group ID of the consul nodes."
+}
