@@ -1,9 +1,10 @@
 locals {
   ami_id_bastion = "ami-1853ac65" # Amazon Linux AMI 2017.09.1 (HVM)
 
-  allowed_ssh_cidr_blocks = {
+# cidr blocks allowed for ssh and alb access
+  allowed_cidr_blocks = {
     "pcc_dev" = "80.146.215.90/32"
-    "thomas"  = "95.90.215.116/32"
+    "thomas"  = "95.90.215.69/32"
     "shared"  = "10.49.0.0/16"
   }
 }
@@ -38,7 +39,7 @@ module "bastion" {
   aws_region              = "${var.aws_region}"
   env_name                = "${var.env_name}"
   stack_name              = "${var.stack_name}"
-  allowed_ssh_cidr_blocks = "${local.allowed_ssh_cidr_blocks}"
+  allowed_ssh_cidr_blocks = "${local.allowed_cidr_blocks}"
   instance_type           = "t2.micro"
   unique_postfix          = "-${random_pet.unicorn.id}"
 }
@@ -72,9 +73,9 @@ module "nomad-infra" {
   unique_postfix          = "-${random_pet.unicorn.id}"
   instance_type_server    = "t2.micro"
   ssh_key_name            = "${var.ssh_key_name}"
-  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
+  allowed_ssh_cidr_blocks = ["${values(local.allowed_cidr_blocks)}"]
 
-  allowed_cidr_blocks_for_ui_alb = "${local.allowed_ssh_cidr_blocks}"
+  allowed_cidr_blocks_for_ui_alb = "${local.allowed_cidr_blocks}"
 
   # [Nomad] Optional variables
   nomad_server_scaling_cfg            = "${var.server_scaling_cfg}"
