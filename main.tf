@@ -178,6 +178,14 @@ module "nomad" {
   unique_postfix          = "${var.unique_postfix}"
 }
 
+module "sgrules" {
+  source                     = "modules/sgrules"
+  sg_id_public_services_dc   = "${module.dc-public-services.sg_datacenter_id}"
+  sg_id_private_services_dc  = "${module.dc-private-services.sg_datacenter_id}"
+  sg_id_content_connector_dc = "${module.dc-content-connector.sg_datacenter_id}"
+  sg_id_backoffice_dc        = "${module.dc-backoffice.sg_datacenter_id}"
+}
+
 module "ecr" {
   source = "modules/ecr"
 
