@@ -63,6 +63,12 @@ Terraform modules for separate aspects of the cluster orchestration system.
 The picture shows the dependencies within the modules of the cos-stack and the dependencies to the networking-stack.
 ![deps](_docs/module-dependencies.png)
 
+## Security
+
+### Security-Groups
+
+![sgs](_docs/security_groups.png)
+
 ## References
 
 * [Nomad Terraform Module](https://github.com/hashicorp/terraform-aws-nomad)
