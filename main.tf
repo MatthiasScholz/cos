@@ -12,7 +12,6 @@ module "ui-access" {
   consul_server_asg_name = "${module.consul.asg_name_consul_servers}"
   nomad_server_asg_name  = "${module.nomad.asg_name_nomad_servers}"
   fabio_server_asg_name  = "${module.dc-public-services.asg_name}"
-  nomad_server_sg_id     = "${module.nomad.security_group_id_nomad_servers}"
   consul_server_sg_id    = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
@@ -182,6 +181,7 @@ module "sgrules" {
   sg_id_backoffice_dc        = "${module.dc-backoffice.sg_datacenter_id}"
   sg_id_consul               = "${module.consul.security_group_id_consul_servers}"
   sg_id_nomad_server         = "${module.nomad.security_group_id_nomad_servers}"
+  sg_id_ui_alb_nomad         = "${module.ui-access.nomad_ui_alb_sg_id}"
 }
 
 module "ecr" {

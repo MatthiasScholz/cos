@@ -19,3 +19,7 @@ variable "sg_id_consul" {
 variable "sg_id_nomad_server" {
   description = "Security-Group ID of the nomad server."
 }
+
+variable "sg_id_ui_alb_nomad" {
+  description = "Security-Group ID of the ui-alb for nomad."
+}
