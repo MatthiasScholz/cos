@@ -39,7 +39,6 @@ module "nomad-datacenter" {
   consul_cluster_tag_key           = "consul-servers"
   consul_cluster_tag_value         = "${local.stack_name}-${local.env_name}-consul-srv"
   server_sg_id                     = "${aws_security_group.sg_nomad_server.id}"
-  consul_cluster_security_group_id = "${aws_security_group.sg_nomad_server.id}"
 
   ## optional parameters
   aws_region                    = "${local.aws_region}"

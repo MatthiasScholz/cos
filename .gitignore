@@ -11,6 +11,7 @@ consul.plan
 ui.plan
 dc.plan
 nm.plan
+file.plan
 bst.plan
 *.tfvars
 .terraform.tfstate.lock.info

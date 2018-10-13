@@ -27,7 +27,6 @@ module "data_center" {
   max_size         = "${local.max}"
   desired_capacity = "${local.desired_capacity}"
   security_groups = [
-    "${aws_security_group.sg_nomad_server_access.id}",
     "${aws_security_group.sg_datacenter.id}",
   ]
   # Access over cidr blocks is disabled here.
