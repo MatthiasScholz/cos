@@ -15,3 +15,7 @@ variable "sg_id_backoffice_dc" {
 variable "sg_id_consul" {
   description = "Security-Group ID of the consul nodes."
 }
+
+variable "sg_id_nomad_server" {
+  description = "Security-Group ID of the nomad server."
+}

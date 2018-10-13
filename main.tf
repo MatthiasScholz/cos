@@ -48,12 +48,12 @@ module "dc-public-services" {
   source = "modules/nomad-datacenter"
 
   ## required parameters
-  vpc_id                           = "${var.vpc_id}"
-  subnet_ids                       = "${var.nomad_clients_public_services_subnet_ids}"
-  ami_id                           = "${var.nomad_ami_id_clients}"
-  consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
-  consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
-  server_sg_id                     = "${module.nomad.security_group_id_nomad_servers}"
+  vpc_id                   = "${var.vpc_id}"
+  subnet_ids               = "${var.nomad_clients_public_services_subnet_ids}"
+  ami_id                   = "${var.nomad_ami_id_clients}"
+  consul_cluster_tag_key   = "${local.consul_cluster_tag_key}"
+  consul_cluster_tag_value = "${local.consul_cluster_tag_value}"
+  server_sg_id             = "${module.nomad.security_group_id_nomad_servers}"
 
   ## optional parameters
   env_name                       = "${var.env_name}"
@@ -77,12 +77,12 @@ module "dc-private-services" {
   source = "modules/nomad-datacenter"
 
   ## required parameters
-  vpc_id                           = "${var.vpc_id}"
-  subnet_ids                       = "${var.nomad_clients_private_services_subnet_ids}"
-  ami_id                           = "${var.nomad_ami_id_clients}"
-  consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
-  consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
-  server_sg_id                     = "${module.nomad.security_group_id_nomad_servers}"
+  vpc_id                   = "${var.vpc_id}"
+  subnet_ids               = "${var.nomad_clients_private_services_subnet_ids}"
+  ami_id                   = "${var.nomad_ami_id_clients}"
+  consul_cluster_tag_key   = "${local.consul_cluster_tag_key}"
+  consul_cluster_tag_value = "${local.consul_cluster_tag_value}"
+  server_sg_id             = "${module.nomad.security_group_id_nomad_servers}"
 
   ## optional parameters
   env_name                   = "${var.env_name}"
@@ -105,12 +105,12 @@ module "dc-backoffice" {
   source = "modules/nomad-datacenter"
 
   ## required parameters
-  vpc_id                           = "${var.vpc_id}"
-  subnet_ids                       = "${var.nomad_clients_backoffice_subnet_ids}"
-  ami_id                           = "${var.nomad_ami_id_clients}"
-  consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
-  consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
-  server_sg_id                     = "${module.nomad.security_group_id_nomad_servers}"
+  vpc_id                   = "${var.vpc_id}"
+  subnet_ids               = "${var.nomad_clients_backoffice_subnet_ids}"
+  ami_id                   = "${var.nomad_ami_id_clients}"
+  consul_cluster_tag_key   = "${local.consul_cluster_tag_key}"
+  consul_cluster_tag_value = "${local.consul_cluster_tag_value}"
+  server_sg_id             = "${module.nomad.security_group_id_nomad_servers}"
 
   ## optional parameters
   env_name                   = "${var.env_name}"
@@ -131,12 +131,12 @@ module "dc-content-connector" {
   source = "modules/nomad-datacenter"
 
   ## required parameters
-  vpc_id                           = "${var.vpc_id}"
-  subnet_ids                       = "${var.nomad_clients_content_connector_subnet_ids}"
-  ami_id                           = "${var.nomad_ami_id_clients}"
-  consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
-  consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
-  server_sg_id                     = "${module.nomad.security_group_id_nomad_servers}"
+  vpc_id                   = "${var.vpc_id}"
+  subnet_ids               = "${var.nomad_clients_content_connector_subnet_ids}"
+  ami_id                   = "${var.nomad_ami_id_clients}"
+  consul_cluster_tag_key   = "${local.consul_cluster_tag_key}"
+  consul_cluster_tag_value = "${local.consul_cluster_tag_value}"
+  server_sg_id             = "${module.nomad.security_group_id_nomad_servers}"
 
   ## optional parameters
   env_name                   = "${var.env_name}"
@@ -181,6 +181,7 @@ module "sgrules" {
   sg_id_content_connector_dc = "${module.dc-content-connector.sg_datacenter_id}"
   sg_id_backoffice_dc        = "${module.dc-backoffice.sg_datacenter_id}"
   sg_id_consul               = "${module.consul.security_group_id_consul_servers}"
+  sg_id_nomad_server         = "${module.nomad.security_group_id_nomad_servers}"
 }
 
 module "ecr" {
