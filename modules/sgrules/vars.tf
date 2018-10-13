@@ -2,12 +2,15 @@
 variable "sg_id_public_services_dc" {
   description = "Security-Group ID of the public-service dc."
 }
+
 variable "sg_id_private_services_dc" {
   description = "Security-Group ID of the private-service dc."
 }
+
 variable "sg_id_content_connector_dc" {
   description = "Security-Group ID of the content-connector dc."
 }
+
 variable "sg_id_backoffice_dc" {
   description = "Security-Group ID of the backoffice dc."
 }
@@ -22,4 +25,8 @@ variable "sg_id_nomad_server" {
 
 variable "sg_id_ui_alb_nomad" {
   description = "Security-Group ID of the ui-alb for nomad."
+}
+
+variable "sg_id_ui_alb_consul" {
+  description = "Security-Group ID of the ui-alb for consul."
 }

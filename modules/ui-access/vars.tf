@@ -20,10 +20,6 @@ variable "fabio_server_asg_name" {
   description = "Name of the AutoScalingGroup of the fabio-servers."
 }
 
-variable "consul_server_sg_id" {
-  description = "The id of the security-group of the consul servers. This is needed to inject rules in order to access the consul-servers."
-}
-
 #### Optional Variables ############################################
 variable "env_name" {
   description = "name of the environment (i.e. prod)"
