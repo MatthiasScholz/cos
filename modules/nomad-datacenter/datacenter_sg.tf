@@ -19,17 +19,6 @@ resource "aws_security_group" "sg_datacenter" {
   }
 }
 
-# INGRESS
-resource "aws_security_group_rule" "sgr_datacenter_ig_docker" {
-  type              = "ingress"
-  description       = "Nomad Dynamic Docker Ports"
-  from_port         = 20000
-  to_port           = 32000
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.sg_datacenter.id}"
-}
-
 # EGRESS
 # grants access for all tcp but only to the services subnet
 resource "aws_security_group_rule" "sgr_datacenter_eg_all" {
