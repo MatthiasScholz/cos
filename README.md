@@ -64,6 +64,32 @@ Terraform modules for separate aspects of the cluster orchestration system.
 The picture shows the dependencies within the modules of the cos-stack and the dependencies to the networking-stack.
 ![deps](_docs/module-dependencies.png)
 
+## Troubleshooting
+
+### Nomad CLI complains about invalid Certificate
+
+If you have deployed the cluster with https endpoints for the ui-albs and have created a selfsigned certificate you might get errors from the nomad cli complanig about an invalid certificate (`x509: certificate is..`). To fix this you have to integrate your custom root-CA you used for signing your certificate apropriately into your system.
+
+#### Provide access to CA cert-file
+
+Therefore you have to store the PEM encoded CA cert-file locally and give the information where to find it to nomad.
+
+There are two options:
+1. `-ca-cert=<path>` flag or `NOMAD_CACERT` environment variable
+2. `-ca-path=<path>` flag or `NOMAD_CAPATH` environment variable
+
+#### Disable Certificate verification
+
+To overcome certificate verification issues you can also (not recommended) temporarily skip the certificate verification when using the nomad CLI.
+1. `-tls-skip-verify`
+   As additional parameter in your cli calls.
+   i.e. `nomad plan -tls-skip-verify jobfile.nomad`
+2. `NOMAD_SKIP_VERIFY`
+   Just set the environment variable to 1.
+   `export NOMAD_SKIP_VERIFY=1`
+   And then call your CLI commands as usual.
+   i.e. `nomad plan jobfile.nomad`
+
 ## References
 
 * [Nomad Terraform Module](https://github.com/hashicorp/terraform-aws-nomad)

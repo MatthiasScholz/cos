@@ -37,16 +37,28 @@ resource "aws_alb_target_group" "tgr_nomad_ui" {
   }
 }
 
+# HTTP listener, used when no https certificate is provided.
 resource "aws_alb_listener" "albl_http_nomad_ui" {
+  count             = "${var.ui_alb_use_https_listener? 0 : 1}"
   load_balancer_arn = "${aws_alb.alb_nomad_ui.arn}"
+  protocol          = "HTTP"
+  port              = "${local.listener_port}"
 
-  #TODO: add support for https
-  #protocol        = "HTTPS"
-  #port            = "443"
-  #certificate_arn = "${var.dummy_listener_certificate_arn}"
+  default_action {
+    target_group_arn = "${aws_alb_target_group.tgr_nomad_ui.arn}"
+    type             = "forward"
+  }
+}
 
-  protocol = "HTTP"
-  port     = "80"
+# HTTPS listener, used when a https certificate is provided.
+resource "aws_alb_listener" "albl_https_nomad_ui" {
+  count             = "${var.ui_alb_use_https_listener}"
+  load_balancer_arn = "${aws_alb.alb_nomad_ui.arn}"
+  protocol          = "HTTPS"
+  port              = "${local.listener_port}"
+  certificate_arn   = "${var.ui_alb_https_listener_cert_arn}"
+  ssl_policy        = "${local.ssl_policy}"
+
   default_action {
     target_group_arn = "${aws_alb_target_group.tgr_nomad_ui.arn}"
     type             = "forward"

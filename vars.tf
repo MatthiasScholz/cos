@@ -105,6 +105,16 @@ variable "allowed_cidr_blocks_for_ui_alb" {
   }
 }
 
+variable "ui_alb_https_listener_cert_arn" {
+  description = "ARN of the certificate that should be used to set up the https endpoint for the ui-alb's. If not provided, a http enpoint will be created."
+  default     = ""
+}
+
+variable "ui_alb_use_https_listener" {
+  description = "If true, the https endpoint for the ui-albs will be created instead of the http one. Precondition for this is that ui_alb_https_listener_cert_arn is set apropriately."
+  default     = false
+}
+
 #### [Nomad] Optional Variables ###################################################################
 variable "nomad_server_scaling_cfg" {
   description = "Scaling configuration for the nomad servers."
