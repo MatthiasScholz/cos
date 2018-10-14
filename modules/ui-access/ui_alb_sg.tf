@@ -19,10 +19,10 @@ locals {
 # INGRESS UI access rules
 resource "aws_security_group_rule" "sgr_alb_ig_ui" {
   count             = "${length(local.keys)}"
-  description       = "${element(local.keys,count.index)}: UI - igress 80"
+  description       = "${element(local.keys,count.index)}: UI - igress ${local.listener_port}"
   type              = "ingress"
-  from_port         = 80
-  to_port           = 80
+  from_port         = "${local.listener_port}"
+  to_port           = "${local.listener_port}"
   protocol          = "tcp"
   cidr_blocks       = ["${lookup(var.allowed_cidr_blocks_for_ui_alb,element(local.keys,count.index),"0.0.0.0/32")}"]
   security_group_id = "${aws_security_group.sg_ui_alb.id}"

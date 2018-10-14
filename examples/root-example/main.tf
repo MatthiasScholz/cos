@@ -1,7 +1,7 @@
 locals {
   ami_id_bastion = "ami-1853ac65" # Amazon Linux AMI 2017.09.1 (HVM)
 
-# cidr blocks allowed for ssh and alb access
+  # cidr blocks allowed for ssh and alb access
   allowed_cidr_blocks = {
     "pcc_dev" = "80.146.215.90/32"
     "thomas"  = "95.90.215.69/32"
@@ -77,23 +77,28 @@ module "nomad-infra" {
 
   allowed_cidr_blocks_for_ui_alb = "${local.allowed_cidr_blocks}"
 
+  # INFO: uncomment the following two lines if you want to deploy the cluster having https endpoints 
+  # for the ui-albs (nomad-ui, consul-ui and fabio-ui).
+  # Keep in mind that you have to configure the nomad CLI to skip certificate verification in this case
+  # because the sample certificate that is used here is just a self signed one which even does not fit the
+  # domain by the nomad alb. Short said it is invalid and only in place for testing/ demonstration purposes. 
+  #ui_alb_https_listener_cert_arn = "${aws_iam_server_certificate.certificate_alb.arn}"
+  #ui_alb_use_https_listener      = true
+
   # [Nomad] Optional variables
-  nomad_server_scaling_cfg            = "${var.server_scaling_cfg}"
-  nomad_private_services_dc_node_cfg  = "${var.nomad_dc_node_cfg}"
-  nomad_public_services_dc_node_cfg   = "${var.nomad_dc_node_cfg}"
-  nomad_content_connector_dc_node_cfg = "${var.nomad_dc_node_cfg}"
-  nomad_backoffice_dc_node_cfg        = "${var.nomad_dc_node_cfg}"
-
-  ebs_block_devices_private_services_dc  = "${var.ebs_block_devices_sample}"
-  ebs_block_devices_public_services_dc   = "${var.ebs_block_devices_sample}"
-  ebs_block_devices_backoffice_dc        = "${var.ebs_block_devices_sample}"
-  ebs_block_devices_content_connector_dc = "${var.ebs_block_devices_sample}"
-
+  nomad_server_scaling_cfg                        = "${var.server_scaling_cfg}"
+  nomad_private_services_dc_node_cfg              = "${var.nomad_dc_node_cfg}"
+  nomad_public_services_dc_node_cfg               = "${var.nomad_dc_node_cfg}"
+  nomad_content_connector_dc_node_cfg             = "${var.nomad_dc_node_cfg}"
+  nomad_backoffice_dc_node_cfg                    = "${var.nomad_dc_node_cfg}"
+  ebs_block_devices_private_services_dc           = "${var.ebs_block_devices_sample}"
+  ebs_block_devices_public_services_dc            = "${var.ebs_block_devices_sample}"
+  ebs_block_devices_backoffice_dc                 = "${var.ebs_block_devices_sample}"
+  ebs_block_devices_content_connector_dc          = "${var.ebs_block_devices_sample}"
   device_to_mount_target_map_public_services_dc   = "${var.device_to_mount_target_map_sample}"
   device_to_mount_target_map_private_services_dc  = "${var.device_to_mount_target_map_sample}"
   device_to_mount_target_map_backoffice_dc        = "${var.device_to_mount_target_map_sample}"
   device_to_mount_target_map_content_connector_dc = "${var.device_to_mount_target_map_sample}"
-
   # [Consul] Optional variables
   consul_num_servers   = 3
   consul_instance_type = "t2.micro"

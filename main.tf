@@ -7,11 +7,13 @@ module "ui-access" {
   source = "modules/ui-access"
 
   ## required parameters
-  vpc_id                 = "${var.vpc_id}"
-  subnet_ids             = "${var.alb_subnet_ids}"
-  consul_server_asg_name = "${module.consul.asg_name_consul_servers}"
-  nomad_server_asg_name  = "${module.nomad.asg_name_nomad_servers}"
-  fabio_server_asg_name  = "${module.dc-public-services.asg_name}"
+  vpc_id                         = "${var.vpc_id}"
+  subnet_ids                     = "${var.alb_subnet_ids}"
+  consul_server_asg_name         = "${module.consul.asg_name_consul_servers}"
+  nomad_server_asg_name          = "${module.nomad.asg_name_nomad_servers}"
+  fabio_server_asg_name          = "${module.dc-public-services.asg_name}"
+  ui_alb_https_listener_cert_arn = "${var.ui_alb_https_listener_cert_arn}"
+  ui_alb_use_https_listener      = "${var.ui_alb_use_https_listener}"
 
   ## optional parameters
   aws_region                     = "${var.aws_region}"
