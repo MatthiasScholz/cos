@@ -20,13 +20,13 @@ resource "aws_security_group" "sg_datacenter" {
 }
 
 # EGRESS
-# grants access for all tcp but only to the services subnet
+# grants access on all ports for all protocols
 resource "aws_security_group_rule" "sgr_datacenter_eg_all" {
-  type      = "egress"
-  from_port = 0
-  to_port   = 65535
-  protocol  = "tcp"
-
+  type              = "egress"
+  description       = "egress all protocols all ports"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.sg_datacenter.id}"
 }
