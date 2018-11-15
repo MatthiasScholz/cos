@@ -33,12 +33,12 @@ module "nomad-datacenter" {
   source = "../../modules/nomad-datacenter"
 
   ## required parameters
-  vpc_id                           = "${data.aws_vpc.default.id}"
-  subnet_ids                       = "${data.aws_subnet_ids.all.ids}"
-  ami_id                           = "ami-a23feadf"
-  consul_cluster_tag_key           = "consul-servers"
-  consul_cluster_tag_value         = "${local.stack_name}-${local.env_name}-consul-srv"
-  server_sg_id                     = "${aws_security_group.sg_nomad_server.id}"
+  vpc_id                   = "${data.aws_vpc.default.id}"
+  subnet_ids               = "${data.aws_subnet_ids.all.ids}"
+  ami_id                   = "ami-a23feadf"
+  consul_cluster_tag_key   = "consul-servers"
+  consul_cluster_tag_value = "${local.stack_name}-${local.env_name}-consul-srv"
+  server_sg_id             = "${aws_security_group.sg_nomad_server.id}"
 
   ## optional parameters
   aws_region                    = "${local.aws_region}"
@@ -52,6 +52,14 @@ module "nomad-datacenter" {
   alb_ingress_http_listener_arn = ""
   attach_ingress_alb_listener   = false
   ingress_controller_port       = 9999
+
+  additional_instance_tags = [
+    {
+      "key"                 = "nomad-version"
+      "value"               = "vX.Y.Z"
+      "propagate_at_launch" = "true"
+    },
+  ]
 
   node_scaling_cfg = {
     "min"              = 1

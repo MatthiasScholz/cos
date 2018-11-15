@@ -138,3 +138,25 @@ variable "fs_type" {
   description = "The file system type to be created for devices which have no file-system yet."
   default     = "xfs"
 }
+
+# List of tags to add to the datacenter instances
+# A tag is a map consiting of key (string), value (string) and propagate (bool) at launch
+# key ... the key for the tag (i.e. version)
+# value ... the value (i.e. v1.2.9)
+# Example:
+#  additional_instance_tags = [
+#    {
+#      "key"                 = "version"
+#      "value"               = "v1.2.9"
+#      "propagate_at_launch" = "true"
+#    },
+#    {
+#      "key"                 = "map-version"
+#      "value"               = "20.0092"
+#      "propagate_at_launch" = "true"
+#    }]
+variable "additional_instance_tags" {
+  description = "List of tags to add to the datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
+  type        = "list"
+  default     = []
+}

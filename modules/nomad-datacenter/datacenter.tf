@@ -45,6 +45,7 @@ module "data_center" {
       "value"               = "client"
       "propagate_at_launch" = "true"
     },
+    "${var.additional_instance_tags}",
   ]
   # Configuration for additional ebs_block devices
   ebs_block_devices = "${var.ebs_block_devices}"

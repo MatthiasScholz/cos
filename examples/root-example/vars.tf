@@ -75,3 +75,15 @@ variable "device_to_mount_target_map_sample" {
 
   default = ["/dev/xvde:/mnt/map1", "/dev/xvdf:/mnt/map2"]
 }
+
+variable "additional_instance_tags_sample" {
+  type = "list"
+
+  default = [
+    {
+      "key"                 = "nomad-version"
+      "value"               = "vX.Y.Z"
+      "propagate_at_launch" = "true"
+    },
+  ]
+}

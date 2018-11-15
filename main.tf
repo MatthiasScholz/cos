@@ -70,6 +70,7 @@ module "dc-public-services" {
   node_scaling_cfg               = "${var.nomad_public_services_dc_node_cfg}"
   ebs_block_devices              = "${var.ebs_block_devices_public_services_dc}"
   device_to_mount_target_map     = "${var.device_to_mount_target_map_public_services_dc}"
+  additional_instance_tags       = "${var.additional_instance_tags_public_services_dc}"
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
@@ -98,6 +99,7 @@ module "dc-private-services" {
   map_bucket_name            = "${var.map_bucket_name}"
   ebs_block_devices          = "${var.ebs_block_devices_private_services_dc}"
   device_to_mount_target_map = "${var.device_to_mount_target_map_private_services_dc}"
+  additional_instance_tags   = "${var.additional_instance_tags_private_services_dc}"
 }
 
 #### DC: BACKOFFICE ###################################################
@@ -124,6 +126,7 @@ module "dc-backoffice" {
   node_scaling_cfg           = "${var.nomad_backoffice_dc_node_cfg}"
   ebs_block_devices          = "${var.ebs_block_devices_backoffice_dc}"
   device_to_mount_target_map = "${var.device_to_mount_target_map_backoffice_dc}"
+  additional_instance_tags   = "${var.additional_instance_tags_backoffice_dc}"
 }
 
 #### DC: CONTENT-CONNECTOR ###################################################
@@ -150,6 +153,7 @@ module "dc-content-connector" {
   node_scaling_cfg           = "${var.nomad_content_connector_dc_node_cfg}"
   ebs_block_devices          = "${var.ebs_block_devices_content_connector_dc}"
   device_to_mount_target_map = "${var.device_to_mount_target_map_content_connector_dc}"
+  additional_instance_tags   = "${var.additional_instance_tags_content_conncetor_dc}"
 }
 
 module "nomad" {

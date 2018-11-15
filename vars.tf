@@ -166,6 +166,22 @@ variable "device_to_mount_target_map_private_services_dc" {
   default     = []
 }
 
+# List of tags to add to the private_services datacenter instances
+# A tag is a map consiting of key (string), value (string) and propagate (bool) at launch
+# key ... the key for the tag (i.e. version)
+# value ... the value (i.e. v1.2.9)
+# Example:
+#  additional_instance_tags_private_services_dc = [ {
+#      "key"                 = "version"
+#      "value"               = "v1.2.9"
+#      "propagate_at_launch" = "true"
+#    }]
+variable "additional_instance_tags_private_services_dc" {
+  description = "List of tags to add to the private_services datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
+  type        = "list"
+  default     = []
+}
+
 variable "nomad_public_services_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the public-services data center."
   type        = "map"
@@ -201,6 +217,22 @@ variable "ebs_block_devices_public_services_dc" {
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
 variable "device_to_mount_target_map_public_services_dc" {
   description = "List of device to mount target entries."
+  type        = "list"
+  default     = []
+}
+
+# List of tags to add to the public_services datacenter instances
+# A tag is a map consiting of key (string), value (string) and propagate (bool) at launch
+# key ... the key for the tag (i.e. version)
+# value ... the value (i.e. v1.2.9)
+# Example:
+#  additional_instance_tags_public_services_dc = [ {
+#      "key"                 = "version"
+#      "value"               = "v1.2.9"
+#      "propagate_at_launch" = "true"
+#    }]
+variable "additional_instance_tags_public_services_dc" {
+  description = "List of tags to add to the public_services datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
   type        = "list"
   default     = []
 }
@@ -244,6 +276,22 @@ variable "device_to_mount_target_map_backoffice_dc" {
   default     = []
 }
 
+# List of tags to add to the backoffice datacenter instances
+# A tag is a map consiting of key (string), value (string) and propagate (bool) at launch
+# key ... the key for the tag (i.e. version)
+# value ... the value (i.e. v1.2.9)
+# Example:
+#  additional_instance_tags_backoffice_dc = [ {
+#      "key"                 = "version"
+#      "value"               = "v1.2.9"
+#      "propagate_at_launch" = "true"
+#    }]
+variable "additional_instance_tags_backoffice_dc" {
+  description = "List of tags to add to the backoffice datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
+  type        = "list"
+  default     = []
+}
+
 variable "nomad_content_connector_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the content-connetor data center."
   type        = "map"
@@ -279,6 +327,22 @@ variable "ebs_block_devices_content_connector_dc" {
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
 variable "device_to_mount_target_map_content_connector_dc" {
   description = "List of device to mount target entries."
+  type        = "list"
+  default     = []
+}
+
+# List of tags to add to the content_connector datacenter instances
+# A tag is a map consiting of key (string), value (string) and propagate (bool) at launch
+# key ... the key for the tag (i.e. version)
+# value ... the value (i.e. v1.2.9)
+# Example:
+#  additional_instance_tags_content_connector_dc = [ {
+#      "key"                 = "version"
+#      "value"               = "v1.2.9"
+#      "propagate_at_launch" = "true"
+#    }]
+variable "additional_instance_tags_content_connector_dc" {
+  description = "List of tags to add to the content_connector datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
   type        = "list"
   default     = []
 }
