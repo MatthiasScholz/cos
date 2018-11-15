@@ -99,10 +99,10 @@ module "nomad-infra" {
   device_to_mount_target_map_private_services_dc  = "${var.device_to_mount_target_map_sample}"
   device_to_mount_target_map_backoffice_dc        = "${var.device_to_mount_target_map_sample}"
   device_to_mount_target_map_content_connector_dc = "${var.device_to_mount_target_map_sample}"
-  additional_instance_tags_public_services_dc   = "${var.additional_instance_tags_sample}"
-  additional_instance_tags_private_services_dc  = "${var.additional_instance_tags_sample}"
-  additional_instance_tags_backoffice_dc        = "${var.additional_instance_tags_sample}"
-  additional_instance_tags_content_connector_dc = "${var.additional_instance_tags_sample}"
+  additional_instance_tags_public_services_dc     = "${var.additional_instance_tags_sample}"
+  additional_instance_tags_private_services_dc    = "${var.additional_instance_tags_sample}"
+  additional_instance_tags_backoffice_dc          = "${var.additional_instance_tags_sample}"
+  additional_instance_tags_content_connector_dc   = "${var.additional_instance_tags_sample}"
   # [Consul] Optional variables
   consul_num_servers   = 3
   consul_instance_type = "t2.micro"

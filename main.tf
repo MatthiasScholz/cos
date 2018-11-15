@@ -153,7 +153,7 @@ module "dc-content-connector" {
   node_scaling_cfg           = "${var.nomad_content_connector_dc_node_cfg}"
   ebs_block_devices          = "${var.ebs_block_devices_content_connector_dc}"
   device_to_mount_target_map = "${var.device_to_mount_target_map_content_connector_dc}"
-  additional_instance_tags   = "${var.additional_instance_tags_content_conncetor_dc}"
+  additional_instance_tags   = "${var.additional_instance_tags_content_connector_dc}"
 }
 
 module "nomad" {
