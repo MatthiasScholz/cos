@@ -6,7 +6,7 @@
     "consul_version": "1.3.1",
     "aws_account_id": "",
     "aws_region": "eu-central-1",
-    "ami_regions": "eu-central-1,us-east-2"
+    "ami_regions": "eu-central-1,us-east-1"
   },
   "builders": [
     {
