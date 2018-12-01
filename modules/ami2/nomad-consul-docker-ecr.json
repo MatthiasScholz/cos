@@ -2,7 +2,7 @@
   "min_packer_version": "0.12.0",
   "variables": {
     "nomad_version": "0.8.6",
-    "consul_module_version": "v0.3.10",
+    "consul_module_version": "v0.4.4",
     "consul_version": "1.3.1",
     "aws_account_id": "",
     "aws_region": "eu-central-1",
@@ -25,24 +25,18 @@
           "block-device-mapping.volume-type": "gp2",
           "root-device-type": "ebs"
         },
-        "owners": [
-          "amazon"
-        ],
+        "owners": ["amazon"],
         "most_recent": true
       },
       "ssh_username": "ec2-user",
-      "ami_users": [
-        "{{user `aws_account_id`}}"
-      ]
+      "ami_users": ["{{user `aws_account_id`}}"]
     }
   ],
   "provisioners": [
     {
       "type": "shell",
       "script": "{{template_dir}}/setup_amazon-linux.sh",
-      "only": [
-        "amazon-linux-ami2"
-      ]
+      "only": ["amazon-linux-ami2"]
     },
     {
       "type": "file",
@@ -72,9 +66,7 @@
     },
     {
       "type": "shell",
-      "inline": [
-        "mkdir -p ~/.docker"
-      ]
+      "inline": ["mkdir -p ~/.docker"]
     },
     {
       "type": "file",
