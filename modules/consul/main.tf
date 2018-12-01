@@ -8,7 +8,7 @@ terraform {
 # DEPLOY THE CONSUL SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_servers" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.3.5"
+  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.4.4"
 
   cluster_name  = "${var.cluster_tag_value}"
   cluster_size  = "${var.num_servers}"
@@ -26,8 +26,9 @@ module "consul_servers" {
 
   allowed_ssh_cidr_blocks = "${var.allowed_ssh_cidr_blocks}"
 
-  allowed_inbound_cidr_blocks = ["0.0.0.0/32"]
-  ssh_key_name                = "${var.ssh_key_name}"
+  allowed_inbound_cidr_blocks          = []
+  allowed_inbound_security_group_count = 0
+  ssh_key_name                         = "${var.ssh_key_name}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
