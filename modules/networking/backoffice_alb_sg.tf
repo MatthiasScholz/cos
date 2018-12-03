@@ -1,6 +1,6 @@
 resource "aws_security_group" "sg_backoffice_alb" {
   vpc_id      = "${aws_vpc.vpc_main.id}"
-  name        = "${var.stack_name}-backoffice${var.unique_postfix}"
+  name        = "${var.stack_name}-backoffice-alb${var.unique_postfix}"
   description = "security group that allows ingress access to everyone."
 
   tags {

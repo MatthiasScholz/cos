@@ -64,7 +64,6 @@ module "dc-public-services" {
   ssh_key_name                   = "${var.ssh_key_name}"
   datacenter_name                = "public-services"
   unique_postfix                 = "${var.unique_postfix}"
-  alb_ingress_http_listener_arn  = "${var.alb_ingress_http_listener_arn}"
   alb_ingress_https_listener_arn = "${var.alb_ingress_https_listener_arn}"
   attach_ingress_alb_listener    = true
   node_scaling_cfg               = "${var.nomad_public_services_dc_node_cfg}"

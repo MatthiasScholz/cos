@@ -17,13 +17,13 @@ resource "aws_alb" "alb_public_services" {
 
 # Listener with empty dummy target group
 resource "aws_alb_target_group" "tgr_dummy_public_services" {
-  name     = "${var.stack_name}-dummy${var.unique_postfix}"
+  name     = "${var.stack_name}-igress-dummy${var.unique_postfix}"
   port     = "${local.dummy_port}"
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.vpc_main.id}"
 
   tags {
-    Name = "${var.stack_name}-dummy${var.unique_postfix}"
+    Name = "${var.stack_name}-igress-dummy${var.unique_postfix}"
   }
 }
 

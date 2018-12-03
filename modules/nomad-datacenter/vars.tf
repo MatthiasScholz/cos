@@ -26,13 +26,8 @@ variable "subnet_ids" {
 
 #### Optional Variables ############################################
 variable "attach_ingress_alb_listener" {
-  description = "If true, the datacenter nodes will be attached to the ingress http and https alb listener. Therfore the variable alb_ingress_http_listener_arn and alb_ingress_https_listener_arn has to be set."
+  description = "If true, the datacenter nodes will be attached to the ingress http and https alb listener. Therfore the variable alb_ingress_https_listener_arn has to be set."
   default     = false
-}
-
-variable "alb_ingress_http_listener_arn" {
-  description = "The arn of the alb http listener for ingress data. If not specified, no alb-attachment will be created to grant ingress access to the data-center nodes."
-  default     = ""
 }
 
 variable "alb_ingress_https_listener_arn" {

@@ -13,13 +13,13 @@ resource "aws_alb" "alb_backoffice" {
 
 # Listener with empty dummy target group
 resource "aws_alb_target_group" "tgr_dummy_backoffice" {
-  name     = "${var.stack_name}-dummy${var.unique_postfix}"
+  name     = "${var.stack_name}-backoffice-dummy${var.unique_postfix}"
   port     = 5000
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.vpc_main.id}"
 
   tags {
-    Name = "${var.stack_name}-dummy${var.unique_postfix}"
+    Name = "${var.stack_name}-backoffice-dummy${var.unique_postfix}"
   }
 }
 

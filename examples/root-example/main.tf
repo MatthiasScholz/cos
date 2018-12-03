@@ -48,11 +48,12 @@ module "nomad-infra" {
   source = "../../"
 
   # [General] Required variables
-  aws_region                     = "${var.aws_region}"
-  vpc_id                         = "${module.networking.vpc_id}"
-  alb_subnet_ids                 = "${module.networking.public_subnet_ids}"
-  alb_ingress_http_listener_arn  = "${module.networking.alb_ingress_http_listener_arn}"
-  alb_ingress_https_listener_arn = "${module.networking.alb_ingress_https_listener_arn}"
+  aws_region                        = "${var.aws_region}"
+  vpc_id                            = "${module.networking.vpc_id}"
+  alb_subnet_ids                    = "${module.networking.public_subnet_ids}"
+  alb_ingress_https_listener_arn    = "${module.networking.alb_ingress_https_listener_arn}"
+  alb_backoffice_https_listener_arn = "${module.networking.alb_backoffice_https_listener_arn}"
+  attach_backoffice_alb_listener    = true
 
   # [Nomad] Required variables
   nomad_ami_id_servers                       = "${var.nomad_ami_id_servers}"
