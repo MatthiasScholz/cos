@@ -41,17 +41,15 @@ module "nomad-datacenter" {
   server_sg_id             = "${aws_security_group.sg_nomad_server.id}"
 
   ## optional parameters
-  aws_region                    = "${local.aws_region}"
-  env_name                      = "${local.env_name}"
-  stack_name                    = "${local.stack_name}"
-  allowed_ssh_cidr_blocks       = ["0.0.0.0/0"]
-  ssh_key_name                  = "kp-us-east-1-playground-instancekey"
-  datacenter_name               = "public-services"
-  instance_type                 = "t2.micro"
-  unique_postfix                = "-${random_pet.unicorn.id}"
-  alb_ingress_http_listener_arn = ""
-  attach_ingress_alb_listener   = false
-  ingress_controller_port       = 9999
+  aws_region              = "${local.aws_region}"
+  env_name                = "${local.env_name}"
+  stack_name              = "${local.stack_name}"
+  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
+  ssh_key_name            = "kp-us-east-1-playground-instancekey"
+  datacenter_name         = "public-services"
+  instance_type           = "t2.micro"
+  unique_postfix          = "-${random_pet.unicorn.id}"
+  ingress_controller_port = 9999
 
   additional_instance_tags = [
     {
