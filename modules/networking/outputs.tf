@@ -26,6 +26,10 @@ output "alb_ingress_https_listener_arn" {
   value = "${aws_alb_listener.alb_ingress_https.arn}"
 }
 
+output "alb_backoffice_https_listener_arn" {
+  value = "${aws_alb_listener.alb_backoffice_https.arn}"
+}
+
 output "alb_public_services_dns" {
   value = "${aws_alb.alb_public_services.dns_name}"
 }
