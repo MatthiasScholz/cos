@@ -3,10 +3,6 @@ variable "aws_region" {
   description = "region this stack should be applied to"
 }
 
-variable "alb_ingress_http_listener_arn" {
-  description = "The arn of the http alb listener for ingress data."
-}
-
 variable "alb_ingress_https_listener_arn" {
   description = "The arn of the https alb listener for ingress data."
 }
@@ -112,6 +108,16 @@ variable "ui_alb_https_listener_cert_arn" {
 
 variable "ui_alb_use_https_listener" {
   description = "If true, the https endpoint for the ui-albs will be created instead of the http one. Precondition for this is that ui_alb_https_listener_cert_arn is set apropriately."
+  default     = false
+}
+
+variable "alb_backoffice_https_listener_arn" {
+  description = "The arn of the https alb listener for the backoffice data-center. To attach the alb listener to the backoffice data-center the variable attach_backoffice_alb_listener has to be set to true as well."
+  default     = ""
+}
+
+variable "attach_backoffice_alb_listener" {
+  description = "Set this to true in case an alb shall be attached to the backoffice data-center. In this case the variable alb_backoffice_https_listener_arn has to be set specifying the correct alb listener."
   default     = false
 }
 

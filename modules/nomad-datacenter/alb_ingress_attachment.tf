@@ -33,22 +33,6 @@ resource "aws_alb_target_group" "tgr_ingress_controller" {
   }
 }
 
-# listener rule for HTTP
-resource "aws_alb_listener_rule" "alr_ingress_http" {
-  count        = "${var.attach_ingress_alb_listener}"
-  listener_arn = "${var.alb_ingress_http_listener_arn}"
-
-  action {
-    type             = "forward"
-    target_group_arn = "${aws_alb_target_group.tgr_ingress_controller.arn}"
-  }
-
-  condition {
-    field  = "path-pattern"
-    values = ["/*"]
-  }
-}
-
 # listener rule for HTTPS
 resource "aws_alb_listener_rule" "alr_ingress_https" {
   count        = "${var.attach_ingress_alb_listener}"
