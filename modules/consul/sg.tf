@@ -12,35 +12,7 @@ data "aws_security_group" "consul_sg" {
 # HTTP API (Default 8500). This is used by clients to talk to the HTTP API. TCP only.
 # DNS Interface (Default 8600). Used to resolve DNS queries. TCP and UDP.
 
-# [server>server] Serf LAN and WAN, TCP
-resource "aws_security_group_rule" "sgr_srv_2_srv_serf_wan_lan_tcp" {
-  type                     = "ingress"
-  description              = "ig tcp (serf: wan/lan)"
-  from_port                = 8301
-  to_port                  = 8302
-  protocol                 = "tcp"
-  source_security_group_id = "${data.aws_security_group.consul_sg.id}"
-  security_group_id        = "${data.aws_security_group.consul_sg.id}"
-}
 
-# [server>server] Serf LAN and WAN, UDP
-resource "aws_security_group_rule" "sgr_srv_2_srv_serf_wan_lan_udp" {
-  type                     = "ingress"
-  description              = "ig udp (serf: wan/lan)"
-  from_port                = 8301
-  to_port                  = 8302
-  protocol                 = "udp"
-  source_security_group_id = "${data.aws_security_group.consul_sg.id}"
-  security_group_id        = "${data.aws_security_group.consul_sg.id}"
-}
+# The needed security group rules needed to allow a communication between the consul nodes is already implemented in the
+# hashicorp repo for the consule module (https://github.com/hashicorp/terraform-aws-consul/blob/v0.4.4/modules/consul-client-security-group-rules/main.tf#L51).
 
-# [server>server] Server RPC, TCP
-resource "aws_security_group_rule" "sgr_srv_2_srv_rpc_tcp" {
-  type                     = "ingress"
-  description              = "ig tcp server RPC"
-  from_port                = 8300
-  to_port                  = 8300
-  protocol                 = "tcp"
-  source_security_group_id = "${data.aws_security_group.consul_sg.id}"
-  security_group_id        = "${data.aws_security_group.consul_sg.id}"
-}
