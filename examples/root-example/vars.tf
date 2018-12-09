@@ -5,12 +5,12 @@ variable "deploy_profile" {
 
 variable "nomad_ami_id_servers" {
   description = "AMI ID for nomad server"
-  default     = "ami-47adac38"
+  default     = "ami-02d24827dece83bef"
 }
 
 variable "nomad_ami_id_clients" {
   description = "AMI ID for nomad nodes"
-  default     = "ami-47adac38"
+  default     = "ami-02d24827dece83bef"
 }
 
 variable "env_name" {
