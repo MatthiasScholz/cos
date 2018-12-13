@@ -4,6 +4,7 @@
 * [get_nomad_server_ip.sh](get_nomad_server_ip.sh)
 * [get_nomad_subnet_mask.sh](get_nomad_subnet_mask.sh)
 * [nomad-examples-helper.sh](nomad-examples-helper.sh)
+* [node-drain](NodeDrain.md) ... A script to do a script based node draining.
 
 ## Setup
 
