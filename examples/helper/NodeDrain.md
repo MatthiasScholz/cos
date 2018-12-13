@@ -2,6 +2,7 @@
 
 This is a simple script that helps draining nomad nodes.
 The nodes to be drained can be filtered using EC2 instance tags.
+Per default the script uses a drain-deadline of 15 min.
 
 ## Preconditions
 * Python has to be installed
