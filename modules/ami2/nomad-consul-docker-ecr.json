@@ -29,7 +29,13 @@
         "most_recent": true
       },
       "ssh_username": "ec2-user",
-      "ami_users": "{{user `aws_account_ids`}}"
+      "ami_users": "{{user `aws_account_ids`}}",
+      "tags": {
+        "Consul Version": "{{user `consul_version`}}",
+        "Consul Module Version": "{{user `consul_module_version`}}",
+        "Nomad Version": "{{user `nomad_version`}}",
+        "Base_AMI_Name": "{{ .SourceAMIName }}"
+      }
     }
   ],
   "provisioners": [
