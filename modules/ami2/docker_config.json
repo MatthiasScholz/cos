@@ -1,3 +1,6 @@
 {
-    "credsStore": "ecr-login"
+  "credsStore": "ecr-login",
+  "credHelpers": {
+    "https://index.docker.io/v1/": "pass"
+  }
 }
