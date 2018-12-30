@@ -2,15 +2,28 @@
 
 - [ ] TODO: Explaining the available AMIs.
 
-# Amazon Linux 2
+## Amazon Linux 2
 
 https://aws.amazon.com/de/amazon-linux-2/release-notes/
+
+### AMI without ECR support
+
+The packer definition `nomad-consul-docker.json` creates an ami that can load docker images from public repositories such as docker hub.
 
 - Nomad
 - Consul
 - Docker
-- AWS ECR plugin
 - privileged mode activated
+
+### AMI with ECR support
+
+The packer definition `nomad-consul-docker-ecr.json` creates an ami with ECR support. That means you can load docker images hosted at a AWS ECR of your account.
+
+- Nomad
+- Consul
+- Docker
+- privileged mode activated
+- AWS ECR plugin
 
 ## Create the Machine Image
 
@@ -22,10 +35,12 @@ As described at [Authentication Packer](https://www.packer.io/docs/builders/amaz
 # environment variables
 export AWS_ACCESS_KEY_ID="anaccesskey"
 export AWS_SECRET_ACCESS_KEY="asecretkey"
-export AWS_DEFAULT_REGION="us-west-2"
+export AWS_DEFAULT_REGION="us-east-1"
 ```
 
 ### Build the AMI using Packer
+
+The following can be applied for `nomad-consul-docker-ecr.json` and `nomad-consul-docker.json`
 
 ```bash
 # Build it using the default variables specified in the packer file.
