@@ -4,14 +4,14 @@
     "nomad_version": "0.8.6",
     "consul_module_version": "v0.4.4",
     "consul_version": "1.3.1",
-    "aws_account_id": "",
+    "aws_account_ids": "",
     "aws_region": "eu-central-1",
     "ami_regions": "eu-central-1,us-east-1"
   },
   "builders": [
     {
       "ami_name": "nomad-consul-docker-ecr-amazon-linux2-{{isotime | clean_ami_name}}",
-      "ami_description": "An Amazon Linux 2 AMI that has Nomad {{`nomad_version`}}, Consul {{`consul_version`}} and Docker, ECR Helper installed.",
+      "ami_description": "An Amazon Linux 2 AMI that has Nomad ({{user `nomad_version`}}), Consul ({{user `consul_version`}}) and Docker, ECR Helper installed.",
       "instance_type": "t2.micro",
       "name": "amazon-linux-ami2",
       "region": "{{user `aws_region`}}",
@@ -29,7 +29,7 @@
         "most_recent": true
       },
       "ssh_username": "ec2-user",
-      "ami_users": ["{{user `aws_account_id`}}"]
+      "ami_users": "{{user `aws_account_ids`}}"
     }
   ],
   "provisioners": [
