@@ -3,9 +3,8 @@ locals {
 
   # cidr blocks allowed for ssh and alb access
   allowed_cidr_blocks = {
-    "pcc_dev" = "80.146.215.90/32"
-    "thomas"  = "95.90.215.69/32"
-    "shared"  = "10.49.0.0/16"
+    "all"    = "0.0.0.0/0"
+    "shared" = "10.49.0.0/16"
   }
 }
 
@@ -24,6 +23,7 @@ module "networking" {
   region         = "${var.aws_region}"
   env_name       = "${var.env_name}"
   unique_postfix = "-${random_pet.unicorn.id}"
+  az_postfixes   = ["a", "b"]
 }
 
 module "bastion" {
