@@ -2,16 +2,20 @@
   "min_packer_version": "0.12.0",
   "variables": {
     "nomad_version": "0.8.6",
-    "consul_module_version": "v0.3.10",
-    "consul_version": "1.2.3"
+    "consul_module_version": "v0.4.4",
+    "consul_version": "1.3.1",
+    "aws_account_ids": "",
+    "aws_region": "eu-central-1",
+    "ami_regions": "eu-central-1"
   },
   "builders": [
     {
       "ami_name": "nomad-consul-docker-amazon-linux2-{{isotime | clean_ami_name}}",
-      "ami_description": "An Amazon Linux 2 AMI that has Nomad {{`nomad_version`}}, Consul {{`consul_version`}} and Docker installed.",
+      "ami_description": "An Amazon Linux 2 AMI that has Nomad ({{user `nomad_version`}}), Consul ({{user `consul_version`}}) and Docker installed.",
       "instance_type": "t2.micro",
       "name": "amazon-linux-ami2",
       "region": "{{user `aws_region`}}",
+      "ami_regions": "{{user `ami_regions`}}",
       "type": "amazon-ebs",
       "source_ami_filter": {
         "filters": {
@@ -21,21 +25,24 @@
           "block-device-mapping.volume-type": "gp2",
           "root-device-type": "ebs"
         },
-        "owners": [
-          "amazon"
-        ],
+        "owners": ["amazon"],
         "most_recent": true
       },
-      "ssh_username": "ec2-user"
+      "ssh_username": "ec2-user",
+      "ami_users": "{{user `aws_account_ids`}}",
+      "tags": {
+        "Consul Version": "{{user `consul_version`}}",
+        "Consul Module Version": "{{user `consul_module_version`}}",
+        "Nomad Version": "{{user `nomad_version`}}",
+        "Base_AMI_Name": "{{ .SourceAMIName }}"
+      }
     }
   ],
   "provisioners": [
     {
       "type": "shell",
       "script": "{{template_dir}}/setup_amazon-linux.sh",
-      "only": [
-        "amazon-linux-ami2"
-      ]
+      "only": ["amazon-linux-ami2"]
     },
     {
       "type": "file",
