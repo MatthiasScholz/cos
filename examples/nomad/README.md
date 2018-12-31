@@ -7,12 +7,12 @@ Per default the module will be deployed in us-east-1 (virginia) into three AZ's.
 
 ```bash
 # terraform init &&\
-# terraform plan -out nm.plan -var deploy_profile=<your-profile> &&\
+# terraform plan -out nm.plan -var deploy_profile=<your-profile> -var ami_id=<id of the ami to use for consul/ nomad nodes> &&\
 # terraform apply "nm.plan"
 
 # on playground
 terraform init &&\
-terraform plan -out nm.plan -var deploy_profile=playground &&\
+terraform plan -out nm.plan -var deploy_profile=playground -var ami_id=ami-1234567890 &&\
 terraform apply "nm.plan"
 ```
 
@@ -28,7 +28,7 @@ export AWS_PROFILE=playground
 ### Run the test script
 
 ```bash
-./run_test.sh
+./run_tests.sh
 ```
 
 The result should look like this:

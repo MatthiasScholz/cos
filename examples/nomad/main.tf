@@ -2,8 +2,8 @@ locals {
   aws_region               = "us-east-1"
   stack_name               = "COS"
   env_name                 = "playground"
-  consul_ami_id            = "ami-a23feadf"
-  nomad_ami_id             = "ami-a23feadf"
+  consul_ami_id            = "${var.ami_id}"
+  nomad_ami_id             = "${var.ami_id}"
   consul_cluster_tag_key   = "consul-servers"
   consul_cluster_tag_value = "${local.stack_name}-SDCFG-consul-${random_pet.unicorn.id}"
 }
