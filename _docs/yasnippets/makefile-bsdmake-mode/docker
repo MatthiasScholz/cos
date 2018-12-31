@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: Docker Makefile
 # key: mdoc
+# expand-env: ((yas-indent-line nil))
 # Generating a Makefile to build and push Docker images.
 # Features:
 # . Registries: AWS ECR, local
