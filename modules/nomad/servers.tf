@@ -60,6 +60,8 @@ module "consul_iam_policies_servers" {
   iam_role_id = "${module.nomad_servers.iam_role_id}"
 }
 
+data "aws_caller_identity" "aws_account_id" {}
+
 # This script will configure and start Consul and Nomad
 data "template_file" "user_data_server" {
   template = "${file("${path.module}/user-data-nomad-server.sh")}"
@@ -69,5 +71,6 @@ data "template_file" "user_data_server" {
     cluster_tag_key   = "${var.consul_cluster_tag_key}"
     cluster_tag_value = "${var.consul_cluster_tag_value}"
     datacenter        = "${var.datacenter_name}"
+    aws_account_id    = "${data.aws_caller_identity.aws_account_id.account_id}"
   }
 }
