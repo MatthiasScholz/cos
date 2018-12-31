@@ -77,5 +77,6 @@ data "template_file" "user_data_data_center" {
     device_to_mount_target_map = "${join(" ", var.device_to_mount_target_map)}"
     fs_type                    = "${var.fs_type}"
     aws_account_id             = "${data.aws_caller_identity.aws_account_id.account_id}"
+    aws_region                 = "${var.aws_region}"
   }
 }

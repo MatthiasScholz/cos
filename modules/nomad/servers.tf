@@ -72,5 +72,6 @@ data "template_file" "user_data_server" {
     cluster_tag_value = "${var.consul_cluster_tag_value}"
     datacenter        = "${var.datacenter_name}"
     aws_account_id    = "${data.aws_caller_identity.aws_account_id.account_id}"
+    aws_region        = "${var.aws_region}"
   }
 }
