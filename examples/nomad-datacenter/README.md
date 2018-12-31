@@ -7,12 +7,12 @@ Per default the module will be deployed in us-east-1 (virginia) into three AZ's.
 
 ```bash
 # terraform init &&\
-# terraform plan -out dc.plan -var deploy_profile=<your-profile> &&\
+# terraform plan -out dc.plan -var deploy_profile=<your-profile> -var ami_id=<id of the ami to use for consul/ nomad nodes> &&\
 # terraform apply "dc.plan"
 
 # on playground
 terraform init &&\
-terraform plan -out dc.plan -var deploy_profile=playground &&\
+terraform plan -out dc.plan -var deploy_profile=playground -var ami_id=ami-1234567890 &&\
 terraform apply "dc.plan"
 ```
 
