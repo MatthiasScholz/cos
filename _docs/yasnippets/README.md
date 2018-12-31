@@ -16,6 +16,6 @@ Note: Since yasnippet uses the actual mode of the file which should be expanded 
 ### Example: Makefile Generation
 This requires the `makefile-bsdmake-mode`.
 1. Create `Makefile`
-2. Type `docker`
+2. Type `mdoc`
 3. Execute `yas-expand`
 4. Use `TAB` to step through the template instantiation.
