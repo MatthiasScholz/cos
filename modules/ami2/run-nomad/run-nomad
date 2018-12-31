@@ -161,8 +161,7 @@ client {
   enabled = true
 
   options   = {
-    "docker.auth.config"        = "/etc/docker/config.json"
-    "docker.auth.helper"        = "ecr-login"
+    "docker.auth.config"        = "/etc/docker/config.json"    
     "docker.privileged.enabled" = "true"
   }
 }

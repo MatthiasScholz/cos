@@ -25,6 +25,13 @@ function log_info {
   log "INFO" "$message"
 }
 
+function configure_ecr_docker_credential_helper (){ 
+  # These variables are passed in via Terraform template interplation
+  log_info "Creating /etc/docker/config.json containing the credential helper for docker login to ECR"
+  echo -e "echo -e '{\n\"credHelpers\": {\n\t\"${aws_account_id}.dkr.ecr.us-east-1.amazonaws.com\": \"ecr-login\"\n\t}\n}' > /etc/docker/config.json" | sudo sh  
+}
+
+
 function setup_consul_and_nomad (){ 
   # These variables are passed in via Terraform template interplation
   log_info "Configuring consul."
@@ -125,7 +132,7 @@ function prepare_and_mount_device () {
   done
 }
 
-
+configure_ecr_docker_credential_helper
 setup_consul_and_nomad
 configure_efs
 
