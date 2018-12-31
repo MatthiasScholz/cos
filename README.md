@@ -29,6 +29,12 @@ The data-centers of the COS are organized/ live in three different subnets.
 2. **Services**: This subnet contains the services that need no egress access to the internet. Ingress access is only granted for some of them over an ALB, but not directly.
 3. **Content-Connector**: This subnet contains services that need egress access to the internet in order to obtain data from conent-providers.
 
+### Docker Registry
+
+This Cluster Orchestration System allows to pull docker images from public docker registries like Docker Hub and from AWS ECR.
+
+Regarding AWS ECR, **it is only possible to pull from the registry of the AWS account and region where this COS is deployed to**. Thus you have to create an ECR in the same region on the same account and push your docker images there.
+
 ### HA-Setup
 
 ![deps](_docs/Cluster_Orchestration_System_HA.png)
