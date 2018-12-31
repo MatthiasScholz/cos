@@ -4,14 +4,10 @@ job "ping_service" {
   datacenters = ["public-services","private-services","content-connector","backoffice"]
   type = "service"
 
-  meta {
-    my-key = "example"
-  }
-
   # The group stanza defines a series of tasks that should be co-located on the same Nomad client.
   # Any task within a group will be placed on the same client.
   group "ping_service_group" {
-    count = 5
+    count = 4
 
     # restart-policy
     restart {
@@ -32,10 +28,7 @@ job "ping_service" {
       driver = "docker"
       config {
         # Docker Hub:
-        #image = "thobe/ping_service:0.0.9"
-        # AWS ECR playground: image = "<aws_account_id>.dkr.ecr.us-east-1.amazonaws.com/service/ping-service:0.0.7"
-        #args    = ["Hello, World!"]
-        image = "307557990628.dkr.ecr.us-east-1.amazonaws.com/service/ping-service:2018-04-15_11-16-11_0eaa8b1_dirty"
+        image = "thobe/ping_service:0.0.9"
       }
 
       logs {
