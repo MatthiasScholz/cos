@@ -78,6 +78,11 @@ has to be updated to match your current setup.
 Fabio just works out of the box. No additional adjustments are needed
 if fabio is used natively with the nomad `exec` driver.
 
+##### Docker
+
+For Fabio running in a Docker container again the `<host_ip_address>`
+has to be configured. This time in the `fabio_docker.nomad` job description.
+
 ## Local Docker Registry
 
 1. One time: Configure the Docker daemon to accept local Docker registry.

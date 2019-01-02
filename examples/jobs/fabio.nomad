@@ -8,7 +8,7 @@ job "fabio" {
   }
   group "fabio" {
     task "fabio" {
-      driver = "exec"
+      driver = "exec" # Linux only!
       config {
         command = "fabio-1.5.10-go1.11.1-linux_amd64"
       }
