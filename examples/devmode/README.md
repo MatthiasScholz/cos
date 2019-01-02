@@ -29,19 +29,54 @@ to reflect the actual one once deployed.
 * `sudo nomad agent -dev -dc="testing"` ( default dc: "dc1" )
 
 ## Development Mode - Advanced
-For the setup of the advanced mode a specific nomad configuration file is provided: `dev.hcl`. This configuration provides a local server and client setup. And avoids and uses the host ip address to setup the client node.
 
-To use the advanced mode just follow the instructions for the simple mode and replace `localhost` with `<host_ip_address>`.
+For the setup of the advanced mode a specific nomad configuration file
+is provided: `nomad.hcl`. This configuration provides a local server and
+client setup. And avoids and uses the host ip address to setup the client node.
+Furthermore a local setup for consul is provided with the `consul.hcl`.
+This will allow the interaction with the service discovery and
+the load balancer ( fabio ).
 
-NOTE: Remember not to check in your host specific configuration files!
+To use the advanced mode just follow the instructions for the simple mode and
+replace `localhost` with `<host_ip_address>`.
+The `<host_ip_address>` has to be configured in the `nomad.hcl` and
+in the `consul.hcl` by replacing the `<host_ip_address>` place holder.
+
+TODO: provide a script to do this ( using sed ).
+
+### NOTE
+
+Remember: Do NOT check in your host specific configuration files!
 
 ### Quickstart
+
 ```
-sudo nomad agent -config=dev.hcl
+consul agent -config-file=consul.hcl
+sudo nomad agent -config=nomad.hcl
 # Note: Use a new terminal to preserve log output of the nomad agent.
 export NOMAD_ADDR=http://<host_ip_address>:4646
 nomad run registry/creg.nomad
 ```
+
+### Service Discovery
+
+#### Quickstart
+
+```
+consul agent -dev -node local -> not working with fabio!
+```
+
+#### Local Consul
+
+The nomad agent configuration has to be adapted in order to support
+automatic service registration in Consul.
+To make this work the `<host_ip_address>` in the `nomad.hcl`
+has to be updated to match your current setup.
+
+#### Fabio
+
+Fabio just works out of the box. No additional adjustments are needed
+if fabio is used natively with the nomad `exec` driver.
 
 ## Local Docker Registry
 

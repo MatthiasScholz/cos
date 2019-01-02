@@ -20,3 +20,7 @@ server {
   bootstrap_expect = 1
   num_schedulers   = 1
 }
+
+consul {
+  address = "<host_ip_address>:8500"
+}
