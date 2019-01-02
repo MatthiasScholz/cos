@@ -14,8 +14,9 @@ name        	:= $0
 docker_dir := .
 
 # FIXME: DO NOT COMMIT THIS if true!!!
-registry_local := ${2:false}
-latest_tag     := $2
+registry_local     := ${2:false}
+registry_local_url := "${3:<host_ip_address>}:5000"
+latest_tag         := $2
 
 # Registry: AWS - default configuration, if unset environment variables
 AWS_REGION    ?= eu-central-1
@@ -27,7 +28,7 @@ AWS_PROFILE		?= integration
 
 # Registry: LOCAL
 ifeq ($(registry_local), true)
-	registry_url := localhost:5000
+	registry_url := $(registry_local_url)
 	creds := $(echo "Using local docker registry: " $(registry_url))
 # Registry: AWS
 else
