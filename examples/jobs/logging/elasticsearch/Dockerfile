@@ -1,4 +1,5 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.3
+FROM docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.4
+
 
 #################################################
 # NOTE: The following lines can keep untouched. #
