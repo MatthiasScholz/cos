@@ -1,0 +1,59 @@
+# -*- mode: snippet -*-
+# name: Nomad job file
+# key: nomad
+# Generation of a basic nomad job file
+# --
+
+job "$1" {
+  datacenters = ["$2"]
+  type = "${3:service}"
+
+  group "$1_group" {
+    count = 1
+
+    restart {
+      attempts = 10
+      interval = "5m"
+      delay    = "25s"
+      mode     = "delay"
+    }
+
+    task "$4" {
+      driver = "docker"
+      config {
+        image = "${0:localhost:5000/service/$1:latest}"
+        port_map = {
+          http = ${5:80}
+        }
+      }
+
+      resources {
+        cpu    = ${6:200} # MHz
+        memory = ${7:300} # MB
+        network {
+          mbits = 10
+          port "http" {}
+        }
+      }
+
+      service {
+        name = "$1"
+        tags = ["urlprefix-/$1"] # Fabio
+        port = "http"
+        check {
+          name     = "${8:${4:$(capitalize yas-text)}} Alive State"
+          port     = "http"
+          type     = "http"
+          method   = "GET"
+          path     = "{$7:/health}"
+          interval = "10s"
+          timeout  = "2s"
+        }
+      }
+
+      env {
+        $9 = "$10"
+      }
+    }
+  }
+}
