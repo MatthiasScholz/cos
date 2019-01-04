@@ -75,6 +75,20 @@ function replaceTemplateVarInFiles {
   done
 }
 
+function start_consul {
+  local readonly workingDir=$1
+  log_info "Starting consul"
+  consulcmd="consul agent -config-file=${workingDir}/consul.hcl &> ${workingDir}/consul.log &"
+  eval "${consulcmd}"
+}
+
+function start_nomad {
+  local readonly workingDir=$1
+  log_info "Starting nomad"
+  nomadcmd="sudo nomad agent -config=${workingDir}/nomad.hcl &> ${workingDir}/nomad.log &"
+  eval "${nomadcmd}"
+}
+
 function run {
   assert_is_installed "nomad"
   assert_is_installed "consul"
@@ -105,8 +119,16 @@ function run {
   replaceTemplateVarInFiles "${workingDir}" "{{host_ip_address}}" "${ipAddr}"
   replaceTemplateVarInFiles "${workingDir}" "{{datacenter}}" "${datacenter}"
 
-  
+  start_consul "${workingDir}"
+  start_nomad "${workingDir}"
 
+  log_info "Useful commands"
+  echo -e "\tSet adresses: export NOMAD_ADDR=http://${ipAddr}:4646 && export CONSUL_HTTP_ADDR=http://${ipAddr}:8500"
+  echo -e "\tOpen nomad UI: xdg-open \$NOMAD_ADDR"
+  echo -e "\tOpen consul UI: xdg-open \$CONSUL_HTTP_ADDR"
+  echo -e "\tConsul logs: tail -f ${workingDir}/consul.log"
+  echo -e "\tNomad logs: tail -f ${workingDir}/nomad.log"
+  echo -e "\tStopp all: pkill consul && sudo pkill nomad"
 }
 
 run "$@"
