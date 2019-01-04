@@ -58,6 +58,19 @@ export NOMAD_ADDR=http://<host_ip_address>:4646
 nomad run registry/creg.nomad
 ```
 
+Or call the `devmode.sh` script:
+
+```bash
+# generic call
+# ./devmode.sh <host_ip_address> [<name of datacenter>]
+
+# start devmode with consul and nomad using datacenter named "testing"
+./devmode.sh 192.168.1.10
+
+# start devmode with consul and nomad using datacenter named "my-datacenter-name"
+./devmode.sh 192.168.1.10 my-datacenter-name
+```
+
 ### Service Discovery
 
 #### Quickstart
