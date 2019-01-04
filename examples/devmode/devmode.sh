@@ -32,7 +32,7 @@ function assert_is_installed {
   fi
 }
 
-function checkIp {
+function check_ip {
   local readonly ipAddr=$1
 
   set +o errexit  
@@ -45,7 +45,7 @@ function checkIp {
   fi
 }
 
-function printUsage {
+function print_usage {
   echo "Usage: ${SCRIPT_NAME} <hostIpAddr>"
   echo -e "\thostIpAddr ... ip address of your host that should be used to communicate instead of localhost."
 }
@@ -58,7 +58,7 @@ function copy_files {
   echo "${tempDir}/devmode"
 }
 
-function replaceTemplateVarInFiles {
+function replace_template_var_in_files {
   local readonly workingDir=$1
   local readonly templateToReplace=$2
   local readonly value=$3
@@ -89,6 +89,22 @@ function start_nomad {
   eval "${nomadcmd}"
 }
 
+function print_useful_commands {
+  local readonly ipAddr=$1
+  local readonly workingDir=$2
+  
+  log_info "Useful commands"
+  echo -e "\tSet adresses:\nexport NOMAD_ADDR=http://${ipAddr}:4646 && export CONSUL_HTTP_ADDR=http://${ipAddr}:8500 && export IGRESS_ADDR=http://${ipAddr}:9999"
+  echo -e "\tOpen nomad UI: xdg-open \$NOMAD_ADDR"
+  echo -e "\tOpen consul UI: xdg-open \$CONSUL_HTTP_ADDR"
+  echo -e "\tConsul logs: tail -f ${workingDir}/consul.log"
+  echo -e "\tNomad logs: tail -f ${workingDir}/nomad.log"
+  echo -e "\tDeploy docker registry: nomad run ${workingDir}/registry/creg.nomad"
+  echo -e "\tDeploy fabio: nomad run ${workingDir}/fabio_docker.nomad"
+  echo -e "\tOpen fabio UI: xdg-open http://${ipAddr}:9998"
+  echo -e "\tStopp all: pkill consul && sudo pkill nomad"
+}
+
 function run {
   assert_is_installed "nomad"
   assert_is_installed "consul"
@@ -101,7 +117,7 @@ function run {
 
   if [[ -z "$ipAddr" ]]; then
     log_error "Parameter IpAddr is missing."
-    printUsage
+    print_usage
     exit 1
   fi
 
@@ -111,24 +127,20 @@ function run {
   fi
 
   # check if the given parameter is a valid ip address
-  checkIp "${ipAddr}"
+  check_ip "${ipAddr}"
 
   # copy the files into a temporary file in order to be able to replace template variables
   workingDir=$(copy_files)
 
-  replaceTemplateVarInFiles "${workingDir}" "{{host_ip_address}}" "${ipAddr}"
-  replaceTemplateVarInFiles "${workingDir}" "{{datacenter}}" "${datacenter}"
+  # replace template args
+  replace_template_var_in_files "${workingDir}" "{{host_ip_address}}" "${ipAddr}"
+  replace_template_var_in_files "${workingDir}" "{{datacenter}}" "${datacenter}"
 
+  # start the components
   start_consul "${workingDir}"
   start_nomad "${workingDir}"
 
-  log_info "Useful commands"
-  echo -e "\tSet adresses: export NOMAD_ADDR=http://${ipAddr}:4646 && export CONSUL_HTTP_ADDR=http://${ipAddr}:8500"
-  echo -e "\tOpen nomad UI: xdg-open \$NOMAD_ADDR"
-  echo -e "\tOpen consul UI: xdg-open \$CONSUL_HTTP_ADDR"
-  echo -e "\tConsul logs: tail -f ${workingDir}/consul.log"
-  echo -e "\tNomad logs: tail -f ${workingDir}/nomad.log"
-  echo -e "\tStopp all: pkill consul && sudo pkill nomad"
+  print_useful_commands "${ipAddr}" "${workingDir}"
 }
 
 run "$@"
