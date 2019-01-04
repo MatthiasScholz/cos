@@ -1,7 +1,7 @@
 {
-  "bind_addr": "0.0.0.0",
-  "client_addr": "<host_ip_address>",
-  "datacenter": "testing",
+  "bind_addr": "{{host_ip_address}}",
+  "client_addr": "{{host_ip_address}}",
+  "datacenter": "{{datacenter}}",
   "data_dir": "/tmp/consul",
   "log_level": "DEBUG",
   "enable_debug": true,
