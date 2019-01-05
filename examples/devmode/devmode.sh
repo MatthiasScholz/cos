@@ -86,6 +86,7 @@ function start_nomad {
   local readonly workingDir=$1
   log_info "Starting nomad"
   nomadcmd="sudo nomad agent -config=${workingDir}/nomad.hcl &> ${workingDir}/nomad.log &"
+  sudo -v # needed to force sudo in shell
   eval "${nomadcmd}"
 }
 
