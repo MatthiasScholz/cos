@@ -111,11 +111,11 @@ has to be configured. This time in the `fabio_docker.nomad` job description.
 
 1. Configuration have to be done at: `/etc/docker/daemon.json`:
 
-  ```json
-  {
-      "insecure-registries" : [ "localhost:5000" ]
-  }
-  ```
+   ```json
+   {
+     "insecure-registries" : [ "localhost:5000" ]
+   }
+   ```
 1. Restart the daemon.
 
 #### MacOS
