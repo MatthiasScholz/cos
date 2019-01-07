@@ -86,13 +86,17 @@ has to be updated to match your current setup.
 
 #### Fabio
 
-Fabio just works out of the box. No additional adjustments are needed
+Fabio just works out of the box
+despite the fact that the _datacenter_ variable
+should be adjusted according the local setup.
+No further additional adjustment is needed
 if fabio is used natively with the nomad `exec` driver.
 
 ##### Docker
 
 For Fabio running in a Docker container again the `<host_ip_address>`
-has to be configured. This time in the `fabio_docker.nomad` job description.
+has to be configured as well as the _datacenter_.
+This time in the `fabio_docker.nomad` job description.
 
 ## Local Docker Registry
 
