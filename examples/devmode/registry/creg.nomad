@@ -1,5 +1,5 @@
 job "creg" {
-  datacenters = [ "testing" ]
+  datacenters = [ "{{datacenter}}" ]
   type = "service"
 
   update {
