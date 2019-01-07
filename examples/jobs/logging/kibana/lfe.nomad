@@ -1,8 +1,8 @@
-job "lui" {
+job "lfe" {
   datacenters = ["testing"]
   type = "service"
 
-  group "lui_group" {
+  group "lfe_group" {
     count = 1
 
     restart {
@@ -36,15 +36,15 @@ job "lui" {
       }
 
       service {
-        name = "lui"
-        tags = ["urlprefix-/lui"] # Fabio
+        name = "lfe"
+        tags = ["urlprefix-/lfe"] # Fabio
         port = "http"
         check {
-          name     = "Logging UI Alive State"
+          name     = "Logging Frontend Alive State"
           port     = "http"
           type     = "http"
           method   = "GET"
-          path     = "/lui/api/status"
+          path     = "/lfe/api/status"
           interval = "10s"
           timeout  = "2s"
         }
@@ -52,8 +52,8 @@ job "lui" {
 
       # SEE: www.elastic.co/guide/en/kibana/current/settings.html
       env {
-        SERVER_NAME            = "logging-cluster-ui"
-        SERVER_BASEPATH        = "/lui"
+        SERVER_NAME            = "logging-frontend"
+        SERVER_BASEPATH        = "/lfe"
         SERVER_REWRITEBASEPATH = "true"
         # NOTE: TESTING:
         #       Only for local setups where everything is running on one machine

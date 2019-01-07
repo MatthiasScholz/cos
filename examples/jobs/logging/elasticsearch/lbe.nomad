@@ -1,8 +1,8 @@
-job "lds" {
+job "lbe" {
   datacenters = ["testing"]
   type = "service"
 
-  group "lds_group" {
+  group "lbe_group" {
     count = 1
 
     restart {
@@ -17,8 +17,8 @@ job "lds" {
       config {
         image = "docker.elastic.co/elasticsearch/elasticsearch-oss:6.5.4"
         # Option2:
-        # For local Docker image builds - check NOTE section below.
-        # image = "<host_ip_address>:5000/support/logging/lds:latest"
+        # For local Docker image builbe - check NOTE section below.
+        # image = "<host_ip_address>:5000/support/logging/lbe:latest"
 
 
         port_map = {
@@ -44,11 +44,11 @@ job "lds" {
       }
 
       service {
-        name = "lds"
-        tags = ["urlprefix-/lds"] # fabio
+        name = "lbe"
+        tags = ["urlprefix-/lbe"] # fabio
         port = "http"
         check {
-          name     = "Logging Data Store Alive State"
+          name     = "Logging Backend Alive State"
           port     = "http"
           type     = "http"
           method   = "GET"
@@ -67,7 +67,7 @@ job "lds" {
         #        OOS killed the container because the memory limit was reached.
         #        Might be a bug in Java.
         ES_JAVA_OPTS = "-Xmx256m -Xms256m"
-        CLUSTER_NAME = "es-logging-cluster"
+        CLUSTER_NAME = "logging-backend"
         NETWORK_HOST = "0.0.0.0"
         DISCOVERY_ZEN_MINIMUM_MASTER_NODES = "1"
         ACTION_AUTO_CREATE_INDEX = "true"

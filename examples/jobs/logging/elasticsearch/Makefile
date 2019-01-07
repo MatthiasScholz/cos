@@ -1,5 +1,5 @@
 category    	:= support/logging
-name        	:= lds
+name        	:= lbe
 
 docker_dir := .
 
