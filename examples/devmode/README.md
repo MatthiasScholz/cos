@@ -14,7 +14,7 @@ hence is inconvenient if one has to use the host ip address to interconnect serv
 
 ### Quickstart
 
-```
+```bash
 sudo nomad agent -dev -dc="testing"
 # Note: Use a new terminal to preserve log output of the nomad agent.
 export NOMAD_ADDR=http://localhost:4646
@@ -42,15 +42,13 @@ replace `localhost` with `<host_ip_address>`.
 The `<host_ip_address>` has to be configured in the `nomad.hcl` and
 in the `consul.hcl` by replacing the `<host_ip_address>` place holder.
 
-TODO: provide a script to do this ( using sed ).
-
 ### NOTE
 
 Remember: Do NOT check in your host specific configuration files!
 
 ### Quickstart
 
-```
+```bash
 consul agent -config-file=consul.hcl
 sudo nomad agent -config=nomad.hcl
 # Note: Use a new terminal to preserve log output of the nomad agent.
@@ -75,7 +73,7 @@ Or call the `devmode.sh` script:
 
 #### Quickstart
 
-```
+```bash
 consul agent -dev -node local -> not working with fabio!
 ```
 
@@ -101,7 +99,7 @@ has to be configured. This time in the `fabio_docker.nomad` job description.
 1. One time: Configure the Docker daemon to accept local Docker registry.
    Check the subsections for OS support.
 1. Deploy a local Docker registry in the local nomad
-  * `nomad run creg.nomad`
+  * `nomad run registry/creg.nomad`
 
 ### NOTE
 
@@ -113,13 +111,11 @@ has to be configured. This time in the `fabio_docker.nomad` job description.
 
 1. Configuration have to be done at: `/etc/docker/daemon.json`:
 
-```
-{
-    "insecure-registries" : [ "localhost:5000" ]
-}
-
-```
-
+  ```json
+  {
+      "insecure-registries" : [ "localhost:5000" ]
+  }
+  ```
 1. Restart the daemon.
 
 #### MacOS
@@ -131,7 +127,7 @@ add the local Docker registry `localhost:5000` at "Insecure registries".
 
 #### Pushing to Docker Registry
 
-```
+```bash
 docker build -t samplejob .
 docker tag samplejob:latest localhost:5000/samplejob:latest
 docker push localhost:5000/samplejob:latest
@@ -139,7 +135,7 @@ docker push localhost:5000/samplejob:latest
 
 ##### Using with nomad
 
-```
+```hcl
 job "samplejob" {
   datacenters = [ "testing" ]
   ...
