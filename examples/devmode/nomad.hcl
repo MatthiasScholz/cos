@@ -1,6 +1,6 @@
 log_level = "DEBUG"
 enable_debug = true
-datacenter = "testing"
+datacenter = "{{datacenter}}"
 data_dir = "/tmp/nomad-devagent"
 
 name = "nomad-devagent"
@@ -19,4 +19,8 @@ server {
   enabled          = true
   bootstrap_expect = 1
   num_schedulers   = 1
+}
+
+consul {
+  address = "{{host_ip_address}}:8500"
 }

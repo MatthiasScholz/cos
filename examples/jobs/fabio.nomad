@@ -1,4 +1,3 @@
-
 job "fabio" {
   datacenters = ["public-services"]
 
@@ -9,13 +8,13 @@ job "fabio" {
   }
   group "fabio" {
     task "fabio" {
-      driver = "exec"
+      driver = "exec" # Linux only!
       config {
-        command = "fabio-1.5.8-go1.10-linux_amd64"
+        command = "fabio-1.5.10-go1.11.1-linux_amd64"
       }
 
       artifact {
-        source = "https://github.com/eBay/fabio/releases/download/v1.5.8/fabio-1.5.8-go1.10-linux_amd64"
+        source = "https://github.com/fabiolb/fabio/releases/download/v1.5.10/fabio-1.5.10-go1.11.1-linux_amd64"
       }
 
       resources {
