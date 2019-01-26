@@ -1,5 +1,5 @@
 job "dfs" {
-  datacenters = ["testing"]
+  datacenters = ["backoffice"]
   type = "service"
 
   group "dfs_group" {
