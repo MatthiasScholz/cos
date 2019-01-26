@@ -45,14 +45,14 @@ job "$1" {
           port     = "http"
           type     = "http"
           method   = "GET"
-          path     = "{$7:/health}"
+          path     = "${9:/health}"
           interval = "10s"
           timeout  = "2s"
         }
       }
 
       env {
-        $9 = "$10"
+        $10 = "$11"
       }
     }
   }
