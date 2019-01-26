@@ -52,15 +52,17 @@ RUN /opt/conda/bin/jupyter nbextension enable scratchpad/main
 RUN /opt/conda/bin/jupyter nbextension enable splitcell/splitcell
 RUN /opt/conda/bin/jupyter nbextension enable tree-filter/index
 
-
 # Install Python Support Libraries
 RUN /opt/conda/bin/conda install -c conda-forge pint autopep8 isort -y --quiet
 RUN /opt/conda/bin/conda install -c conda-forge elasticsearch pandas matplotlib -y --quiet
 
+# Install new JupyterLab Interface
+RUN /opt/conda/bin/conda install -c conda-forge jupyterlab -y --quiet
+
 ENTRYPOINT [ \
   "switch", \
           "shell=/bin/sh", "--", \
-  "/opt/conda/bin/jupyter", "notebook", "--notebook-dir=/opt/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.base_url=/dfs/" \
+          "/opt/conda/bin/jupyter", "notebook", "--notebook-dir=/opt/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.base_url=/dfs/" \
 ]
 
 
