@@ -33,13 +33,25 @@ This “glibc workaround” is a very ugly hack that may lead to unexpected beha
 - [x] URL Prefix: https://jupyter-notebook.readthedocs.io/en/stable/public_server.html#running-the-notebook-with-a-customized-url-prefix
   - [ ] Verify Fabio support
 - [ ] Check if all python libraries required by the Jupyter Notebook extensions are provided.
-- [ ] Verify nomad agent volume directory support - which directory should be used on the agents?
+- [ ] Verify nomad agent volume directory support - which directory should be used on the agents? Maybe `/mnt/data/`
 - [ ] Increase flexibility of the Docker Container description using environment variables.
+- [ ] Improve conda setup: https://medium.com/@chadlagore/conda-environments-with-docker-82cdc9d25754
 
 
 ## Usage
 
 - [ ] Provide usage examples
+- https://towardsdatascience.com/advanced-jupyter-notebooks-a-tutorial-3569d8153057
+
+### Access JupyterLab
+
+- "http://<url>:<port>/dfs/lab"
+- https://jupyterlab.readthedocs.io/en/stable/getting_started/starting.html
+
+- Extensions: https://github.com/topics/jupyterlab-extension, https://www.npmjs.com/search?q=keywords:jupyterlab-extension
+
+- http://bokeh.pydata.org/en/latest/docs/user_guide/quickstart.html#userguide-quickstart
+  - https://github.com/bokeh/bokeh-notebooks/tree/master/tutorial
 
 ### Creating Notebooks
 
@@ -50,6 +62,7 @@ This “glibc workaround” is a very ugly hack that may lead to unexpected beha
 #### Widgets
 
 - [ ] Provide examples on how to use notebooks
+- https://towardsdatascience.com/the-next-level-of-data-visualization-in-python-dd6e99039d5e
 
 - General: https://ipywidgets.readthedocs.io/en/stable/
 - Maps: https://github.com/jupyter-widgets/ipyleaflet
@@ -60,6 +73,7 @@ This “glibc workaround” is a very ugly hack that may lead to unexpected beha
 ### Import of Notebooks
 
 - [ ] Provide description how to use the git clone example
+  - https://github.com/jupyter/notebook/blob/master/docs/source/examples/Notebook/Importing%20Notebooks.ipynb
 
 ### Export of Notebooks
 
@@ -71,3 +85,7 @@ This “glibc workaround” is a very ugly hack that may lead to unexpected beha
 
 - https://jupyter.org
 - https://docs.conda.io/en/latest/miniconda.html
+
+### Further Ideas
+
+- https://github.com/mwouts/jupytext

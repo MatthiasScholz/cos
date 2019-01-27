@@ -11,6 +11,8 @@ RUN curl -L https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_V
 
 # Install Jupyter Notebook
 RUN /opt/conda/bin/conda install -c conda-forge jupyter jupyter_nbextensions_configurator jupyter_contrib_nbextensions jupyterthemes -y --quiet
+# .Install widget libraries
+RUN /opt/conda/bin/conda install -c conda-forge ipywidgets ipyleaflet -y --quiet
 RUN mkdir -p /opt/notebooks
 # .Configure Jupyter Extensions Configuration Tab
 RUN /opt/conda/bin/jupyter nbextensions_configurator enable
@@ -53,11 +55,15 @@ RUN /opt/conda/bin/jupyter nbextension enable splitcell/splitcell
 RUN /opt/conda/bin/jupyter nbextension enable tree-filter/index
 
 # Install Python Support Libraries
-RUN /opt/conda/bin/conda install -c conda-forge pint autopep8 isort -y --quiet
-RUN /opt/conda/bin/conda install -c conda-forge elasticsearch pandas matplotlib -y --quiet
+RUN /opt/conda/bin/conda install -c conda-forge pint autopep8 flake8 isort -y --quiet
+RUN /opt/conda/bin/conda install -c conda-forge elasticsearch pandas matplotlib seaborn -y --quiet
+RUN /opt/conda/bin/conda install -c conda-forge bokeh -y --quiet
 
 # Install new JupyterLab Interface
-RUN /opt/conda/bin/conda install -c conda-forge jupyterlab -y --quiet
+RUN /opt/conda/bin/conda install -c conda-forge jupyterlab nodejs -y --quiet
+RUN /opt/conda/bin/conda install -c krinsman jupyterlab_geojson-extension -y --quiet
+RUN /opt/conda/bin/jupyter labextension install jupyter-matplotlib @jupyterlab/git @jupyterlab/geojson-extension @jupyterlab/plotly-extension @jupyterlab/toc @ijmbarr/jupyterlab_spellchecker jupyterlab-flake8 @krassowski/jupyterlab_go_to_definition @jupyter-widgets/jupyterlab-manager jupyterlab_autoversion
+# jupyterlab-spreadsheet
 
 ENTRYPOINT [ \
   "switch", \
