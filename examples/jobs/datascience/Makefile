@@ -1,12 +1,12 @@
 category    	:= support
-name        	:= dfs
+name        	:= dsf
 
 docker_dir := .
 
 # FIXME: DO NOT COMMIT THIS if true!!!
-registry_local     := true
-registry_local_url := "192.168.178.68:5000"
-latest_tag         := true
+registry_local     := false
+registry_local_url := "localhost:5000"
+latest_tag         := false
 
 # Registry: AWS - default configuration, if unset environment variables
 AWS_REGION    ?= eu-central-1
