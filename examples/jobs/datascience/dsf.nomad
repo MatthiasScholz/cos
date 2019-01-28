@@ -1,8 +1,8 @@
-job "dfs" {
+job "dsf" {
   datacenters = ["backoffice"]
   type = "service"
 
-  group "dfs_group" {
+  group "dsf_group" {
     count = 1
 
     restart {
@@ -22,7 +22,7 @@ job "dfs" {
       driver = "docker"
 
       config {
-        image = "192.168.178.68:5000/support/dfs:latest"
+        image = "{{docker_registry_url}}/support/dsf:latest"
         port_map = {
           http = 8888
         }
@@ -42,8 +42,8 @@ job "dfs" {
       }
 
       service {
-        name = "dfs"
-        tags = ["urlprefix-/dfs"] # Fabio
+        name = "dsf"
+        tags = ["urlprefix-/dsf"] # Fabio
         port = "http"
         check {
           name     = "Jupyter Alive State"
