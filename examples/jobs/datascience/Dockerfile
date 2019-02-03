@@ -68,7 +68,7 @@ RUN /opt/conda/bin/jupyter labextension install jupyter-matplotlib @jupyterlab/g
 ENTRYPOINT [ \
   "switch", \
           "shell=/bin/sh", "--", \
-          "/opt/conda/bin/jupyter", "notebook", "--notebook-dir=/opt/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.base_url=/dfs/" \
+          "/opt/conda/bin/jupyter", "notebook", "--notebook-dir=/opt/notebooks", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''", "--NotebookApp.base_url=/dsf/" \
 ]
 
 
