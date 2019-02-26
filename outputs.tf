@@ -68,3 +68,6 @@ output "dc-backoffice_sg_id" {
   value = "${module.dc-backoffice.sg_datacenter_id}"
 }
 
+output "consul_servers_sg_id" {
+  value = "${module.consul.security_group_id_consul_servers}"
+}
