@@ -77,3 +77,11 @@ output "vpc_cidr_block" {
 output "cluster_prefix" {
   value = "${module.nomad-infra.cluster_prefix}"
 }
+
+output "consul_servers_cluster_tag_key" {
+  value = "${module.nomad-infra.consul_servers_cluster_tag_key}"
+}
+
+output "consul_servers_cluster_tag_value" {
+  value = "${module.nomad-infra.consul_servers_cluster_tag_value}"
+}
