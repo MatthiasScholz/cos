@@ -6,6 +6,7 @@ This respository will provide an extended example from the main [nomad terraform
 ## Architecture
 
 ![deps](_docs/Cluster_Orchestration_System_Stack.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMatthiasScholz%2Fcos.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FMatthiasScholz%2Fcos?ref=badge_shield)
 
 The COS (Cluster Orchestration System) consists of three core components.
 
@@ -100,3 +101,7 @@ To overcome certificate verification issues you can also (not recommended) tempo
 
 * [Nomad Terraform Module](https://github.com/hashicorp/terraform-aws-nomad)
 * [Consul Terraform Module](https://github.com/hashicorp/terraform-aws-consul)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMatthiasScholz%2Fcos.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FMatthiasScholz%2Fcos?ref=badge_large)
