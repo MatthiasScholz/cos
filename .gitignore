@@ -21,4 +21,6 @@ out/
 /examples/jobs/grafana/dashboard_navcloud_poi_parking.json
 
 **/version
-test/vendor/
+/test/vendor/
+/test/test_output.log
+/test/tmp_test_output/
