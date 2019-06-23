@@ -66,7 +66,7 @@ test_all: cleanup
 	$(out_parsing)
 
 # SPECIFIC: Matching the name of the Makefile target with the name in of the test to be executed.
-TestAMI2: cleanup
+TestBastionExample: cleanup
 	$(run_test)
 
 TestNetworkingExample: cleanup
