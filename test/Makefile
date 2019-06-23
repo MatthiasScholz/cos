@@ -69,6 +69,9 @@ test_all: cleanup
 TestBastionExample: cleanup
 	$(run_test)
 
+TestConsulExample: cleanup
+	$(run_test)
+
 TestNetworkingExample: cleanup
 	$(run_test)
 

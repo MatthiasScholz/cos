@@ -24,7 +24,7 @@ module "consul" {
   ## required parameters
   vpc_id     = "${data.aws_vpc.default.id}"
   subnet_ids = "${data.aws_subnet_ids.all.ids}"
-  ami_id     = "ami-a23feadf"
+  ami_id     = "${var.ami_id}"
 
   ## optional parameters
   aws_region              = "${local.aws_region}"
@@ -33,7 +33,7 @@ module "consul" {
   cluster_tag_key         = "consul-servers"
   cluster_tag_value       = "${local.stack_name}-${local.env_name}-consul-srv"
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name            = "kp-us-east-1-playground-instancekey"
+  ssh_key_name            = "${var.ssh_key_name}"
   instance_type           = "t2.micro"
   num_servers             = "3"
 }

@@ -10,6 +10,14 @@
   version = "v0.40.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:7a9140c806333a78122763d08ec6c0d7358c7fff1df8cfbb01881c5dc46e24e5"
+  name = "github.com/armon/go-metrics"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "ec5e00d3c878b2a97bbe0884ef45ffd1b4f669f5"
+
+[[projects]]
   digest = "1:8a62589b18700830dd8d4059b86f61b054561aa793e841cf7236b089acdbc917"
   name = "github.com/aws/aws-sdk-go"
   packages = [
@@ -237,6 +245,54 @@
   version = "v0.17.4"
 
 [[projects]]
+  digest = "1:9537873f2fc92467f451178506405fae087efc624d8d92644042209a03a2bfa0"
+  name = "github.com/hashicorp/consul"
+  packages = ["api"]
+  pruneopts = "UT"
+  revision = "501c22b5563935713596034d47a1cbdef1ec1904"
+  version = "v1.4.5"
+
+[[projects]]
+  digest = "1:af105c7c5dc0b4ae41991f122cae860b9600f7d226072c2a83127048c991660c"
+  name = "github.com/hashicorp/go-cleanhttp"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "eda1e5db218aad1db63ca4642c8906b26bcf2744"
+  version = "v0.5.1"
+
+[[projects]]
+  digest = "1:6e9806a06d00f4d1f90806d7b5cfb11e35dca76503390ca6e704b05ea7051bff"
+  name = "github.com/hashicorp/go-immutable-radix"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "7dd1121b595e4e1bd6dd5caa78e0f5c454740379"
+  version = "v1.1.0"
+
+[[projects]]
+  digest = "1:7b893c9e1181e224506c523777dea0d16f4bd20a7627b100cc800e14229f405c"
+  name = "github.com/hashicorp/go-rootcerts"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "df8e78a645e18d56ed7bb9ae10ffb8174ab892e2"
+  version = "v1.0.1"
+
+[[projects]]
+  digest = "1:67474f760e9ac3799f740db2c489e6423a4cde45520673ec123ac831ad849cb8"
+  name = "github.com/hashicorp/golang-lru"
+  packages = ["simplelru"]
+  pruneopts = "UT"
+  revision = "7087cb70de9f7a8bc0a10c375cb0d2280a8edf9c"
+  version = "v0.5.1"
+
+[[projects]]
+  digest = "1:acc81e4e4289587b257ccdfccbc6eaf16d4c2fb57dda73c6bb349bf50f02501f"
+  name = "github.com/hashicorp/serf"
+  packages = ["coordinate"]
+  pruneopts = "UT"
+  revision = "15cfd05de3dffb3664aa37b06e91f970b825e380"
+  version = "v0.8.3"
+
+[[projects]]
   digest = "1:a0cefd27d12712af4b5018dc7046f245e1e3b5760e2e848c30b171b570708f9b"
   name = "github.com/imdario/mergo"
   packages = ["."]
@@ -274,6 +330,14 @@
   pruneopts = "UT"
   revision = "af06845cf3004701891bf4fdb884bfe4920b3727"
   version = "v1.1.0"
+
+[[projects]]
+  digest = "1:53bc4cd4914cd7cd52139990d5170d6dc99067ae31c56530621b18b35fc30318"
+  name = "github.com/mitchellh/mapstructure"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "3536a929edddb9a5b34bd6861dc4a9647cb459fe"
+  version = "v1.1.2"
 
 [[projects]]
   digest = "1:33422d238f147d247752996a26574ac48dcf472976eda7f5134015f06bf16563"
@@ -658,8 +722,11 @@
   analyzer-version = 1
   input-imports = [
     "github.com/gruntwork-io/terratest/modules/aws",
+    "github.com/gruntwork-io/terratest/modules/retry",
+    "github.com/gruntwork-io/terratest/modules/ssh",
     "github.com/gruntwork-io/terratest/modules/terraform",
     "github.com/gruntwork-io/terratest/modules/test-structure",
+    "github.com/hashicorp/consul/api",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
