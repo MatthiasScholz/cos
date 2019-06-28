@@ -324,6 +324,14 @@
   version = "v1.1.6"
 
 [[projects]]
+  branch = "master"
+  digest = "1:8283fa1deab4431edb2abe1ca4c33b2297e6be4fe55c482452103fec83dccfa3"
+  name = "github.com/knq/pemutil"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "fb6fad722528d308d5fbc9f39e0a9644905ee1cb"
+
+[[projects]]
   digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
   name = "github.com/mitchellh/go-homedir"
   packages = ["."]
@@ -722,11 +730,15 @@
   analyzer-version = 1
   input-imports = [
     "github.com/gruntwork-io/terratest/modules/aws",
+    "github.com/gruntwork-io/terratest/modules/logger",
+    "github.com/gruntwork-io/terratest/modules/packer",
     "github.com/gruntwork-io/terratest/modules/retry",
     "github.com/gruntwork-io/terratest/modules/ssh",
     "github.com/gruntwork-io/terratest/modules/terraform",
     "github.com/gruntwork-io/terratest/modules/test-structure",
     "github.com/hashicorp/consul/api",
+    "github.com/knq/pemutil",
+    "golang.org/x/crypto/ssh",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

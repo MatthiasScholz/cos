@@ -1,7 +1,10 @@
 package test
 
 import (
+	"crypto/x509"
+	"encoding/pem"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -12,9 +15,9 @@ import (
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	"github.com/knq/pemutil"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
-
 	consul_api "github.com/hashicorp/consul/api"
 )
 
@@ -68,22 +71,17 @@ func helperCleanup(t *testing.T, tmp_path string) {
 	aws.DeleteEC2KeyPair(t, keyPair)
 }
 
-func helperCheckSSH(t *testing.T, tmp_path string, tf_public_ip string) {
-	terraformOptions := test_structure.LoadTerraformOptions(t, tmp_path)
-	keyPair := test_structure.LoadEc2KeyPair(t, tmp_path)
-
-	// Get public IP
-	publicIP := terraform.Output(t, terraformOptions, tf_public_ip)
+func helperCheckSSH(t *testing.T, publicIP string, keyPair *ssh.KeyPair) {
 
 	publicHost := ssh.Host{
 		Hostname:    publicIP,
-		SshKeyPair:  keyPair.KeyPair,
+		SshKeyPair:  keyPair,
 		SshUserName: "ec2-user",
 	}
 
 	// Check basic SSH to the instance
 	retry.DoWithRetry(t, "SSH to public host", 30, 5*time.Second, func() (string, error) {
-		expectedText := fmt.Sprintf("Hello, %s", tmp_path)
+		expectedText := fmt.Sprintf("Hello, %s", publicIP)
 		command := fmt.Sprintf("echo -n '%s'", expectedText)
 		actualText, err := ssh.CheckSshCommandE(t, publicHost, command)
 
@@ -93,6 +91,65 @@ func helperCheckSSH(t *testing.T, tmp_path string, tf_public_ip string) {
 
 		if strings.TrimSpace(actualText) != expectedText {
 			return "", fmt.Errorf("Expected SSH command to return '%s' but got '%s'", expectedText, actualText)
+		}
+
+		return "", nil
+	})
+}
+
+func helperCheckConsul(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
+
+	publicHost := ssh.Host{
+		Hostname:    publicIP,
+		SshKeyPair:  keyPair.KeyPair,
+		SshUserName: "ec2-user",
+	}
+
+	// Check basic SSH to the instance
+	retry.DoWithRetry(t, "SSH to public host", 30, 5*time.Second, func() (string, error) {
+		// DEBUG: helperExportSshKey(publicHost.SshKeyPair)
+
+		// Check system service configuration: supervisor started consul service and consul is running
+		expectedService := "RUNNING"
+		commandService := "sudo supervisorctl status consul"
+		actualText, errService := ssh.CheckSshCommandE(t, publicHost, commandService)
+
+		// .Verify result
+		if errService != nil {
+			return "", fmt.Errorf("Msg: %s Command %s executed with error: %v", actualText, commandService, errService)
+		}
+		if strings.Contains(actualText, expectedService) == false {
+			return "", fmt.Errorf("Expected systemd consul state to return '%s' but got '%s'", expectedService, actualText)
+		}
+
+		// Check if there is a leader elected.
+		expectedLeader := "leader"
+		commandLeader := "consul operator raft list-peers"
+		actualText, errLeader := ssh.CheckSshCommandE(t, publicHost, commandLeader)
+		// or with curl:
+		// curl http://127.0.0.1:8500/v1/status/leader -> just gives the address of the current leader
+
+		// .Verify result
+		if errLeader != nil {
+			return "", fmt.Errorf("Msg: %s, Command %s executed with error: %v", actualText, commandLeader, errLeader)
+		}
+		if strings.Contains(actualText, expectedLeader) == false {
+			return "", fmt.Errorf("Expected leader report to be '%s' but got '%s'", expectedLeader, actualText)
+		}
+
+		// Check if there are members
+		expectedMembers := "alive"
+		commandMembers := "consul members"
+		actualText, errMembers := ssh.CheckSshCommandE(t, publicHost, commandMembers)
+		// or with curl:
+		// curl http://127.0.0.1:8500/v1/status/peers
+
+		// .Verify result
+		if errMembers != nil {
+			return "", fmt.Errorf("Msg: %s Command %s executed with error: %v", actualText, commandMembers, errMembers)
+		}
+		if strings.Contains(actualText, expectedMembers) == false {
+			return "", fmt.Errorf("Expected members report to be '%s' but got '%s'", expectedLeader, actualText)
 		}
 
 		return "", nil
@@ -117,6 +174,28 @@ func helperBuildAmi(t *testing.T, packerTemplatePath string, packerBuildName str
 	return amiID
 }
 
+// Exports the private SSH key as pem file to the disk.
+// This is helpful for debugging sessions when a manual SSH access to the resource is needed.
+// The key will be written into the execution folder, named: 'private_key.pem'.
+func helperExportSshKey(keyPair *ssh.KeyPair) error {
+
+	store, err := pemutil.DecodeBytes([]byte(keyPair.PrivateKey))
+	privateKey, _ := store.RSAPrivateKey()
+	var pemPrivateBlock = &pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: x509.MarshalPKCS1PrivateKey(privateKey),
+	}
+
+	pemPrivateFile, err := os.Create("private_key.pem")
+	err = pem.Encode(pemPrivateFile, pemPrivateBlock)
+	if err != nil {
+		return err
+	}
+	pemPrivateFile.Close()
+
+	return nil
+}
+
 func TestBastionExample(t *testing.T) {
 
 	// Keep repository clean
@@ -138,10 +217,16 @@ func TestBastionExample(t *testing.T) {
 
 	// Check SSH access into the Bastion
 	test_structure.RunTestStage(t, "validate", func() {
-		helperCheckSSH(t, tmpBastion, "bastion_ip")
+		// Get public IP
+		terraformOptions := test_structure.LoadTerraformOptions(t, tmpBastion)
+		keyPair := test_structure.LoadEc2KeyPair(t, tmpBastion)
+		publicIP := terraform.Output(t, terraformOptions, "bastion_ip")
+		helperCheckSSH(t, publicIP, keyPair.KeyPair)
 	})
 }
 
+// The test is broken into "stages" so you can skip stages by setting environment variables (e.g.,
+// skip stage "teardown" by setting the environment variable "SKIP_teardown=true")
 func TestConsulExample(t *testing.T) {
 
 	tmpConsul := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/consul")
@@ -216,21 +301,14 @@ func TestConsulExample(t *testing.T) {
 		clientConfig := consul_api.DefaultConfig()
 		clientConfig.Address = fmt.Sprintf("%s:8500", nodeIP)
 
-		// FIXME Add error checking
-		consulClient, _ := consul_api.NewClient(clientConfig)
-		clientConfig.HttpClient.Timeout = 5 * time.Second
+		// Check SSH connection
+		keyPair := test_structure.LoadEc2KeyPair(t, tmpConsul)
+		helperCheckSSH(t, nodeIP, keyPair.KeyPair)
 
-		// .Checking for members
-		members, _ := consulClient.Agent().Members(false)
-		if len(members) != expectedMembers {
-			t.Errorf("Number of Consul cluster members wrong, expected: '%d', but got '%d'.", expectedMembers, len(members))
-		}
-
-		// .Checking for leader
-		leader, _ := consulClient.Status().Leader()
-		if leader == "" {
-			t.Errorf("No Consul cluster leader.")
-		}
+		// Check if consul service is running
+		// - Connections from outside are not allowed!
+		// -> Test from inside the cluster needed ( SSH + Commands )
+		helperCheckConsul(t, nodeIP, keyPair)
 	})
 }
 

@@ -33,7 +33,31 @@ clean up.
 ## Usage Hints
 
 ### Execute tests
-- `cd test && make all`
+
+* `cd test && make all`
+
+#### Using Stages
+
+The tests are broken into "stages":
+
+* `test_structure.RunTestStage(t, "teardown", func() {...})`
+
+One can skip stages by setting environment variables:
+
+* Skip stage `teardown` by setting the environment variable `SKIP_teardown=true`.
+  * `SKIP_teardown=true make TestConsulExample`
+
+Using stages will create the temporary configuration in the main folder,
+IGNORING the copy command into the temporary folder!
+This is activate once ONE `SKIP_XXX` statement was found.
+
+#### Teardown
+
+To tear down the debug session at least one `SKIP_XXX` statement
+has to be provided in order to use the main folder configuration settings.
+The suggestion is to skip the setup steps, like:
+
+* `SKIP_setup_ami=true SKIP_setup=true make TestConsulExample`
 
 ### Caching
 
