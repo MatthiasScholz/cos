@@ -1,12 +1,11 @@
 locals {
-  aws_region = "us-east-1"
   stack_name = "COS"
   env_name   = "playground"
 }
 
 provider "aws" {
   profile = "${var.deploy_profile}"
-  region  = "${local.aws_region}"
+  region  = "${var.aws_region}"
 }
 
 ### obtaining default vpc, security group and subnet of the env
@@ -60,7 +59,7 @@ resource "aws_launch_configuration" "lc_sample" {
   image_id                    = "ami-43a15f3e"                             # Ubuntu Server 16.04 LTS (HVM)
   instance_type               = "t2.micro"
   user_data                   = "${data.template_file.user_data.rendered}"
-  key_name                    = "kp-us-east-1-playground-instancekey"
+  key_name                    = "${var.ssh_key_name}"
   associate_public_ip_address = true
   security_groups             = ["${aws_security_group.sg_sample.id}"]
 
@@ -90,7 +89,7 @@ module "ui-access" {
   fabio_server_asg_name  = "${aws_autoscaling_group.asg_sample.name}"
 
   ## optional parameters
-  aws_region     = "${local.aws_region}"
+  aws_region     = "${var.aws_region}"
   env_name       = "${local.env_name}"
   stack_name     = "${local.stack_name}"
   nomad_ui_port  = 4646

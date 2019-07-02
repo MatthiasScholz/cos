@@ -26,9 +26,9 @@ clean up.
 [-] ecr
 [x] networking
 [x] nomad
-[-] nomad-datacenter
+[x] nomad-datacenter
 [-] sgrules
-[-] ui-access
+[x] ui-access
 
 ## Usage Hints
 
