@@ -22,10 +22,10 @@ clean up.
 [-] ami
 [-] ami2
 [x] bastion
-[-] consul
+[x] consul
 [-] ecr
 [x] networking
-[-] nomad
+[x] nomad
 [-] nomad-datacenter
 [-] sgrules
 [-] ui-access

@@ -75,4 +75,6 @@ TestConsulExample: cleanup
 TestNetworkingExample: cleanup
 	$(run_test)
 
+TestNomadExample: cleanup
+	$(run_test)
 
