@@ -373,3 +373,40 @@ func TestNomadExample(t *testing.T) {
 		// TODO Use nomad module to check - no access from the outside to the cluster!
 	})
 }
+
+func TestNomadDataCenterExample(t *testing.T) {
+	tmpNomadDataCenter := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/nomad-datacenter")
+	awsRegion := "us-east-1"
+
+	// Create AMI
+	test_structure.RunTestStage(t, "setup_ami", func() {
+		// Execution from inside the test folder
+		amiName := "amazon-linux-ami2"
+		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+
+		test_structure.SaveString(t, tmpNomadDataCenter, SAVED_AWS_REGION, awsRegion)
+		test_structure.SaveAmiId(t, tmpNomadDataCenter, amiId)
+	})
+
+	// Cleanup
+	defer test_structure.RunTestStage(t, "teardown", func() {
+		helperCleanup(t, tmpNomadDataCenter)
+
+		// Delete the generated AMI
+		amiId := test_structure.LoadAmiId(t, tmpNomadDataCenter)
+		awsRegion := test_structure.LoadString(t, tmpNomadDataCenter, SAVED_AWS_REGION)
+		aws.DeleteAmi(t, awsRegion, amiId)
+	})
+
+	// Create Infrastructure
+	test_structure.RunTestStage(t, "setup", func() {
+		helperSetupInfrastructure(t, awsRegion, tmpNomadDataCenter, true)
+	})
+
+	// Validate Example
+	test_structure.RunTestStage(t, "validate", func() {
+		// TODO Check nomad setup -> ./run_tests.sh
+		// - not output variables configured
+		// - no access from the outside to the cluster
+	})
+}

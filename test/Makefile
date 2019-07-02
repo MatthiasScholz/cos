@@ -78,3 +78,5 @@ TestNetworkingExample: cleanup
 TestNomadExample: cleanup
 	$(run_test)
 
+TestNomadDataCenterExample: cleanup
+	$(run_test)
