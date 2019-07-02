@@ -54,6 +54,10 @@ func helperSetupInfrastructure(t *testing.T, awsRegion string, tmp_path string) 
 	terraformOptions := initTerraformOptions(tmp_path)
 	terraformOptions.Vars["aws_region"] = awsRegion
 	terraformOptions.Vars["ssh_key_name"] = keyPairName
+	if ami {
+		amiId := test_structure.LoadAmiId(t, tmp_path)
+		terraformOptions.Vars["ami_id"] = amiId
+	}
 
 	// Persist options and keypair for later use
 	test_structure.SaveTerraformOptions(t, tmp_path, terraformOptions)
@@ -212,7 +216,7 @@ func TestBastionExample(t *testing.T) {
 		// Fixing the region is a flaw - but since this is only testing the examples it is acceptable.
 		// HINT: terratest provides a more flexible approach using: aws.GetRandomStableRegion()
 		awsRegion := "us-east-1"
-		helperSetupInfrastructure(t, awsRegion, tmpBastion)
+		helperSetupInfrastructure(t, awsRegion, tmpBastion, false)
 	})
 
 	// Check SSH access into the Bastion
@@ -256,22 +260,7 @@ func TestConsulExample(t *testing.T) {
 
 	// Prepare infrastructure and create it
 	test_structure.RunTestStage(t, "setup", func() {
-		keyPairName := "terratest-onetime-key"
-		keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
-
-		amiId := test_structure.LoadAmiId(t, tmpConsul)
-
-		terraformOptions := initTerraformOptions(tmpConsul)
-		terraformOptions.Vars["aws_region"] = awsRegion
-		terraformOptions.Vars["ssh_key_name"] = keyPairName
-		terraformOptions.Vars["ami_id"] = amiId
-
-		// Persist options and keypair for later use
-		test_structure.SaveTerraformOptions(t, tmpConsul, terraformOptions)
-		test_structure.SaveEc2KeyPair(t, tmpConsul, keyPair)
-
-		// Rollout infrastructure
-		terraform.InitAndApply(t, terraformOptions)
+		helperSetupInfrastructure(t, awsRegion, tmpConsul, true)
 	})
 
 	// This module uses a sub module inside. It is tested itself.
@@ -326,7 +315,7 @@ func TestNetworkingExample(t *testing.T) {
 		// TODO Not sure it is a good pattern in regards to have reproducible runs.
 		//      It might be better to run the test in all regions which should be supported.
 		awsRegion := aws.GetRandomStableRegion(t, nil, forbiddenRegions)
-		helperSetupInfrastructure(t, awsRegion, tmpNetworking)
+		helperSetupInfrastructure(t, awsRegion, tmpNetworking, false)
 	})
 
 	// Check infrastructure
