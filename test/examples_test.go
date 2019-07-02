@@ -12,6 +12,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/packer"
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -47,8 +48,10 @@ func initTerraformOptions(path string) *terraform.Options {
 	return terraformOptions
 }
 
-func helperSetupInfrastructure(t *testing.T, awsRegion string, tmp_path string) {
-	keyPairName := "terratest-onetime-key"
+func helperSetupInfrastructure(t *testing.T, awsRegion string, tmp_path string, ami bool) {
+	uniqueID := random.UniqueId()
+
+	keyPairName := fmt.Sprintf("terratest-onetime-key-%s", uniqueID)
 	keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
 
 	terraformOptions := initTerraformOptions(tmp_path)
