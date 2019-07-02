@@ -19,7 +19,6 @@ import (
 	"github.com/knq/pemutil"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
-	consul_api "github.com/hashicorp/consul/api"
 )
 
 const SAVED_AWS_REGION = "AwsRegion"
@@ -289,9 +288,6 @@ func TestConsulExample(t *testing.T) {
 			t.Errorf("Number of AWS instances wrong, expected '%d', but got '%d'.", expectedMembers, len(instanceIds))
 		}
 		nodeIP := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
-
-		clientConfig := consul_api.DefaultConfig()
-		clientConfig.Address = fmt.Sprintf("%s:8500", nodeIP)
 
 		// Check SSH connection
 		keyPair := test_structure.LoadEc2KeyPair(t, tmpConsul)
