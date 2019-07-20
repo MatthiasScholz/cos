@@ -85,3 +85,51 @@ output "consul_servers_cluster_tag_key" {
 output "consul_servers_cluster_tag_value" {
   value = "${module.nomad-infra.consul_servers_cluster_tag_value}"
 }
+
+output "nomad_ui_alb_dns_name" {
+  value = "${module.nomad-infra.nomad_ui_alb_dns_name}"
+}
+
+output "nomad_ui_alb_https_targetgroup_arn" {
+  value = "${module.nomad-infra.nomad_ui_alb_https_targetgroup_arn}"
+}
+
+output "nomad_ui_alb_https_listener_arn" {
+  value = "${module.nomad-infra.nomad_ui_alb_https_listener_arn}"
+}
+
+output "consul_ui_alb_dns_name" {
+  value = "${module.nomad-infra.consul_ui_alb_dns_name}"
+}
+
+output "consul_ui_alb_https_targetgroup_arn" {
+  value = "${module.nomad-infra.consul_ui_alb_https_targetgroup_arn}"
+}
+
+output "consul_ui_alb_https_listener_arn" {
+  value = "${module.nomad-infra.consul_ui_alb_https_listener_arn}"
+}
+
+output "fabio_ui_alb_dns_name" {
+  value = "${module.nomad-infra.fabio_ui_alb_dns_name}"
+}
+
+output "fabio_ui_alb_https_targetgroup_arn" {
+  value = "${module.nomad-infra.fabio_ui_alb_https_targetgroup_arn}"
+}
+
+output "fabio_ui_alb_https_listener_arn" {
+  value = "${module.nomad-infra.fabio_ui_alb_https_listener_arn}"
+}
+
+output "dc-public-services_alb_https_targetgroup_arn" {
+  value = "${module.nomad-infra.dc-public-services_alb_https_targetgroup_arn}"
+}
+
+output "dc-private-services_alb_https_targetgroup_arn" {
+  value = "${module.nomad-infra.dc-private-services_alb_https_targetgroup_arn}"
+}
+
+output "dc-backoffice_alb_https_targetgroup_arn" {
+  value = "${module.nomad-infra.dc-backoffice_alb_https_targetgroup_arn}"
+}

@@ -22,12 +22,36 @@ output "nomad_ui_alb_dns_name" {
   value = "${module.ui-access.nomad_ui_alb_dns_name}"
 }
 
+output "nomad_ui_alb_https_targetgroup_arn" {
+  value = "${module.ui-access.nomad_ui_alb_https_targetgroup_arn}"
+}
+
+output "nomad_ui_alb_https_listener_arn" {
+  value = "${module.ui-access.nomad_ui_alb_https_listener_arn}"
+}
+
 output "consul_ui_alb_dns_name" {
   value = "${module.ui-access.consul_ui_alb_dns_name}"
 }
 
+output "consul_ui_alb_https_targetgroup_arn" {
+  value = "${module.ui-access.consul_ui_alb_https_targetgroup_arn}"
+}
+
+output "consul_ui_alb_https_listener_arn" {
+  value = "${module.ui-access.consul_ui_alb_https_listener_arn}"
+}
+
 output "fabio_ui_alb_dns_name" {
   value = "${module.ui-access.fabio_ui_alb_dns_name}"
+}
+
+output "fabio_ui_alb_https_targetgroup_arn" {
+  value = "${module.ui-access.fabio_ui_alb_https_targetgroup_arn}"
+}
+
+output "fabio_ui_alb_https_listener_arn" {
+  value = "${module.ui-access.fabio_ui_alb_https_listener_arn}"
 }
 
 output "nomad_ui_alb_zone_id" {
@@ -58,12 +82,24 @@ output "dc-public-services_sg_id" {
   value = "${module.dc-public-services.sg_datacenter_id}"
 }
 
+output "dc-public-services_alb_https_targetgroup_arn" {
+  value = "${module.dc-public-services.alb_https_targetgroup_arn}"
+}
+
 output "dc-private-services_sg_id" {
   value = "${module.dc-private-services.sg_datacenter_id}"
 }
 
+output "dc-private-services_alb_https_targetgroup_arn" {
+  value = "${module.dc-private-services.alb_https_targetgroup_arn}"
+}
+
 output "dc-backoffice_sg_id" {
   value = "${module.dc-backoffice.sg_datacenter_id}"
+}
+
+output "dc-backoffice_alb_https_targetgroup_arn" {
+  value = "${module.dc-backoffice.alb_https_targetgroup_arn}"
 }
 
 output "consul_servers_sg_id" {
