@@ -22,12 +22,36 @@ output "nomad_ui_alb_dns_name" {
   value = "${module.ui-access.nomad_ui_alb_dns_name}"
 }
 
+output "nomad_ui_alb_https_targetgroup_arn" {
+  value = "${module.ui-access.nomad_ui_alb_https_targetgroup_arn}"
+}
+
+output "nomad_ui_alb_https_listener_arn" {
+  value = "${module.ui-access.nomad_ui_alb_https_listener_arn}"
+}
+
 output "consul_ui_alb_dns_name" {
   value = "${module.ui-access.consul_ui_alb_dns_name}"
 }
 
+output "consul_ui_alb_https_targetgroup_arn" {
+  value = "${module.ui-access.consul_ui_alb_https_targetgroup_arn}"
+}
+
+output "consul_ui_alb_https_listener_arn" {
+  value = "${module.ui-access.consul_ui_alb_https_listener_arn}"
+}
+
 output "fabio_ui_alb_dns_name" {
   value = "${module.ui-access.fabio_ui_alb_dns_name}"
+}
+
+output "fabio_ui_alb_https_targetgroup_arn" {
+  value = "${module.ui-access.fabio_ui_alb_https_targetgroup_arn}"
+}
+
+output "fabio_ui_alb_https_listener_arn" {
+  value = "${module.ui-access.fabio_ui_alb_https_listener_arn}"
 }
 
 output "nomad_ui_alb_zone_id" {
