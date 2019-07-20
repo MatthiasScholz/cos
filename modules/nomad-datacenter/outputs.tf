@@ -21,3 +21,7 @@ output "cluster_prefix" {
 output "sg_datacenter_id" {
   value = "${aws_security_group.sg_datacenter.id}"
 }
+
+output "alb_https_targetgroup_arn" {
+  value = "${aws_alb_target_group.tgr_ingress_controller.*.arn}"
+}

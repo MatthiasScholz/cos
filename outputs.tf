@@ -58,12 +58,24 @@ output "dc-public-services_sg_id" {
   value = "${module.dc-public-services.sg_datacenter_id}"
 }
 
+output "dc-public-services_alb_https_targetgroup_arn" {
+  value = "${module.dc-public-services.alb_https_targetgroup_arn}"
+}
+
 output "dc-private-services_sg_id" {
   value = "${module.dc-private-services.sg_datacenter_id}"
 }
 
+output "dc-private-services_alb_https_targetgroup_arn" {
+  value = "${module.dc-private-services.alb_https_targetgroup_arn}"
+}
+
 output "dc-backoffice_sg_id" {
   value = "${module.dc-backoffice.sg_datacenter_id}"
+}
+
+output "dc-backoffice_alb_https_targetgroup_arn" {
+  value = "${module.dc-backoffice.alb_https_targetgroup_arn}"
 }
 
 output "consul_servers_sg_id" {
