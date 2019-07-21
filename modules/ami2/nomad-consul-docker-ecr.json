@@ -76,7 +76,7 @@
     },
     {
       "type": "file",
-      "source": "docker_config.json",
+      "source": "{{template_dir}}/docker_config.json",
       "destination": "$HOME/.docker/config.json"
     },
     {
@@ -89,7 +89,7 @@
     },
     {
       "type": "shell",
-      "script": "setup_ecr_helper.sh"
+      "script": "{{template_dir}}/setup_ecr_helper.sh"
     },
     {
       "type": "shell",
@@ -101,7 +101,7 @@
     },
     {
       "type": "file",
-      "source": "mount_efs.sh",
+      "source": "{{template_dir}}/mount_efs.sh",
       "destination": "/tmp/mount_efs.sh"
     },
     {
@@ -113,7 +113,7 @@
     },
     {
       "type": "file",
-      "source": "copy_map_efs.sh",
+      "source": "{{template_dir}}/copy_map_efs.sh",
       "destination": "/tmp/copy_map_efs.sh"
     },
     {
