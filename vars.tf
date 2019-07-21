@@ -7,6 +7,11 @@ variable "alb_ingress_https_listener_arn" {
   description = "The arn of the https alb listener for ingress data."
 }
 
+variable "prio_public_services_alb_forward_all_https_rule" {
+  description = "This variable controls the prio that should be used for the alb listener rule that forwards all requests (/*) to the ASG of the public-services data-center."
+  default     = 1
+}
+
 variable "vpc_id" {
   description = "Id of the vpc where to place in the instances."
 }
@@ -119,6 +124,11 @@ variable "alb_backoffice_https_listener_arn" {
 variable "attach_backoffice_alb_listener" {
   description = "Set this to true in case an alb shall be attached to the backoffice data-center. In this case the variable alb_backoffice_https_listener_arn has to be set specifying the correct alb listener."
   default     = false
+}
+
+variable "prio_backoffice_alb_forward_all_https_rule" {
+  description = "This variable controls the prio that should be used for the alb listener rule that forwards all requests (/*) to the ASG of the backoffice data-center."
+  default     = 1
 }
 
 #### [Nomad] Optional Variables ###################################################################

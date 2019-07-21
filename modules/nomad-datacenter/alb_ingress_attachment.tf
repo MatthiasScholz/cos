@@ -37,6 +37,7 @@ resource "aws_alb_target_group" "tgr_ingress_controller" {
 resource "aws_alb_listener_rule" "alr_ingress_https" {
   count        = "${var.attach_ingress_alb_listener}"
   listener_arn = "${var.alb_ingress_https_listener_arn}"
+  priority     = "${var.prio_alb_forward_all_https_rule}"
 
   action {
     type             = "forward"

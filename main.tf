@@ -56,20 +56,21 @@ module "dc-public-services" {
   server_sg_id             = "${module.nomad.security_group_id_nomad_servers}"
 
   ## optional parameters
-  env_name                       = "${var.env_name}"
-  stack_name                     = "${var.stack_name}"
-  aws_region                     = "${var.aws_region}"
-  instance_type                  = "${lookup(var.nomad_public_services_dc_node_cfg,"instance_type","INVALID")}"
-  allowed_ssh_cidr_blocks        = "${var.allowed_ssh_cidr_blocks}"
-  ssh_key_name                   = "${var.ssh_key_name}"
-  datacenter_name                = "public-services"
-  unique_postfix                 = "${var.unique_postfix}"
-  alb_ingress_https_listener_arn = "${var.alb_ingress_https_listener_arn}"
-  attach_ingress_alb_listener    = true
-  node_scaling_cfg               = "${var.nomad_public_services_dc_node_cfg}"
-  ebs_block_devices              = "${var.ebs_block_devices_public_services_dc}"
-  device_to_mount_target_map     = "${var.device_to_mount_target_map_public_services_dc}"
-  additional_instance_tags       = "${var.additional_instance_tags_public_services_dc}"
+  env_name                        = "${var.env_name}"
+  stack_name                      = "${var.stack_name}"
+  aws_region                      = "${var.aws_region}"
+  instance_type                   = "${lookup(var.nomad_public_services_dc_node_cfg,"instance_type","INVALID")}"
+  allowed_ssh_cidr_blocks         = "${var.allowed_ssh_cidr_blocks}"
+  ssh_key_name                    = "${var.ssh_key_name}"
+  datacenter_name                 = "public-services"
+  unique_postfix                  = "${var.unique_postfix}"
+  alb_ingress_https_listener_arn  = "${var.alb_ingress_https_listener_arn}"
+  attach_ingress_alb_listener     = true
+  prio_alb_forward_all_https_rule = "${var.prio_public_services_alb_forward_all_https_rule}"
+  node_scaling_cfg                = "${var.nomad_public_services_dc_node_cfg}"
+  ebs_block_devices               = "${var.ebs_block_devices_public_services_dc}"
+  device_to_mount_target_map      = "${var.device_to_mount_target_map_public_services_dc}"
+  additional_instance_tags        = "${var.additional_instance_tags_public_services_dc}"
 }
 
 #### DC: PRIVATE-SERVICES ###################################################
@@ -114,20 +115,21 @@ module "dc-backoffice" {
   server_sg_id             = "${module.nomad.security_group_id_nomad_servers}"
 
   ## optional parameters
-  env_name                       = "${var.env_name}"
-  stack_name                     = "${var.stack_name}"
-  aws_region                     = "${var.aws_region}"
-  instance_type                  = "${lookup(var.nomad_backoffice_dc_node_cfg,"instance_type","INVALID")}"
-  allowed_ssh_cidr_blocks        = "${var.allowed_ssh_cidr_blocks}"
-  ssh_key_name                   = "${var.ssh_key_name}"
-  datacenter_name                = "backoffice"
-  unique_postfix                 = "${var.unique_postfix}"
-  alb_ingress_https_listener_arn = "${var.alb_backoffice_https_listener_arn}"
-  attach_ingress_alb_listener    = "${var.attach_backoffice_alb_listener}"
-  node_scaling_cfg               = "${var.nomad_backoffice_dc_node_cfg}"
-  ebs_block_devices              = "${var.ebs_block_devices_backoffice_dc}"
-  device_to_mount_target_map     = "${var.device_to_mount_target_map_backoffice_dc}"
-  additional_instance_tags       = "${var.additional_instance_tags_backoffice_dc}"
+  env_name                        = "${var.env_name}"
+  stack_name                      = "${var.stack_name}"
+  aws_region                      = "${var.aws_region}"
+  instance_type                   = "${lookup(var.nomad_backoffice_dc_node_cfg,"instance_type","INVALID")}"
+  allowed_ssh_cidr_blocks         = "${var.allowed_ssh_cidr_blocks}"
+  ssh_key_name                    = "${var.ssh_key_name}"
+  datacenter_name                 = "backoffice"
+  unique_postfix                  = "${var.unique_postfix}"
+  alb_ingress_https_listener_arn  = "${var.alb_backoffice_https_listener_arn}"
+  attach_ingress_alb_listener     = "${var.attach_backoffice_alb_listener}"
+  prio_alb_forward_all_https_rule = "${var.prio_backoffice_alb_forward_all_https_rule}"
+  node_scaling_cfg                = "${var.nomad_backoffice_dc_node_cfg}"
+  ebs_block_devices               = "${var.ebs_block_devices_backoffice_dc}"
+  device_to_mount_target_map      = "${var.device_to_mount_target_map_backoffice_dc}"
+  additional_instance_tags        = "${var.additional_instance_tags_backoffice_dc}"
 }
 
 #### DC: CONTENT-CONNECTOR ###################################################

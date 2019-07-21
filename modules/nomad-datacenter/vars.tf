@@ -155,3 +155,8 @@ variable "additional_instance_tags" {
   type        = "list"
   default     = []
 }
+
+variable "prio_alb_forward_all_https_rule" {
+  description = "This variable controls the prio that should be used for the alb listener rule that forwards all requests (/*) to the ASG of this data-center."
+  default     = 1
+}
