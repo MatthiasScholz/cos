@@ -30,13 +30,13 @@ to make sure all tests have enough time to finish and clean up.
 [-] ami
 [-] ami2
 [x] bastion
-[-] consul
+[x] consul
 [-] ecr
 [x] networking
-[-] nomad
-[-] nomad-datacenter
+[x] nomad
+[x] nomad-datacenter
 [-] sgrules
-[-] ui-access
+[x] ui-access
 
 ## Usage Hints
 

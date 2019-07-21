@@ -1,12 +1,11 @@
 locals {
-  aws_region = "us-east-1"
   stack_name = "COS"
   env_name   = "playground"
 }
 
 provider "aws" {
   profile = "${var.deploy_profile}"
-  region  = "${local.aws_region}"
+  region  = "${var.aws_region}"
 }
 
 ### obtaining default vpc, security group and subnet of the env
@@ -27,7 +26,7 @@ module "consul" {
   ami_id     = "${var.ami_id}"
 
   ## optional parameters
-  aws_region              = "${local.aws_region}"
+  aws_region              = "${var.aws_region}"
   env_name                = "${local.env_name}"
   stack_name              = "${local.stack_name}"
   cluster_tag_key         = "consul-servers"

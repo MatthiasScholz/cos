@@ -1,5 +1,4 @@
 locals {
-  aws_region               = "us-east-1"
   stack_name               = "COS"
   env_name                 = "playground"
   consul_ami_id            = "${var.ami_id}"
@@ -10,7 +9,7 @@ locals {
 
 provider "aws" {
   profile = "${var.deploy_profile}"
-  region  = "${local.aws_region}"
+  region  = "${var.aws_region}"
 }
 
 resource "random_pet" "unicorn" {
@@ -36,13 +35,13 @@ module "consul" {
   ami_id     = "${local.consul_ami_id}"
 
   ## optional parameters
-  aws_region              = "${local.aws_region}"
+  aws_region              = "${var.aws_region}"
   env_name                = "${local.env_name}"
   stack_name              = "${local.stack_name}"
   cluster_tag_key         = "${local.consul_cluster_tag_key}"
   cluster_tag_value       = "${local.consul_cluster_tag_value}"
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name            = "kp-us-east-1-playground-instancekey"
+  ssh_key_name            = "${var.ssh_key_name}"
 }
 
 module "nomad" {
@@ -57,11 +56,11 @@ module "nomad" {
   consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
-  aws_region              = "${local.aws_region}"
+  aws_region              = "${var.aws_region}"
   env_name                = "${local.env_name}"
   stack_name              = "${local.stack_name}"
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name            = "kp-us-east-1-playground-instancekey"
+  ssh_key_name            = "${var.ssh_key_name}"
   instance_type           = "t2.micro"
   unique_postfix          = "-${random_pet.unicorn.id}"
   datacenter_name         = "leader"

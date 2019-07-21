@@ -7,7 +7,7 @@
 # - IMPORTANT: Check Gopkg.toml to align with the used go package version!
 TT_VERSION="v0.17.4"
 # Installation path for terratest helper tools
-TT_INSTALL_PATH="~/bin"
+TT_INSTALL_PATH=$(HOME)/bin/
 
 # Check: test/README.md for further details
 TIMEOUT="60m"
@@ -31,7 +31,7 @@ endif
 # - Creation of a summary
 define out_parsing
 @echo "--- Tests finished parsing output ---"
-@terratest_log_parser -testlog $(TEST_OUTPUT) -outputdir $(TEST_OUTPUT_DIR) --log-level "warning"
+@$(TT_INSTALL_PATH)/terratest_log_parser -testlog $(TEST_OUTPUT) -outputdir $(TEST_OUTPUT_DIR) --log-level "warning"
 @echo "--- Output parsing finished ---"
 endef
 
@@ -52,7 +52,7 @@ os:
 
 install_terratest_log_parser:
 	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(TT_VERSION)/terratest_log_parser_$(OS_VERSION)
-	@chmod +x terr satest_log_parser
+	@chmod +x terratest_log_parser
 	mv terratest_log_parser $(TT_INSTALL_PATH)
 
 cleanup:
@@ -75,4 +75,11 @@ TestConsulExample: cleanup
 TestNetworkingExample: cleanup
 	$(run_test)
 
+TestNomadExample: cleanup
+	$(run_test)
 
+TestNomadDataCenterExample: cleanup
+	$(run_test)
+
+TestUIAccessExample: cleanup
+	$(run_test)

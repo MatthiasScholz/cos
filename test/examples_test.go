@@ -4,7 +4,10 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -12,13 +15,14 @@ import (
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/packer"
+	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/knq/pemutil"
+	"github.com/stretchr/testify/assert"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
-	consul_api "github.com/hashicorp/consul/api"
 )
 
 const SAVED_AWS_REGION = "AwsRegion"
@@ -47,13 +51,19 @@ func initTerraformOptions(path string) *terraform.Options {
 	return terraformOptions
 }
 
-func helperSetupInfrastructure(t *testing.T, awsRegion string, tmp_path string) {
-	keyPairName := "terratest-onetime-key"
+func helperSetupInfrastructure(t *testing.T, awsRegion string, tmp_path string, ami bool) {
+	uniqueID := random.UniqueId()
+
+	keyPairName := fmt.Sprintf("terratest-onetime-key-%s", uniqueID)
 	keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
 
 	terraformOptions := initTerraformOptions(tmp_path)
 	terraformOptions.Vars["aws_region"] = awsRegion
 	terraformOptions.Vars["ssh_key_name"] = keyPairName
+	if ami {
+		amiId := test_structure.LoadAmiId(t, tmp_path)
+		terraformOptions.Vars["ami_id"] = amiId
+	}
 
 	// Persist options and keypair for later use
 	test_structure.SaveTerraformOptions(t, tmp_path, terraformOptions)
@@ -212,7 +222,7 @@ func TestBastionExample(t *testing.T) {
 		// Fixing the region is a flaw - but since this is only testing the examples it is acceptable.
 		// HINT: terratest provides a more flexible approach using: aws.GetRandomStableRegion()
 		awsRegion := "us-east-1"
-		helperSetupInfrastructure(t, awsRegion, tmpBastion)
+		helperSetupInfrastructure(t, awsRegion, tmpBastion, false)
 	})
 
 	// Check SSH access into the Bastion
@@ -256,22 +266,7 @@ func TestConsulExample(t *testing.T) {
 
 	// Prepare infrastructure and create it
 	test_structure.RunTestStage(t, "setup", func() {
-		keyPairName := "terratest-onetime-key"
-		keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
-
-		amiId := test_structure.LoadAmiId(t, tmpConsul)
-
-		terraformOptions := initTerraformOptions(tmpConsul)
-		terraformOptions.Vars["aws_region"] = awsRegion
-		terraformOptions.Vars["ssh_key_name"] = keyPairName
-		terraformOptions.Vars["ami_id"] = amiId
-
-		// Persist options and keypair for later use
-		test_structure.SaveTerraformOptions(t, tmpConsul, terraformOptions)
-		test_structure.SaveEc2KeyPair(t, tmpConsul, keyPair)
-
-		// Rollout infrastructure
-		terraform.InitAndApply(t, terraformOptions)
+		helperSetupInfrastructure(t, awsRegion, tmpConsul, true)
 	})
 
 	// This module uses a sub module inside. It is tested itself.
@@ -298,9 +293,6 @@ func TestConsulExample(t *testing.T) {
 		}
 		nodeIP := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
 
-		clientConfig := consul_api.DefaultConfig()
-		clientConfig.Address = fmt.Sprintf("%s:8500", nodeIP)
-
 		// Check SSH connection
 		keyPair := test_structure.LoadEc2KeyPair(t, tmpConsul)
 		helperCheckSSH(t, nodeIP, keyPair.KeyPair)
@@ -326,10 +318,134 @@ func TestNetworkingExample(t *testing.T) {
 		// TODO Not sure it is a good pattern in regards to have reproducible runs.
 		//      It might be better to run the test in all regions which should be supported.
 		awsRegion := aws.GetRandomStableRegion(t, nil, forbiddenRegions)
-		helperSetupInfrastructure(t, awsRegion, tmpNetworking)
+		helperSetupInfrastructure(t, awsRegion, tmpNetworking, false)
 	})
 
 	// Check infrastructure
 	// - examples has no outputs!
 	// -> For now it is just important that the examples successfully ran.
+}
+
+func TestNomadExample(t *testing.T) {
+	tmpNomad := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/nomad")
+	awsRegion := "us-east-1"
+
+	// Create AMI
+	test_structure.RunTestStage(t, "setup_ami", func() {
+		// Execution from inside the test folder
+		amiName := "amazon-linux-ami2"
+		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+
+		test_structure.SaveString(t, tmpNomad, SAVED_AWS_REGION, awsRegion)
+		test_structure.SaveAmiId(t, tmpNomad, amiId)
+	})
+
+	// Cleanup
+	defer test_structure.RunTestStage(t, "teardown", func() {
+		helperCleanup(t, tmpNomad)
+
+		// Delete the generated AMI
+		amiId := test_structure.LoadAmiId(t, tmpNomad)
+		awsRegion := test_structure.LoadString(t, tmpNomad, SAVED_AWS_REGION)
+		aws.DeleteAmi(t, awsRegion, amiId)
+	})
+
+	// Create Infrastructure
+	test_structure.RunTestStage(t, "setup", func() {
+		helperSetupInfrastructure(t, awsRegion, tmpNomad, true)
+	})
+
+	// Validate Example
+	test_structure.RunTestStage(t, "validate", func() {
+		terraformOptions := test_structure.LoadTerraformOptions(t, tmpNomad)
+		// TODO Check nomad setup -> ./run_tests.sh
+		nomadServerCount, _ := strconv.Atoi(terraform.Output(t, terraformOptions, "num_nomad_servers"))
+		nomadClusterTagKey := terraform.Output(t, terraformOptions, "nomad_servers_cluster_tag_key")
+		nomadClusterTagValue := terraform.Output(t, terraformOptions, "nomad_servers_cluster_tag_value")
+		instanceIds := aws.GetEc2InstanceIdsByTag(t, awsRegion, nomadClusterTagKey, nomadClusterTagValue)
+
+		// Check number of tagged nomad services with report number of terraform
+		// -> This is more a dull check, because this would just indicate that terraform itself is not working properly.
+		assert.Equal(t, nomadServerCount, len(instanceIds))
+
+		// Check Access to nomad cluster from the outside
+		nomadServerIp := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
+		logger.Logf(t, "Nomad Service IP: '%s'", nomadServerIp)
+
+		// TODO Use nomad module to check - no access from the outside to the cluster!
+	})
+}
+
+func TestNomadDataCenterExample(t *testing.T) {
+	tmpNomadDataCenter := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/nomad-datacenter")
+	awsRegion := "us-east-1"
+
+	// Create AMI
+	test_structure.RunTestStage(t, "setup_ami", func() {
+		// Execution from inside the test folder
+		amiName := "amazon-linux-ami2"
+		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+
+		test_structure.SaveString(t, tmpNomadDataCenter, SAVED_AWS_REGION, awsRegion)
+		test_structure.SaveAmiId(t, tmpNomadDataCenter, amiId)
+	})
+
+	// Cleanup
+	defer test_structure.RunTestStage(t, "teardown", func() {
+		helperCleanup(t, tmpNomadDataCenter)
+
+		// Delete the generated AMI
+		amiId := test_structure.LoadAmiId(t, tmpNomadDataCenter)
+		awsRegion := test_structure.LoadString(t, tmpNomadDataCenter, SAVED_AWS_REGION)
+		aws.DeleteAmi(t, awsRegion, amiId)
+	})
+
+	// Create Infrastructure
+	test_structure.RunTestStage(t, "setup", func() {
+		helperSetupInfrastructure(t, awsRegion, tmpNomadDataCenter, true)
+	})
+
+	// Validate Example
+	test_structure.RunTestStage(t, "validate", func() {
+		// TODO Check nomad setup -> ./run_tests.sh
+		// - not output variables configured
+		// - no access from the outside to the cluster
+	})
+}
+
+func helperCheckUi(t *testing.T, terraformOptions *terraform.Options, terraformOutput string, expected string) {
+	urlUi := terraform.Output(t, terraformOptions, terraformOutput)
+	// DEBUG: logger.Logf(t, "'%s': '%s'", terraformOutput, urlUi)
+
+	respUi, _ := http.Get(urlUi)
+	bodyBytes, _ := ioutil.ReadAll(respUi.Body)
+	respUiBody := string(bodyBytes)
+	assert.Equal(t, http.StatusOK, respUi.StatusCode)
+	assert.Contains(t, respUiBody, expected)
+	defer respUi.Body.Close()
+}
+
+func TestUIAccessExample(t *testing.T) {
+	tmpUIAccess := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/ui-access")
+	awsRegion := "us-east-1"
+
+	// Cleanup
+	defer test_structure.RunTestStage(t, "teardown", func() {
+		helperCleanup(t, tmpUIAccess)
+	})
+
+	// Create Infrastructure
+	test_structure.RunTestStage(t, "setup", func() {
+		helperSetupInfrastructure(t, awsRegion, tmpUIAccess, false)
+	})
+
+	// Validate Example
+	test_structure.RunTestStage(t, "validate", func() {
+		terraformOptions := test_structure.LoadTerraformOptions(t, tmpUIAccess)
+		// This example has one curl example output for each of the ALB's to access the ui. To test you just have to call it.
+		// I.e. the output for nomad ui was ```curl_nomad_ui = curl http://alb-nomad-ui-example-1440612083.us-east-1.elb.amazonaws.com/ui/jobs```, then the call should return ```<h1>Nomad UI</h1>```.
+		helperCheckUi(t, terraformOptions, "url_nomad_ui", "Nomad UI")
+		helperCheckUi(t, terraformOptions, "url_consul_ui", "Consul UI")
+		helperCheckUi(t, terraformOptions, "url_fabio_ui", "Fabio UI")
+	})
 }
