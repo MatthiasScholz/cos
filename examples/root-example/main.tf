@@ -60,8 +60,8 @@ module "nomad-infra" {
   attach_backoffice_alb_listener    = true
 
   # [Nomad] Required variables
-  nomad_ami_id_servers                       = "${var.nomad_ami_id_servers}"
-  nomad_ami_id_clients                       = "${var.nomad_ami_id_clients}"
+  nomad_ami_id_servers                       = "${var.ami_id}"
+  nomad_ami_id_clients                       = "${var.ami_id}"
   nomad_server_subnet_ids                    = "${module.networking.backoffice_subnet_ids}"
   nomad_clients_public_services_subnet_ids   = "${module.networking.services_subnet_ids}"
   nomad_clients_private_services_subnet_ids  = "${module.networking.services_subnet_ids}"
@@ -69,7 +69,7 @@ module "nomad-infra" {
   nomad_clients_backoffice_subnet_ids        = "${module.networking.backoffice_subnet_ids}"
 
   # [Consul] Required variables
-  consul_ami_id            = "${var.nomad_ami_id_servers}"
+  consul_ami_id            = "${var.ami_id}"
   consul_server_subnet_ids = "${module.networking.backoffice_subnet_ids}"
 
   # [General] Optional variables

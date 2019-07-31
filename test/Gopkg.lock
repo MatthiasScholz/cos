@@ -203,6 +203,22 @@
   version = "v0.3.0"
 
 [[projects]]
+  digest = "1:e3f17aa0eb8c151426d23cb767ae50f5b42c46533db3424761ee639b56ab9041"
+  name = "github.com/gorhill/cronexpr"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a557574d6c024ed6e36acc8b610f5f211c91568a"
+  version = "1.0.0"
+
+[[projects]]
+  digest = "1:7b5c6e2eeaa9ae5907c391a91c132abfd5c9e8a784a341b5625e750c67e6825d"
+  name = "github.com/gorilla/websocket"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
+  version = "v1.4.0"
+
+[[projects]]
   branch = "master"
   digest = "1:5fc0e23b254a1bd7d8d2d42fa093ba33471d08f52fe04afd3713adabb5888dc3"
   name = "github.com/gregjones/httpcache"
@@ -283,6 +299,17 @@
   pruneopts = "UT"
   revision = "7087cb70de9f7a8bc0a10c375cb0d2280a8edf9c"
   version = "v0.5.1"
+
+[[projects]]
+  digest = "1:848cf7f9c8f8824c0419ebbd4537e8b71f9668eace568045cf4d6690864f3de0"
+  name = "github.com/hashicorp/nomad"
+  packages = [
+    "api",
+    "api/contexts",
+  ]
+  pruneopts = "UT"
+  revision = "e0fce4603bdc0e42578e5ede3b1fbafe6499d9bb"
+  version = "v0.9.3"
 
 [[projects]]
   digest = "1:acc81e4e4289587b257ccdfccbc6eaf16d4c2fb57dda73c6bb349bf50f02501f"
@@ -732,13 +759,15 @@
     "github.com/gruntwork-io/terratest/modules/aws",
     "github.com/gruntwork-io/terratest/modules/logger",
     "github.com/gruntwork-io/terratest/modules/packer",
+    "github.com/gruntwork-io/terratest/modules/random",
     "github.com/gruntwork-io/terratest/modules/retry",
     "github.com/gruntwork-io/terratest/modules/ssh",
     "github.com/gruntwork-io/terratest/modules/terraform",
     "github.com/gruntwork-io/terratest/modules/test-structure",
     "github.com/hashicorp/consul/api",
+    "github.com/hashicorp/nomad/api",
     "github.com/knq/pemutil",
-    "golang.org/x/crypto/ssh",
+    "github.com/stretchr/testify/assert",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

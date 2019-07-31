@@ -38,5 +38,9 @@
   version = "~1.4.4"
 
 [[constraint]]
+  name = "github.com/hashicorp/nomad"
+  version = "~0.9.0"
+
+[[constraint]]
   name = "github.com/knq/pemutil"
   branch = "master"

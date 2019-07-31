@@ -3,6 +3,7 @@ package test
 import (
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -19,8 +20,11 @@ import (
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
+	consul_api "github.com/hashicorp/consul/api"
+	nomad_api "github.com/hashicorp/nomad/api"
 	"github.com/knq/pemutil"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
@@ -448,4 +452,197 @@ func TestUIAccessExample(t *testing.T) {
 		helperCheckUi(t, terraformOptions, "url_consul_ui", "Consul UI")
 		helperCheckUi(t, terraformOptions, "url_fabio_ui", "Fabio UI")
 	})
+}
+
+// Use a Nomad client to connect to the given node and use it to verify that:
+//
+// 1. The Nomad cluster has deployed
+// 2. The cluster has the expected number of members
+// 3. The cluster has elected a leader
+func helperTestNomadCluster(t *testing.T, nodeIpAddress string, expectedServers int, expectedNodes int) {
+	nomadClient := helperCreateNomadClient(t, fmt.Sprintf("http://%s", nodeIpAddress))
+	maxRetries := 60
+	sleepBetweenRetries := 10 * time.Second
+
+	leader := retry.DoWithRetry(t, "Check nomad members", maxRetries, sleepBetweenRetries, func() (string, error) {
+
+		// Check nomad servers
+		// cli: nomad server members
+		servers, err := nomadClient.Agent().Members()
+
+		if err != nil {
+			return "", err
+		}
+
+		if len(servers.Members) != expectedServers {
+			return "", fmt.Errorf("Expected the cluster to have %d servers, but found %d", expectedServers, len(servers.Members))
+		}
+
+		// Check nomad leader
+		leader, err := nomadClient.Status().Leader()
+		if err != nil {
+			return "", err
+		}
+
+		if leader == "" {
+			return "", errors.New("Nomad cluster returned an empty leader response, so a leader must not have been elected yet.")
+		}
+
+		// Check for number of nomad client nodes
+		// cli: nomad node status
+		nodes, _, err := nomadClient.Nodes().List(nil)
+
+		if err != nil {
+			return "", err
+		}
+
+		if len(nodes) != expectedNodes {
+			return "", fmt.Errorf("Expected the cluster to have %d nodes, but found %d", expectedNodes, len(nodes))
+		}
+
+		return leader, nil
+	})
+
+	logger.Logf(t, "Nomad cluster is properly deployed and has elected leader %s", leader)
+}
+
+// Nomad ALB Client
+// ALB maps the ports to the underlying nodes
+func helperCreateNomadClient(t *testing.T, ipAddress string) *nomad_api.Client {
+	config := nomad_api.DefaultConfig()
+	config.Address = ipAddress
+
+	client, err := nomad_api.NewClient(config)
+	if err != nil {
+		t.Fatalf("Failed to create nomad ALB client due to error: %v", err)
+	}
+
+	if config.HttpClient != nil {
+		t.Fatalf("Failed to create nomad ALB client due to error - HttpClient")
+	}
+
+	//FIXME Crashes - Why? config.HttpClient.Timeout = 5 * time.Second
+
+	return client
+}
+
+// Use a Consul client to connect to the given node and use it to verify that:
+//
+// 1. The Consul cluster has deployed
+// 2. The cluster has the expected number of members
+// 3. The cluster has elected a leader
+func helperTestConsulCluster(t *testing.T, nodeIpAddress string, expectedMembers int) {
+	consulClient := helperCreateConsulClient(t, nodeIpAddress)
+	maxRetries := 60
+	sleepBetweenRetries := 10 * time.Second
+
+	leader := retry.DoWithRetry(t, "Check Consul members", maxRetries, sleepBetweenRetries, func() (string, error) {
+		members, err := consulClient.Agent().Members(false)
+		if err != nil {
+			return "", err
+		}
+
+		if len(members) != expectedMembers {
+			return "", fmt.Errorf("Expected the cluster to have %d members, but found %d", expectedMembers, len(members))
+		}
+
+		leader, err := consulClient.Status().Leader()
+		if err != nil {
+			return "", err
+		}
+
+		if leader == "" {
+			return "", errors.New("Consul cluster returned an empty leader response, so a leader must not have been elected yet.")
+		}
+
+		return leader, nil
+	})
+
+	logger.Logf(t, "Consul cluster is properly deployed and has elected leader %s", leader)
+}
+
+// Create a Consul ALB client
+func helperCreateConsulClient(t *testing.T, ipAddress string) *consul_api.Client {
+	config := consul_api.DefaultConfig()
+	config.Address = ipAddress
+
+	client, err := consul_api.NewClient(config)
+	if err != nil {
+		t.Fatalf("Failed to create Consul client due to error: %v", err)
+	}
+
+	config.HttpClient.Timeout = 5 * time.Second
+
+	return client
+}
+
+func TestRootExample(t *testing.T) {
+	tmpRoot := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/root-example")
+	awsRegion := "us-east-1"
+
+	// Create AMI
+	test_structure.RunTestStage(t, "setup_ami", func() {
+		// Execution from inside the test folder
+		amiName := "amazon-linux-ami2"
+		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+
+		test_structure.SaveString(t, tmpRoot, SAVED_AWS_REGION, awsRegion)
+		test_structure.SaveAmiId(t, tmpRoot, amiId)
+	})
+
+	// Cleanup
+	defer test_structure.RunTestStage(t, "teardown", func() {
+		helperCleanup(t, tmpRoot)
+
+		// Delete the generated AMI
+		amiId := test_structure.LoadAmiId(t, tmpRoot)
+		awsRegion := test_structure.LoadString(t, tmpRoot, SAVED_AWS_REGION)
+		aws.DeleteAmi(t, awsRegion, amiId)
+	})
+
+	// Create Infrastructure
+	test_structure.RunTestStage(t, "setup", func() {
+		helperSetupInfrastructure(t, awsRegion, tmpRoot, true)
+	})
+
+	// Validate Infrastructure and general cluster health
+	test_structure.RunTestStage(t, "validate", func() {
+		terraformOptions := test_structure.LoadTerraformOptions(t, tmpRoot)
+		// Get nomad access via ALB and check basic setup ( members, leader )
+		nomadURI := terraform.Output(t, terraformOptions, "nomad_ui_alb_dns")
+		helperTestNomadCluster(t, nomadURI, 3, 4)
+
+		// Consul ( members, leader )
+		consulURI := terraform.Output(t, terraformOptions, "consul_ui_alb_dns")
+		helperTestConsulCluster(t, consulURI, 10) // nomad server + client + consul server
+	})
+
+	// Setup nomad cluster
+	test_structure.RunTestStage(t, "setup_cluster", func() {
+		terraformOptions := test_structure.LoadTerraformOptions(t, tmpRoot)
+		nomadURI := terraform.Output(t, terraformOptions, "nomad_ui_alb_dns")
+		c := helperCreateNomadClient(t, nomadURI) // connect to the cluster
+		jobs := c.Jobs()                          // get jobs
+
+		// Check if current number of jobs is zero
+		resp, _, err := jobs.List(nil)
+		require.Nil(t, err)                                            // Check no error
+		require.Emptyf(t, resp, "expected 0 jobs, got: %d", len(resp)) // Check empty job listing
+
+		// Create new job - fabio
+		jobFabio := nomad_api.ParseHCL("../examples/jobs/fabio.nomad", true) // TODO fabio
+		resp2, wm, err := jobs.Register(jobFabio, nil)
+		require.Nil(t, err)
+		require.NotNil(t, resp2)
+		require.NotEmpty(t, resp2.EvalID)
+	})
+
+	// TODO Further testing of the cluster.
+	// TODO deploy ping_service -> nomad job run
+	// TODO Check for external access support
+
+	// TODO Validate Cluster
+	// test service ( + retries )
+	// tf out: ingress_alb_dns
+	// curl -s http://$IG_ALB_DNS/ping -> Status Code: 200
 }

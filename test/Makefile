@@ -83,3 +83,6 @@ TestNomadDataCenterExample: cleanup
 
 TestUIAccessExample: cleanup
 	$(run_test)
+
+TestRootExample: cleanup
+	$(run_test)

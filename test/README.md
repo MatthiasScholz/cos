@@ -29,6 +29,7 @@ clean up.
 [x] nomad-datacenter
 [-] sgrules
 [x] ui-access
+[x] root-example
 
 ## Usage Hints
 
