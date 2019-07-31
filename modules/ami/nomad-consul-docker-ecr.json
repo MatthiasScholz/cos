@@ -73,7 +73,7 @@
     },
     {
       "type": "file",
-      "source": "docker_config.json",
+      "source": "{{template_dir}}/docker_config.json",
       "destination": "$HOME/.docker/config.json"
     },
     {
@@ -91,7 +91,7 @@
     },
     {
       "type": "shell",
-      "script": "setup_ecr_helper.sh"
+      "script": "{{template_dir}}/setup_ecr_helper.sh"
     },
     {
       "type": "shell",
@@ -99,7 +99,8 @@
           "cp /etc/sysctl.conf /tmp/sysctl.conf",
           "echo 'vm.max_map_count=262144' >> /tmp/sysctl.conf",
           "sudo cp /tmp/sysctl.conf /etc/sysctl.conf"
-    ]
+      ]
+    },
     {
       "type": "shell",
       "inline": [
