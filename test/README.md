@@ -41,11 +41,12 @@ to make sure all tests have enough time to finish and clean up.
 
 ## Usage Hints
 
-### Setup
+### Setup and Preconditions
 
-* To be able to run the tests you need to have a working golang setup and terratest needs to be installed.
-* The golang installation is described [here](https://golang.org/doc/install).
-* Terratest will be installed when executing the tests.
+* To be able to run the tests you need to have a working golang setup, an AWS account and terratest needs to be installed.
+* The **golang** installation is described [here](https://golang.org/doc/install).
+* **Terratest** will be installed when executing the tests.
+* The **AWS account** to be used is automatically identified by terratest using the `~/.aws/credentials` file. There the `[default]` entry will be used for authentication. How to configure the AWS credentials is described [here](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html).
 
 ### Execute tests
 
