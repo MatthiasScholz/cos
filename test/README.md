@@ -49,7 +49,7 @@ to make sure all tests have enough time to finish and clean up.
 
 ### Execute tests
 
-* `cd test && make all`
+* `make all`
 
 #### Using Stages
 
