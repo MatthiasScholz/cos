@@ -41,6 +41,12 @@ to make sure all tests have enough time to finish and clean up.
 
 ## Usage Hints
 
+### Setup
+
+* To be able to run the tests you need to have a working golang setup and terratest needs to be installed.
+* The golang installation is described [here](https://golang.org/doc/install).
+* Terratest will be installed when executing the tests.
+
 ### Execute tests
 
 * `cd test && make all`
@@ -85,3 +91,10 @@ which only log to stdout after the completion of a test.
 Run the test sequentially to avoid golang stdout buffering `-p 1`.
 This is how the [Makefile](test/Makefile) is configured.
 
+### Troubleshooting
+
+#### root project import: <some folder> is not within any GOPATH/src
+
+* If you get an error message like `root project import: [..]/test is not within any GOPATH/src` you have to check out this repository in a folder-structure that fits the needs of golang.
+* This means the code has to reside in a folder-structure like this `<some-folder>/src`.
+* The best solution would be to just check out this repo into your GOPATH structure: `cd %GOPATH/src && clone https://github.com/MatthiasScholz/cos.git` which then would result in `<some-folder>/src/cos` containing all the code.
