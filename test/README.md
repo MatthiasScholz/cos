@@ -46,7 +46,7 @@ to make sure all tests have enough time to finish and clean up.
 * To be able to run the tests you need to have a working golang setup,
 an AWS account and terratest needs to be installed.
 * The **golang** installation is described [here](https://golang.org/doc/install).
-* **Terratest** will be installed when executing the tests.
+* **Terratest** provides a tool to beautify the test output called: _terratest_log_parser_. This tool will be installed when executing the tests and via the provided `Makefile` and calling the target `make install_terratest_log_parser`.
 * The **AWS account** to be used is automatically identified by terratest
 using the `~/.aws/credentials` file.
 There the `[default]` entry will be used for authentication.
