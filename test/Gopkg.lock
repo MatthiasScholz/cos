@@ -269,6 +269,14 @@
   version = "v1.4.5"
 
 [[projects]]
+  digest = "1:0ade334594e69404d80d9d323445d2297ff8161637f9b2d347cc6973d2d6f05b"
+  name = "github.com/hashicorp/errwrap"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "8a6fb523712970c966eefc6b39ed2c5e74880354"
+  version = "v1.0.0"
+
+[[projects]]
   digest = "1:af105c7c5dc0b4ae41991f122cae860b9600f7d226072c2a83127048c991660c"
   name = "github.com/hashicorp/go-cleanhttp"
   packages = ["."]
@@ -283,6 +291,14 @@
   pruneopts = "UT"
   revision = "7dd1121b595e4e1bd6dd5caa78e0f5c454740379"
   version = "v1.1.0"
+
+[[projects]]
+  digest = "1:f668349b83f7d779567c880550534addeca7ebadfdcf44b0b9c39be61864b4b7"
+  name = "github.com/hashicorp/go-multierror"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "886a7fbe3eb1c874d46f623bfa70af45f425b3d1"
+  version = "v1.0.0"
 
 [[projects]]
   digest = "1:7b893c9e1181e224506c523777dea0d16f4bd20a7627b100cc800e14229f405c"
@@ -301,11 +317,31 @@
   version = "v0.5.1"
 
 [[projects]]
-  digest = "1:848cf7f9c8f8824c0419ebbd4537e8b71f9668eace568045cf4d6690864f3de0"
+  digest = "1:ea40c24cdbacd054a6ae9de03e62c5f252479b96c716375aace5c120d68647c8"
+  name = "github.com/hashicorp/hcl"
+  packages = [
+    ".",
+    "hcl/ast",
+    "hcl/parser",
+    "hcl/scanner",
+    "hcl/strconv",
+    "hcl/token",
+    "json/parser",
+    "json/scanner",
+    "json/token",
+  ]
+  pruneopts = "UT"
+  revision = "8cb6e5b959231cc1119e43259c4a608f9c51a241"
+  version = "v1.0.0"
+
+[[projects]]
+  digest = "1:2fb311c442d0cfaeecd89e74379566ebbee4c957171f1c8a2cdb4bf9592a3e26"
   name = "github.com/hashicorp/nomad"
   packages = [
     "api",
     "api/contexts",
+    "helper",
+    "jobspec",
   ]
   pruneopts = "UT"
   revision = "e0fce4603bdc0e42578e5ede3b1fbafe6499d9bb"
@@ -766,8 +802,10 @@
     "github.com/gruntwork-io/terratest/modules/test-structure",
     "github.com/hashicorp/consul/api",
     "github.com/hashicorp/nomad/api",
+    "github.com/hashicorp/nomad/jobspec",
     "github.com/knq/pemutil",
     "github.com/stretchr/testify/assert",
+    "github.com/stretchr/testify/require",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

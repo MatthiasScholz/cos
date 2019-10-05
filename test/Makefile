@@ -45,12 +45,13 @@ endef
 all: setup test_all
 
 setup: install_terratest_log_parser
-	dep ensure
+	dep ensure -v
 
 os:
 	@echo $(OS_VERSION)
 
 install_terratest_log_parser:
+	@mkdir -p $(TT_INSTALL_PATH)
 	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(TT_VERSION)/terratest_log_parser_$(OS_VERSION)
 	@chmod +x terratest_log_parser
 	mv terratest_log_parser $(TT_INSTALL_PATH)

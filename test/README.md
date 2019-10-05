@@ -41,9 +41,20 @@ to make sure all tests have enough time to finish and clean up.
 
 ## Usage Hints
 
+### Setup and Preconditions
+
+* To be able to run the tests you need to have a working golang setup,
+an AWS account and terratest needs to be installed.
+* The **golang** installation is described [here](https://golang.org/doc/install).
+* **Terratest** provides a tool to beautify the test output called: _terratest_log_parser_. This tool will be installed when executing the tests and via the provided `Makefile` and calling the target `make install_terratest_log_parser`.
+* The **AWS account** to be used is automatically identified by terratest
+using the `~/.aws/credentials` file.
+There the `[default]` entry will be used for authentication.
+How to configure the AWS credentials is described [here](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html).
+
 ### Execute tests
 
-* `cd test && make all`
+* `make all`
 
 #### Using Stages
 
@@ -85,3 +96,16 @@ which only log to stdout after the completion of a test.
 Run the test sequentially to avoid golang stdout buffering `-p 1`.
 This is how the [Makefile](test/Makefile) is configured.
 
+### Troubleshooting
+
+#### Golang: _"root project import: <some folder> is not within any GOPATH/src"_
+
+* If you get an error message like
+`root project import: [..]/test is not within any GOPATH/src`
+you have to check out this repository in a folder-structure
+that fits the needs of golang.
+* This means the code has to reside in
+a folder-structure like this `<some-folder>/src`.
+* The best solution would be to just check out this repository
+into your GOPATH structure: `cd %GOPATH/src && clone https://github.com/MatthiasScholz/cos.git`
+which then would result in `<some-folder>/src/cos` containing all the code.

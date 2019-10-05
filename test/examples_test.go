@@ -22,6 +22,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	consul_api "github.com/hashicorp/consul/api"
 	nomad_api "github.com/hashicorp/nomad/api"
+	nomad_jobspec "github.com/hashicorp/nomad/jobspec"
 	"github.com/knq/pemutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -630,9 +631,11 @@ func TestRootExample(t *testing.T) {
 		require.Emptyf(t, resp, "expected 0 jobs, got: %d", len(resp)) // Check empty job listing
 
 		// Create new job - fabio
-		jobFabio := nomad_api.ParseHCL("../examples/jobs/fabio.nomad", true) // TODO fabio
-		resp2, wm, err := jobs.Register(jobFabio, nil)
-		require.Nil(t, err)
+		jobFabio, err := nomad_jobspec.ParseFile("../examples/jobs/fabio.nomad")
+		require.NoError(t, err)
+		require.NotNil(t, jobFabio)
+		resp2, _, err := jobs.Register(jobFabio, nil)
+		require.NoError(t, err)
 		require.NotNil(t, resp2)
 		require.NotEmpty(t, resp2.EvalID)
 	})
