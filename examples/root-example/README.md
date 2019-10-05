@@ -147,4 +147,3 @@ sshuttle_login.sh
 ### Simplified AMI Usage
 
 This example uses the same AMI for the nomad servers, clients and the consul servers.
-This is just to simplify the example and not recommended for production use.
