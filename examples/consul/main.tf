@@ -4,8 +4,8 @@ locals {
 }
 
 provider "aws" {
-  profile = "${var.deploy_profile}"
-  region  = "${var.aws_region}"
+  profile = var.deploy_profile
+  region  = local.aws_region
 }
 
 ### obtaining default vpc, security group and subnet of the env
@@ -14,21 +14,21 @@ data "aws_vpc" "default" {
 }
 
 data "aws_subnet_ids" "all" {
-  vpc_id = "${data.aws_vpc.default.id}"
+  vpc_id = data.aws_vpc.default.id
 }
 
 module "consul" {
   source = "../../modules/consul"
 
   ## required parameters
-  vpc_id     = "${data.aws_vpc.default.id}"
-  subnet_ids = "${data.aws_subnet_ids.all.ids}"
-  ami_id     = "${var.ami_id}"
+  vpc_id     = data.aws_vpc.default.id
+  subnet_ids = data.aws_subnet_ids.all.ids
+  ami_id     = var.consul_ami_id
 
   ## optional parameters
-  aws_region              = "${var.aws_region}"
-  env_name                = "${local.env_name}"
-  stack_name              = "${local.stack_name}"
+  aws_region              = local.aws_region
+  env_name                = local.env_name
+  stack_name              = local.stack_name
   cluster_tag_key         = "consul-servers"
   cluster_tag_value       = "${local.stack_name}-${local.env_name}-consul-srv"
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
