@@ -1,9 +1,9 @@
 resource "aws_security_group" "sg_public_services_alb" {
-  vpc_id      = "${aws_vpc.vpc_main.id}"
+  vpc_id      = aws_vpc.vpc_main.id
   name        = "${var.stack_name}-ingress${var.unique_postfix}"
   description = "security group that allows ingress access to everyone."
 
-  tags {
+  tags = {
     Name = "${var.stack_name}-ingress${var.unique_postfix}"
   }
 
@@ -20,7 +20,7 @@ resource "aws_security_group_rule" "sgr_alb_ig_http" {
   to_port           = 80
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.sg_public_services_alb.id}"
+  security_group_id = aws_security_group.sg_public_services_alb.id
 }
 
 resource "aws_security_group_rule" "sgr_alb_ig_https" {
@@ -30,7 +30,7 @@ resource "aws_security_group_rule" "sgr_alb_ig_https" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.sg_public_services_alb.id}"
+  security_group_id = aws_security_group.sg_public_services_alb.id
 }
 
 # grants access for all tcp but only to the services subnet
@@ -42,5 +42,6 @@ resource "aws_security_group_rule" "sgr_alb_egAll_server" {
   protocol    = "tcp"
 
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.sg_public_services_alb.id}"
+  security_group_id = aws_security_group.sg_public_services_alb.id
 }
+
