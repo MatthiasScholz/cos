@@ -24,7 +24,6 @@ source ./bootstrap.sh
 
 Or you follow the preceding instructions.
 
-
 ## Setup helper scripts
 
 ```bash
@@ -139,7 +138,36 @@ sshuttle_login.sh
 
 ### Datacenter Configuration
 
-* [ ** TODO: Describe to configuration of the different nomad datacenters.
+- [ ] TODO: Describe to configuration of the different nomad datacenters.
+
+## Troubleshooting
+
+### No images found for AMI
+
+```bash
+module.nomad-infra.module.dc-backoffice.module.data_center.aws_launch_configuration.launch_configuration: 1 error occurred:
+aws_launch_configuration.launch_configuration: No images found for AMI ami-02d24827dece83bef
+```
+
+### MalformedCertificate: Certificate is no longer valid
+
+If the used certificate is not valid any more you will receive the following (or similar) error.
+
+```bash
+aws_iam_server_certificate.certificate_alb: 1 error occurred:
+aws_iam_server_certificate.certificate_alb: Error uploading server certificate, error: MalformedCertificate: Certificate is no longer valid. The 'Not After' date restriction on the certificate has passed.
+```
+
+To solve this issue a new certificate has to be created.
+
+#### Create the self signed Certificate
+
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+```
+
+Then copy the content of `cert.pem` into the field `certificate_body` of the file `alb_cert.tf`.
+And copy the content of `key.pem` into the field `private_key` of the file `alb_cert.tf`.
 
 
 ## Remarks
