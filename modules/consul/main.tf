@@ -8,7 +8,7 @@ terraform {
 # DEPLOY THE CONSUL SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_servers" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.6.1"
+  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.7.0"
 
   cluster_name  = "${var.cluster_tag_value}"
   cluster_size  = "${var.num_servers}"
