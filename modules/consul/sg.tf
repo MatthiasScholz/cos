@@ -1,6 +1,6 @@
 # obtain consul sg in order to add rules needed 
 data "aws_security_group" "consul_sg" {
-  id = "${module.consul_servers.security_group_id}"
+  id = module.consul_servers.security_group_id
 }
 
 # Consul ports see: https://www.consul.io/docs/agent/options.html in section 'Ports Used' 
