@@ -144,10 +144,26 @@ sshuttle_login.sh
 
 ### No images found for AMI
 
+If you see the following error, then you don't have the AMI which is referenced available in your account.
+
 ```bash
 module.nomad-infra.module.dc-backoffice.module.data_center.aws_launch_configuration.launch_configuration: 1 error occurred:
 aws_launch_configuration.launch_configuration: No images found for AMI ami-02d24827dece83bef
 ```
+
+To solve this issue you have to build it and to reference the newly built AMI in the example.
+
+#### Build the AMI
+
+How to do this see paragraph `Build the AMI using Packer` in [modules/ami2/README.md](../../modules/ami2/README.md).
+
+![output of ami creation](create_ami_output.png)
+
+#### Reference the AMI in root-example
+
+Open the file `vars.tf` and there replace the value of the field `default` for variables `nomad_ami_id_clients` and `nomad_ami_id_servers` with the id of the ami that was just created with packer.
+
+![reference the ami](ref_ami.png)
 
 ### MalformedCertificate: Certificate is no longer valid
 
