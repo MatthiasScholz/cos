@@ -9,7 +9,7 @@ variable "vpc_id" {
 
 variable "subnet_ids" {
   description = "Ids of the subnets to deploy the nomad servers into."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "consul_cluster_tag_key" {
@@ -57,7 +57,7 @@ variable "unique_postfix" {
 
 variable "allowed_ssh_cidr_blocks" {
   description = "A list of cidr block from which inbound ssh traffic should be allowed."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -68,7 +68,7 @@ variable "datacenter_name" {
 
 variable "node_scaling_cfg" {
   description = "Scaling configuration for the nomad servers."
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 3

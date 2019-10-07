@@ -1,9 +1,9 @@
 resource "aws_security_group" "sg_server" {
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
   name        = "${local.base_cluster_name}-SG${var.unique_postfix}"
   description = "Security group for the nomad-server."
 
-  tags {
+  tags = {
     Name = "${local.base_cluster_name}-SG${var.unique_postfix}"
   }
 
@@ -21,7 +21,7 @@ resource "aws_security_group_rule" "sgr_server_eg_all" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.sg_server.id}"
+  security_group_id = aws_security_group.sg_server.id
 }
 
 # Inject rule into sg of nomad server to get access over ports 4646..4648
@@ -32,8 +32,8 @@ resource "aws_security_group_rule" "sgr_server_to_server_ig4646_4648" {
   to_port     = 4648
   protocol    = "tcp"
 
-  source_security_group_id = "${aws_security_group.sg_server.id}"
-  security_group_id        = "${aws_security_group.sg_server.id}"
+  source_security_group_id = aws_security_group.sg_server.id
+  security_group_id        = aws_security_group.sg_server.id
 }
 
 # Inject rule into sg of nomad server to get access over ports 4648
@@ -44,6 +44,7 @@ resource "aws_security_group_rule" "sgr_serversto_server_ig4648" {
   to_port     = 4648
   protocol    = "udp"
 
-  source_security_group_id = "${aws_security_group.sg_server.id}"
-  security_group_id        = "${aws_security_group.sg_server.id}"
+  source_security_group_id = aws_security_group.sg_server.id
+  security_group_id        = aws_security_group.sg_server.id
 }
+
