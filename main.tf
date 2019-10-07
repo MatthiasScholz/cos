@@ -166,7 +166,6 @@ module "nomad" {
   ami_id                           = "${var.nomad_ami_id_servers}"
   consul_cluster_tag_key           = "${local.consul_cluster_tag_key}"
   consul_cluster_tag_value         = "${local.consul_cluster_tag_value}"
-  consul_cluster_security_group_id = "${module.consul.security_group_id_consul_servers}"
 
   ## optional parameters
   env_name                = "${var.env_name}"
