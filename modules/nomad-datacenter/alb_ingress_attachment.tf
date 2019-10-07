@@ -5,18 +5,18 @@
 
 # Define autoscaling attachments to connect the ingress-controller target group with the autoscaling group having the ingress-contoller instances.
 resource "aws_autoscaling_attachment" "asga_ingress_controller" {
-  count                  = "${var.attach_ingress_alb_listener}"
-  autoscaling_group_name = "${module.data_center.asg_name}"
-  alb_target_group_arn   = "${aws_alb_target_group.tgr_ingress_controller.arn}"
+  count                  = var.attach_ingress_alb_listener ? 1 : 0 
+  autoscaling_group_name = module.data_center.asg_name
+  alb_target_group_arn   = aws_alb_target_group.tgr_ingress_controller[0].arn
 }
 
 # Targetgroup that points to the ingress-controller (i.e. fabio) port
 resource "aws_alb_target_group" "tgr_ingress_controller" {
-  count    = "${var.attach_ingress_alb_listener}"
+  count    = var.attach_ingress_alb_listener ? 1 : 0 
   name     = "${var.datacenter_name}-inctl${var.unique_postfix}"
-  port     = "${var.ingress_controller_port}"
+  port     = var.ingress_controller_port
   protocol = "HTTP"
-  vpc_id   = "${var.vpc_id}"
+  vpc_id   = var.vpc_id
 
   health_check {
     interval            = 15
@@ -28,19 +28,19 @@ resource "aws_alb_target_group" "tgr_ingress_controller" {
     unhealthy_threshold = 2
   }
 
-  tags {
+  tags = {
     Name = "${var.stack_name}-${var.datacenter_name}-ingress-controller${var.unique_postfix}"
   }
 }
 
 # listener rule for HTTPS
 resource "aws_alb_listener_rule" "alr_ingress_https" {
-  count        = "${var.attach_ingress_alb_listener}"
-  listener_arn = "${var.alb_ingress_https_listener_arn}"
+  count        = var.attach_ingress_alb_listener ? 1 : 0 
+  listener_arn = var.alb_ingress_https_listener_arn
 
   action {
     type             = "forward"
-    target_group_arn = "${aws_alb_target_group.tgr_ingress_controller.arn}"
+    target_group_arn = aws_alb_target_group.tgr_ingress_controller[0].arn
   }
 
   condition {
@@ -48,3 +48,4 @@ resource "aws_alb_listener_rule" "alr_ingress_https" {
     values = ["/*"]
   }
 }
+

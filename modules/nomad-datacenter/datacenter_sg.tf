@@ -6,11 +6,11 @@
 # Every client can get requests for the automatically assigned ports for each nomad job,
 # for example fabio will use consul to figure out the port mapping and direct requests directly to this ports.
 resource "aws_security_group" "sg_datacenter" {
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
   name        = "${var.stack_name}-${var.datacenter_name}${var.unique_postfix}"
   description = "Security group that allows ingress access for the nomad service handling and docker ports."
 
-  tags {
+  tags = {
     Name = "${var.stack_name}-${var.datacenter_name}${var.unique_postfix}"
   }
 
@@ -28,5 +28,6 @@ resource "aws_security_group_rule" "sgr_datacenter_eg_all" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.sg_datacenter.id}"
+  security_group_id = aws_security_group.sg_datacenter.id
 }
+
