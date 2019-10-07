@@ -16,8 +16,8 @@ resource "aws_security_group_rule" "sgr_public_services_to_consul_tcp" {
   from_port                = 8300
   to_port                  = 8302
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from private-services data-center consul on ports
@@ -29,8 +29,8 @@ resource "aws_security_group_rule" "sgr_private_services_to_consul_tcp" {
   from_port                = 8300
   to_port                  = 8302
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from content-connector data-center consul on ports
@@ -42,8 +42,8 @@ resource "aws_security_group_rule" "sgr_content_connector_to_consul_tcp" {
   from_port                = 8300
   to_port                  = 8302
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from backoffice data-center consul on ports
@@ -55,8 +55,8 @@ resource "aws_security_group_rule" "sgr_backoffice_to_consul_tcp" {
   from_port                = 8300
   to_port                  = 8302
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from public-services data-center consul on ports
@@ -68,8 +68,8 @@ resource "aws_security_group_rule" "sgr_public_services_to_consul_udp" {
   from_port                = 8301
   to_port                  = 8302
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from private-services data-center consul on ports
@@ -81,8 +81,8 @@ resource "aws_security_group_rule" "sgr_private_services_to_consul_udp" {
   from_port                = 8301
   to_port                  = 8302
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from content-connector data-center consul on ports
@@ -94,8 +94,8 @@ resource "aws_security_group_rule" "sgr_content_connector_to_consul_udp" {
   from_port                = 8301
   to_port                  = 8302
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from backoffice data-center consul on ports
@@ -107,8 +107,8 @@ resource "aws_security_group_rule" "sgr_backoffice_to_consul_udp" {
   from_port                = 8301
   to_port                  = 8302
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from public-services data-center consul on ports
@@ -120,8 +120,8 @@ resource "aws_security_group_rule" "sgr_public_services_to_consul_http" {
   from_port                = 8500
   to_port                  = 8500
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from private-services data-center consul on ports
@@ -133,8 +133,8 @@ resource "aws_security_group_rule" "sgr_private_services_to_consul_http" {
   from_port                = 8500
   to_port                  = 8500
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from content-connector data-center consul on ports
@@ -146,8 +146,8 @@ resource "aws_security_group_rule" "sgr_content_connector_to_consul_http" {
   from_port                = 8500
   to_port                  = 8500
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from backoffice data-center consul on ports
@@ -159,8 +159,8 @@ resource "aws_security_group_rule" "sgr_backoffice_to_consul_http" {
   from_port                = 8500
   to_port                  = 8500
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from public-services data-center consul on ports
@@ -172,8 +172,8 @@ resource "aws_security_group_rule" "sgr_public_services_to_consul_dns_tcp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from private-services data-center consul on ports
@@ -185,8 +185,8 @@ resource "aws_security_group_rule" "sgr_private_services_to_consul_dns_tcp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from content-connector data-center consul on ports
@@ -198,8 +198,8 @@ resource "aws_security_group_rule" "sgr_content_connector_to_consul_dns_tcp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from backoffice data-center consul on ports
@@ -211,8 +211,8 @@ resource "aws_security_group_rule" "sgr_backoffice_to_consul_dns_tcp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from public-services data-center consul on ports
@@ -224,8 +224,8 @@ resource "aws_security_group_rule" "sgr_public_services_to_consul_dns_udp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from private-services data-center consul on ports
@@ -237,8 +237,8 @@ resource "aws_security_group_rule" "sgr_private_services_to_consul_dns_udp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from content-connector data-center consul on ports
@@ -250,8 +250,8 @@ resource "aws_security_group_rule" "sgr_content_connector_to_consul_dns_udp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from backoffice data-center consul on ports
@@ -263,6 +263,6 @@ resource "aws_security_group_rule" "sgr_backoffice_to_consul_dns_udp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_consul
 }
