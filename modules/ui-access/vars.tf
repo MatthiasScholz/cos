@@ -5,7 +5,7 @@ variable "vpc_id" {
 
 variable "subnet_ids" {
   description = "Ids of the subnets to deploy the alb's into."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "nomad_server_asg_name" {
@@ -53,7 +53,7 @@ variable "fabio_ui_port" {
 
 variable "allowed_cidr_blocks_for_ui_alb" {
   description = "Map for cidr blocks that should get access over alb. The format is name:cidr-block. I.e. 'my_cidr'='90.250.75.79/32'"
-  type        = "map"
+  type        = map(string)
 
   default = {
     "all" = "0.0.0.0/0"
@@ -74,3 +74,4 @@ variable "ui_alb_use_https_listener" {
   description = "If true, the https endpoint for the ui-albs will be created instead of the http one. Precondition for this is that ui_alb_https_listener_cert_arn is set apropriately."
   default     = false
 }
+
