@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/logger"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
@@ -29,4 +30,5 @@ func TestNetworkingExample(t *testing.T) {
 	// Check infrastructure
 	// - examples has no outputs!
 	// -> For now it is just important that the examples successfully ran.
+	logger.Log(t, "############ TestNetworkingExample [SUCCESS] ####################")
 }
