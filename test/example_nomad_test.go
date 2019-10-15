@@ -21,10 +21,10 @@ func TestNomadExample(t *testing.T) {
 	test_structure.RunTestStage(t, "setup_ami", func() {
 		// Execution from inside the test folder
 		amiName := "amazon-linux-ami2"
-		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+		amiID := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
 
 		test_structure.SaveString(t, tmpNomad, savedAWSRegion, awsRegion)
-		test_structure.SaveAmiId(t, tmpNomad, amiId)
+		test_structure.SaveAmiId(t, tmpNomad, amiID)
 	})
 
 	// Cleanup
@@ -32,9 +32,9 @@ func TestNomadExample(t *testing.T) {
 		helperCleanup(t, tmpNomad)
 
 		// Delete the generated AMI
-		amiId := test_structure.LoadAmiId(t, tmpNomad)
+		amiID := test_structure.LoadAmiId(t, tmpNomad)
 		awsRegion := test_structure.LoadString(t, tmpNomad, savedAWSRegion)
-		aws.DeleteAmi(t, awsRegion, amiId)
+		aws.DeleteAmi(t, awsRegion, amiID)
 	})
 
 	// Create Infrastructure
@@ -56,8 +56,8 @@ func TestNomadExample(t *testing.T) {
 		assert.Equal(t, nomadServerCount, len(instanceIds))
 
 		// Check Access to nomad cluster from the outside
-		nomadServerIp := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
-		logger.Logf(t, "Nomad Service IP: '%s'", nomadServerIp)
+		nomadServerIP := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
+		logger.Logf(t, "Nomad Service IP: '%s'", nomadServerIP)
 
 		// TODO Use nomad module to check - no access from the outside to the cluster!
 	})

@@ -21,10 +21,10 @@ func TestRootExample(t *testing.T) {
 	test_structure.RunTestStage(t, "setup_ami", func() {
 		// Execution from inside the test folder
 		amiName := "amazon-linux-ami2"
-		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+		amiID := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
 
 		test_structure.SaveString(t, tmpRoot, savedAWSRegion, awsRegion)
-		test_structure.SaveAmiId(t, tmpRoot, amiId)
+		test_structure.SaveAmiId(t, tmpRoot, amiID)
 	})
 
 	// Cleanup
@@ -32,9 +32,9 @@ func TestRootExample(t *testing.T) {
 		helperCleanup(t, tmpRoot)
 
 		// Delete the generated AMI
-		amiId := test_structure.LoadAmiId(t, tmpRoot)
+		amiID := test_structure.LoadAmiId(t, tmpRoot)
 		awsRegion := test_structure.LoadString(t, tmpRoot, savedAWSRegion)
-		aws.DeleteAmi(t, awsRegion, amiId)
+		aws.DeleteAmi(t, awsRegion, amiID)
 	})
 
 	// Create Infrastructure
