@@ -25,7 +25,7 @@ func TestConsulExample(t *testing.T) {
 
 		// TODO Understand why this is needed - the AMI should be in the same region as the example.
 		//      Why can the region information can not be preserved in a different way?
-		test_structure.SaveString(t, tmpConsul, SAVED_AWS_REGION, awsRegion)
+		test_structure.SaveString(t, tmpConsul, savedAWSRegion, awsRegion)
 		test_structure.SaveAmiId(t, tmpConsul, amiId)
 	})
 
@@ -35,7 +35,7 @@ func TestConsulExample(t *testing.T) {
 
 		// Delete the generated AMI
 		amiId := test_structure.LoadAmiId(t, tmpConsul)
-		awsRegion := test_structure.LoadString(t, tmpConsul, SAVED_AWS_REGION)
+		awsRegion := test_structure.LoadString(t, tmpConsul, savedAWSRegion)
 		aws.DeleteAmi(t, awsRegion, amiId)
 	})
 

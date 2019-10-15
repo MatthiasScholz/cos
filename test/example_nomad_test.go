@@ -23,7 +23,7 @@ func TestNomadExample(t *testing.T) {
 		amiName := "amazon-linux-ami2"
 		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
 
-		test_structure.SaveString(t, tmpNomad, SAVED_AWS_REGION, awsRegion)
+		test_structure.SaveString(t, tmpNomad, savedAWSRegion, awsRegion)
 		test_structure.SaveAmiId(t, tmpNomad, amiId)
 	})
 
@@ -33,7 +33,7 @@ func TestNomadExample(t *testing.T) {
 
 		// Delete the generated AMI
 		amiId := test_structure.LoadAmiId(t, tmpNomad)
-		awsRegion := test_structure.LoadString(t, tmpNomad, SAVED_AWS_REGION)
+		awsRegion := test_structure.LoadString(t, tmpNomad, savedAWSRegion)
 		aws.DeleteAmi(t, awsRegion, amiId)
 	})
 
