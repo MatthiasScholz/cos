@@ -342,3 +342,45 @@ func helperCreateConsulClient(t *testing.T, ipAddress string) *consul_api.Client
 
 	return client
 }
+
+func helperCheckNomad(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
+
+	publicHost := ssh.Host{
+		Hostname:    publicIP,
+		SshKeyPair:  keyPair.KeyPair,
+		SshUserName: "ec2-user",
+	}
+
+	// Check basic nomad commands directly on the created instances
+	retry.DoWithRetry(t, "Check nomad on created host/ server", 30, 5*time.Second, func() (string, error) {
+		// DEBUG: helperExportSSHKey(publicHost.SshKeyPair)
+
+		// Check the status of the nomad setup
+		expectedLeader := "No running jobs"
+		commandLeader := "nomad status"
+		actualText, errLeader := ssh.CheckSshCommandE(t, publicHost, commandLeader)
+
+		// .Verify result
+		if errLeader != nil {
+			return "", fmt.Errorf("Msg: %s, Command %s executed with error: %v", actualText, commandLeader, errLeader)
+		}
+		if strings.Contains(actualText, expectedLeader) == false {
+			return "", fmt.Errorf("Expected status report to be '%s' but got '%s'", expectedLeader, actualText)
+		}
+
+		// Check if there is a leader elected
+		expectedMembers := "leader"
+		commandMembers := "nomad operator raft list-peers"
+		actualText, errMembers := ssh.CheckSshCommandE(t, publicHost, commandMembers)
+
+		// .Verify result
+		if errMembers != nil {
+			return "", fmt.Errorf("Msg: %s Command %s executed with error: %v", actualText, commandMembers, errMembers)
+		}
+		if strings.Contains(actualText, expectedMembers) == false {
+			return "", fmt.Errorf("Expected leader report to be '%s' but got '%s'", expectedLeader, actualText)
+		}
+
+		return "", nil
+	})
+}

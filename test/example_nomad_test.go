@@ -59,6 +59,15 @@ func TestNomadExample(t *testing.T) {
 		nomadServerIP := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
 		logger.Logf(t, "Nomad Service IP: '%s'", nomadServerIP)
 
-		// TODO Use nomad module to check - no access from the outside to the cluster!
+		// Check SSH connection
+		keyPair := test_structure.LoadEc2KeyPair(t, tmpNomad)
+		helperCheckSSH(t, nomadServerIP, keyPair.KeyPair)
+
+		// Check if nomad is running
+		// - Connections from outside are not allowed!
+		// -> Test from inside the cluster needed ( SSH + Commands )
+		helperCheckNomad(t, nomadServerIP, keyPair)
 	})
+
+	logger.Log(t, "############ TestNomadExample [SUCCESS] ####################")
 }
