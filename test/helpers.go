@@ -56,33 +56,33 @@ func initTerraformOptions(path string) *terraform.Options {
 	return terraformOptions
 }
 
-func helperSetupInfrastructure(t *testing.T, awsRegion string, tmp_path string, ami bool) {
+func helperSetupInfrastructure(t *testing.T, awsRegion string, tmpPath string, ami bool) {
 	uniqueID := random.UniqueId()
 
 	keyPairName := fmt.Sprintf("terratest-onetime-key-%s", uniqueID)
 	keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
 
-	terraformOptions := initTerraformOptions(tmp_path)
+	terraformOptions := initTerraformOptions(tmpPath)
 	terraformOptions.Vars["aws_region"] = awsRegion
 	terraformOptions.Vars["ssh_key_name"] = keyPairName
 	if ami {
-		amiId := test_structure.LoadAmiId(t, tmp_path)
+		amiId := test_structure.LoadAmiId(t, tmpPath)
 		terraformOptions.Vars["ami_id"] = amiId
 	}
 
 	// Persist options and keypair for later use
-	test_structure.SaveTerraformOptions(t, tmp_path, terraformOptions)
-	test_structure.SaveEc2KeyPair(t, tmp_path, keyPair)
+	test_structure.SaveTerraformOptions(t, tmpPath, terraformOptions)
+	test_structure.SaveEc2KeyPair(t, tmpPath, keyPair)
 
 	// Rollout infrastructure
 	terraform.InitAndApply(t, terraformOptions)
 }
 
-func helperCleanup(t *testing.T, tmp_path string) {
-	terraformOptions := test_structure.LoadTerraformOptions(t, tmp_path)
+func helperCleanup(t *testing.T, tmpPath string) {
+	terraformOptions := test_structure.LoadTerraformOptions(t, tmpPath)
 	terraform.Destroy(t, terraformOptions)
 
-	keyPair := test_structure.LoadEc2KeyPair(t, tmp_path)
+	keyPair := test_structure.LoadEc2KeyPair(t, tmpPath)
 	aws.DeleteEC2KeyPair(t, keyPair)
 }
 
