@@ -254,7 +254,7 @@ func helperTestNomadCluster(t *testing.T, nodeIpAddress string, expectedServers 
 		}
 
 		if leader == "" {
-			return "", errors.New("Nomad cluster returned an empty leader response, so a leader must not have been elected yet.")
+			return "", errors.New("Nomad cluster returned an empty leader response, so a leader must not have been elected yet")
 		}
 
 		// Check for number of nomad client nodes
@@ -321,7 +321,7 @@ func helperTestConsulCluster(t *testing.T, nodeIpAddress string, expectedMembers
 		}
 
 		if leader == "" {
-			return "", errors.New("Consul cluster returned an empty leader response, so a leader must not have been elected yet.")
+			return "", errors.New("Consul cluster returned an empty leader response, so a leader must not have been elected yet")
 		}
 
 		return leader, nil
