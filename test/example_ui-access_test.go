@@ -5,6 +5,7 @@ package test
 import (
 	"testing"
 
+	"github.com/gruntwork-io/terratest/modules/logger"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
@@ -31,4 +32,5 @@ func TestUIAccessExample(t *testing.T) {
 		helperCheckUI(t, terraformOptions, "url_consul_ui", "Consul UI")
 		helperCheckUI(t, terraformOptions, "url_fabio_ui", "Fabio UI")
 	})
+	logger.Log(t, "############ TestUIAccessExample [SUCCESS] ####################")
 }

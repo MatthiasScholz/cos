@@ -210,15 +210,31 @@ func helperExportSSHKey(keyPair *ssh.KeyPair) error {
 }
 
 func helperCheckUI(t *testing.T, terraformOptions *terraform.Options, terraformOutput string, expected string) {
+	maxRetries := 60
+	sleepBetweenRetries := 10 * time.Second
+
 	urlUI := terraform.Output(t, terraformOptions, terraformOutput)
 	// DEBUG: logger.Logf(t, "'%s': '%s'", terraformOutput, urlUI)
 
-	respUI, _ := http.Get(urlUI)
-	bodyBytes, _ := ioutil.ReadAll(respUI.Body)
-	respUIBody := string(bodyBytes)
-	assert.Equal(t, http.StatusOK, respUI.StatusCode)
-	assert.Contains(t, respUIBody, expected)
-	defer respUI.Body.Close()
+	retry.DoWithRetry(t, "Check nomad members", maxRetries, sleepBetweenRetries, func() (string, error) {
+		respUI, err := http.Get(urlUI)
+		if err != nil {
+			return "", err
+		}
+
+		defer respUI.Body.Close()
+
+		bodyBytes, err := ioutil.ReadAll(respUI.Body)
+		if err != nil {
+			return "", err
+		}
+		respUIBody := string(bodyBytes)
+		assert.Equal(t, http.StatusOK, respUI.StatusCode)
+		assert.Contains(t, respUIBody, expected)
+
+		return "", nil
+	})
+
 }
 
 // Use a Nomad client to connect to the given node and use it to verify that:
