@@ -45,7 +45,7 @@ endef
 all: setup test_all
 
 setup: install_terratest_log_parser
-	dep ensure -v
+	dep ensure -vendor-only -v
 
 os:
 	@echo $(OS_VERSION)
