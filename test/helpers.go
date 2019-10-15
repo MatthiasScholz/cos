@@ -36,9 +36,6 @@ var forbiddenRegions = []string{
 
 const savedAWSRegion = "AwsRegion"
 
-// FIXME: this seems to be odd - how often is this constant used?
-const consulAMITemplateVarRegion = "aws_region"
-
 func initTerraformOptions(path string) *terraform.Options {
 	terraformOptions := &terraform.Options{
 		// Path to terraform code
@@ -176,7 +173,7 @@ func helperBuildAmi(t *testing.T, packerTemplatePath string, packerBuildName str
 		Template: packerTemplatePath,
 		Only:     packerBuildName,
 		Vars: map[string]string{
-			consulAMITemplateVarRegion: awsRegion,
+			"aws_region": awsRegion,
 		},
 	}
 
