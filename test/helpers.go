@@ -24,6 +24,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/knq/pemutil"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 	consul_api "github.com/hashicorp/consul/api"
@@ -80,6 +81,7 @@ func helperCleanup(t *testing.T, tmpPath string) {
 	terraform.Destroy(t, terraformOptions)
 
 	keyPair := test_structure.LoadEc2KeyPair(t, tmpPath)
+	require.NotNil(t, keyPair, "Expected to obtain a key-pair in order to clean it up after usage, but none was found.")
 	aws.DeleteEC2KeyPair(t, keyPair)
 }
 
