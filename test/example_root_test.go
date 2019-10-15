@@ -6,9 +6,8 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	nomad_jobspec "github.com/hashicorp/nomad/jobspec"
-	"github.com/stretchr/testify/require"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
@@ -58,22 +57,7 @@ func TestRootExample(t *testing.T) {
 	test_structure.RunTestStage(t, "setup_cluster", func() {
 		terraformOptions := test_structure.LoadTerraformOptions(t, tmpRoot)
 		nomadURI := terraform.Output(t, terraformOptions, "nomad_ui_alb_dns")
-		c := helperCreateNomadClient(t, nomadURI) // connect to the cluster
-		jobs := c.Jobs()                          // get jobs
-
-		// Check if current number of jobs is zero
-		resp, _, err := jobs.List(nil)
-		require.Nil(t, err)                                            // Check no error
-		require.Emptyf(t, resp, "expected 0 jobs, got: %d", len(resp)) // Check empty job listing
-
-		// Create new job - fabio
-		jobFabio, err := nomad_jobspec.ParseFile("../examples/jobs/fabio.nomad")
-		require.NoError(t, err)
-		require.NotNil(t, jobFabio)
-		resp2, _, err := jobs.Register(jobFabio, nil)
-		require.NoError(t, err)
-		require.NotNil(t, resp2)
-		require.NotEmpty(t, resp2.EvalID)
+		helperTestCOSDeployment(t, nomadURI)
 	})
 
 	// TODO Further testing of the cluster.
@@ -84,4 +68,5 @@ func TestRootExample(t *testing.T) {
 	// test service ( + retries )
 	// tf out: ingress_alb_dns
 	// curl -s http://$IG_ALB_DNS/ping -> Status Code: 200
+	logger.Log(t, "############ TestRootExample [SUCCESS] ####################")
 }

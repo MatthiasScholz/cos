@@ -24,10 +24,12 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/knq/pemutil"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 	consul_api "github.com/hashicorp/consul/api"
 	nomad_api "github.com/hashicorp/nomad/api"
+	nomad_jobspec "github.com/hashicorp/nomad/jobspec"
 )
 
 var forbiddenRegions = []string{
@@ -397,6 +399,47 @@ func helperCheckNomad(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
 			return "", fmt.Errorf("Expected leader report to be '%s' but got '%s'", expectedLeader, actualText)
 		}
 
+		return "", nil
+	})
+}
+
+// Use a Nomad client to connect to the given node and use it to verify that:
+//
+// 1. A deployment of a service (e.g. fabio) is possible
+func helperTestCOSDeployment(t *testing.T, nodeIPAddress string) {
+	nomadClient := helperCreateNomadClient(t, fmt.Sprintf("http://%s", nodeIPAddress))
+	require.NotNil(t, nomadClient, "Failed to create nomad client")
+	maxRetries := 60
+	sleepBetweenRetries := 10 * time.Second
+
+	retry.DoWithRetry(t, "Check nomad job deployment", maxRetries, sleepBetweenRetries, func() (string, error) {
+		jobs := nomadClient.Jobs() // get jobs
+		if jobs == nil {
+			return "", fmt.Errorf("nomadClient.Jobs() is nil")
+		}
+
+		// Check if current number of jobs is zero
+		resp, _, err := jobs.List(nil)
+		if err != nil {
+			return "", err
+		}
+		if len(resp) > 0 {
+			return "", fmt.Errorf("Expected 0 jobs, got: %d", len(resp))
+		}
+
+		// Create new job - fabio
+		jobFabio, err := nomad_jobspec.ParseFile("../examples/jobs/fabio.nomad")
+		if err != nil {
+			return "", err
+		}
+
+		resp2, _, err := jobs.Register(jobFabio, nil)
+		if err != nil {
+			return "", err
+		}
+		if len(resp2.EvalID) == 0 {
+			return "", fmt.Errorf("Expected to get a valid EvalID, but got '%s'", resp2.EvalID)
+		}
 		return "", nil
 	})
 }
