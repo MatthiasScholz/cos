@@ -216,7 +216,7 @@ func helperCheckUI(t *testing.T, terraformOptions *terraform.Options, terraformO
 	urlUI := terraform.Output(t, terraformOptions, terraformOutput)
 	// DEBUG: logger.Logf(t, "'%s': '%s'", terraformOutput, urlUI)
 
-	retry.DoWithRetry(t, "Check nomad members", maxRetries, sleepBetweenRetries, func() (string, error) {
+	retry.DoWithRetry(t, "Check UI access ("+expected+")", maxRetries, sleepBetweenRetries, func() (string, error) {
 		respUI, err := http.Get(urlUI)
 		if err != nil {
 			return "", err
