@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
@@ -77,4 +78,5 @@ func TestConsulExample(t *testing.T) {
 		// -> Test from inside the cluster needed ( SSH + Commands )
 		helperCheckConsul(t, nodeIP, keyPair)
 	})
+	logger.Log(t, "############ TestConsulExample [SUCCESS] ####################")
 }

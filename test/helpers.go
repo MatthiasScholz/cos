@@ -164,7 +164,6 @@ func helperCheckConsul(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
 			return "", fmt.Errorf("Expected members report to be '%s' but got '%s'", expectedLeader, actualText)
 		}
 
-		logger.Log(t, "############# CONSUL TESTS SUCCESSFUL ##########")
 		return "", nil
 	})
 }

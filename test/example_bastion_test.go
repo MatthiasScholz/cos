@@ -7,6 +7,7 @@ import (
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 
+	"github.com/gruntwork-io/terratest/modules/logger"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
@@ -37,4 +38,6 @@ func TestBastionExample(t *testing.T) {
 		publicIP := terraform.Output(t, terraformOptions, "bastion_ip")
 		helperCheckSSH(t, publicIP, keyPair.KeyPair)
 	})
+
+	logger.Log(t, "############ TestBastionExample [SUCCESS] ####################")
 }
