@@ -1,6 +1,7 @@
-// This files contains helper functions to evaluation the functionality
-// of the terraform modules.
 package test
+
+// This file contains helper functions to evaluate the functionality
+// of the terraform modules.
 
 import (
 	"crypto/x509"
