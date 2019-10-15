@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/logger"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
@@ -44,4 +45,5 @@ func TestNomadDataCenterExample(t *testing.T) {
 		// - not output variables configured
 		// - no access from the outside to the cluster
 	})
+	logger.Log(t, "############ TestNomadDataCenterExample [SUCCESS] ####################")
 }
