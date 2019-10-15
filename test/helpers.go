@@ -66,8 +66,8 @@ func helperSetupInfrastructure(t *testing.T, awsRegion string, tmpPath string, a
 	terraformOptions.Vars["aws_region"] = awsRegion
 	terraformOptions.Vars["ssh_key_name"] = keyPairName
 	if ami {
-		amiId := test_structure.LoadAmiId(t, tmpPath)
-		terraformOptions.Vars["ami_id"] = amiId
+		amiID := test_structure.LoadAmiId(t, tmpPath)
+		terraformOptions.Vars["ami_id"] = amiID
 	}
 
 	// Persist options and keypair for later use
@@ -122,7 +122,7 @@ func helperCheckConsul(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
 
 	// Check basic SSH to the instance
 	retry.DoWithRetry(t, "SSH to public host", 30, 5*time.Second, func() (string, error) {
-		// DEBUG: helperExportSshKey(publicHost.SshKeyPair)
+		// DEBUG: helperExportSSHKey(publicHost.SshKeyPair)
 
 		// Check system service configuration: supervisor started consul service and consul is running
 		expectedService := "RUNNING"
@@ -192,7 +192,7 @@ func helperBuildAmi(t *testing.T, packerTemplatePath string, packerBuildName str
 // Exports the private SSH key as pem file to the disk.
 // This is helpful for debugging sessions when a manual SSH access to the resource is needed.
 // The key will be written into the execution folder, named: 'private_key.pem'.
-func helperExportSshKey(keyPair *ssh.KeyPair) error {
+func helperExportSSHKey(keyPair *ssh.KeyPair) error {
 
 	store, err := pemutil.DecodeBytes([]byte(keyPair.PrivateKey))
 	privateKey, _ := store.RSAPrivateKey()
@@ -211,16 +211,16 @@ func helperExportSshKey(keyPair *ssh.KeyPair) error {
 	return nil
 }
 
-func helperCheckUi(t *testing.T, terraformOptions *terraform.Options, terraformOutput string, expected string) {
-	urlUi := terraform.Output(t, terraformOptions, terraformOutput)
-	// DEBUG: logger.Logf(t, "'%s': '%s'", terraformOutput, urlUi)
+func helperCheckUI(t *testing.T, terraformOptions *terraform.Options, terraformOutput string, expected string) {
+	urlUI := terraform.Output(t, terraformOptions, terraformOutput)
+	// DEBUG: logger.Logf(t, "'%s': '%s'", terraformOutput, urlUI)
 
-	respUi, _ := http.Get(urlUi)
-	bodyBytes, _ := ioutil.ReadAll(respUi.Body)
-	respUiBody := string(bodyBytes)
-	assert.Equal(t, http.StatusOK, respUi.StatusCode)
-	assert.Contains(t, respUiBody, expected)
-	defer respUi.Body.Close()
+	respUI, _ := http.Get(urlUI)
+	bodyBytes, _ := ioutil.ReadAll(respUI.Body)
+	respUIBody := string(bodyBytes)
+	assert.Equal(t, http.StatusOK, respUI.StatusCode)
+	assert.Contains(t, respUIBody, expected)
+	defer respUI.Body.Close()
 }
 
 // Use a Nomad client to connect to the given node and use it to verify that:
@@ -228,8 +228,8 @@ func helperCheckUi(t *testing.T, terraformOptions *terraform.Options, terraformO
 // 1. The Nomad cluster has deployed
 // 2. The cluster has the expected number of members
 // 3. The cluster has elected a leader
-func helperTestNomadCluster(t *testing.T, nodeIpAddress string, expectedServers int, expectedNodes int) {
-	nomadClient := helperCreateNomadClient(t, fmt.Sprintf("http://%s", nodeIpAddress))
+func helperTestNomadCluster(t *testing.T, nodeIPAddress string, expectedServers int, expectedNodes int) {
+	nomadClient := helperCreateNomadClient(t, fmt.Sprintf("http://%s", nodeIPAddress))
 	maxRetries := 60
 	sleepBetweenRetries := 10 * time.Second
 
@@ -300,8 +300,8 @@ func helperCreateNomadClient(t *testing.T, ipAddress string) *nomad_api.Client {
 // 1. The Consul cluster has deployed
 // 2. The cluster has the expected number of members
 // 3. The cluster has elected a leader
-func helperTestConsulCluster(t *testing.T, nodeIpAddress string, expectedMembers int) {
-	consulClient := helperCreateConsulClient(t, nodeIpAddress)
+func helperTestConsulCluster(t *testing.T, nodeIPAddress string, expectedMembers int) {
+	consulClient := helperCreateConsulClient(t, nodeIPAddress)
 	maxRetries := 60
 	sleepBetweenRetries := 10 * time.Second
 
