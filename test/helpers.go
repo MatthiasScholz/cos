@@ -34,7 +34,8 @@ import (
 
 var forbiddenRegions = []string{
 	"ap-northeast-1", // Subnet ap-northeast-1b not supported
-	"sa-east-1",      // Subnet asa-east-1b not supported
+	"sa-east-1",      // Subnet sa-east-1b not supported
+	"ca-central-1",   // Subnet ca-central-1c not supported
 }
 
 const savedAWSRegion = "AwsRegion"
