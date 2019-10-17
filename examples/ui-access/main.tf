@@ -5,7 +5,7 @@ locals {
 
 provider "aws" {
   profile = var.deploy_profile
-  region  = local.aws_region
+  region  = var.aws_region
 }
 
 ### obtaining default vpc, security group and subnet of the env
@@ -89,7 +89,7 @@ module "ui-access" {
   fabio_server_asg_name  = aws_autoscaling_group.asg_sample.name
 
   ## optional parameters
-  aws_region     = local.aws_region
+  aws_region     = var.aws_region
   env_name       = local.env_name
   stack_name     = local.stack_name
   nomad_ui_port  = 4646
