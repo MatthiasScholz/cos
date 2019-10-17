@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
@@ -21,12 +22,12 @@ func TestConsulExample(t *testing.T) {
 	// This test needs a custom AMI.
 	test_structure.RunTestStage(t, "setup_ami", func() {
 		// Execution from inside the test folder
-		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+		amiID := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
 
 		// TODO Understand why this is needed - the AMI should be in the same region as the example.
 		//      Why can the region information can not be preserved in a different way?
-		test_structure.SaveString(t, tmpConsul, SAVED_AWS_REGION, awsRegion)
-		test_structure.SaveAmiId(t, tmpConsul, amiId)
+		test_structure.SaveString(t, tmpConsul, savedAWSRegion, awsRegion)
+		test_structure.SaveAmiId(t, tmpConsul, amiID)
 	})
 
 	// Cleanup infrastructure
@@ -34,9 +35,9 @@ func TestConsulExample(t *testing.T) {
 		helperCleanup(t, tmpConsul)
 
 		// Delete the generated AMI
-		amiId := test_structure.LoadAmiId(t, tmpConsul)
-		awsRegion := test_structure.LoadString(t, tmpConsul, SAVED_AWS_REGION)
-		aws.DeleteAmi(t, awsRegion, amiId)
+		amiID := test_structure.LoadAmiId(t, tmpConsul)
+		awsRegion := test_structure.LoadString(t, tmpConsul, savedAWSRegion)
+		aws.DeleteAmi(t, awsRegion, amiID)
 	})
 
 	// Prepare infrastructure and create it
@@ -77,4 +78,5 @@ func TestConsulExample(t *testing.T) {
 		// -> Test from inside the cluster needed ( SSH + Commands )
 		helperCheckConsul(t, nodeIP, keyPair)
 	})
+	logger.Log(t, "############ TestConsulExample [SUCCESS] ####################")
 }

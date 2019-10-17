@@ -31,5 +31,5 @@ output "curl_fabio_ui" {
 }
 
 output "url_fabio_ui" {
-  value = "http://${module.ui-access.fabio_ui_alb_dns_name}/"
+  value = "http://${module.ui-access.fabio_ui_alb_dns_name}/health"
 }

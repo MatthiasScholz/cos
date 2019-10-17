@@ -5,6 +5,7 @@ package test
 import (
 	"testing"
 
+	"github.com/gruntwork-io/terratest/modules/logger"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
@@ -27,8 +28,9 @@ func TestUIAccessExample(t *testing.T) {
 		terraformOptions := test_structure.LoadTerraformOptions(t, tmpUIAccess)
 		// This example has one curl example output for each of the ALB's to access the ui. To test you just have to call it.
 		// I.e. the output for nomad ui was ```curl_nomad_ui = curl http://alb-nomad-ui-example-1440612083.us-east-1.elb.amazonaws.com/ui/jobs```, then the call should return ```<h1>Nomad UI</h1>```.
-		helperCheckUi(t, terraformOptions, "url_nomad_ui", "Nomad UI")
-		helperCheckUi(t, terraformOptions, "url_consul_ui", "Consul UI")
-		helperCheckUi(t, terraformOptions, "url_fabio_ui", "Fabio UI")
+		helperCheckUI(t, terraformOptions, "url_nomad_ui", "Nomad UI")
+		helperCheckUI(t, terraformOptions, "url_consul_ui", "Consul UI")
+		helperCheckUI(t, terraformOptions, "url_fabio_ui", "Fabio UI")
 	})
+	logger.Log(t, "############ TestUIAccessExample [SUCCESS] ####################")
 }

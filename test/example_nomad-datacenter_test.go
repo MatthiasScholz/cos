@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/logger"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
@@ -17,10 +18,10 @@ func TestNomadDataCenterExample(t *testing.T) {
 	test_structure.RunTestStage(t, "setup_ami", func() {
 		// Execution from inside the test folder
 		amiName := "amazon-linux-ami2"
-		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+		amiID := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
 
-		test_structure.SaveString(t, tmpNomadDataCenter, SAVED_AWS_REGION, awsRegion)
-		test_structure.SaveAmiId(t, tmpNomadDataCenter, amiId)
+		test_structure.SaveString(t, tmpNomadDataCenter, savedAWSRegion, awsRegion)
+		test_structure.SaveAmiId(t, tmpNomadDataCenter, amiID)
 	})
 
 	// Cleanup
@@ -28,9 +29,9 @@ func TestNomadDataCenterExample(t *testing.T) {
 		helperCleanup(t, tmpNomadDataCenter)
 
 		// Delete the generated AMI
-		amiId := test_structure.LoadAmiId(t, tmpNomadDataCenter)
-		awsRegion := test_structure.LoadString(t, tmpNomadDataCenter, SAVED_AWS_REGION)
-		aws.DeleteAmi(t, awsRegion, amiId)
+		amiID := test_structure.LoadAmiId(t, tmpNomadDataCenter)
+		awsRegion := test_structure.LoadString(t, tmpNomadDataCenter, savedAWSRegion)
+		aws.DeleteAmi(t, awsRegion, amiID)
 	})
 
 	// Create Infrastructure
@@ -44,4 +45,5 @@ func TestNomadDataCenterExample(t *testing.T) {
 		// - not output variables configured
 		// - no access from the outside to the cluster
 	})
+	logger.Log(t, "############ TestNomadDataCenterExample [SUCCESS] ####################")
 }

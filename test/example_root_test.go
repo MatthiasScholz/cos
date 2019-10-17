@@ -6,9 +6,8 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
+	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	nomad_jobspec "github.com/hashicorp/nomad/jobspec"
-	"github.com/stretchr/testify/require"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
@@ -21,10 +20,10 @@ func TestRootExample(t *testing.T) {
 	test_structure.RunTestStage(t, "setup_ami", func() {
 		// Execution from inside the test folder
 		amiName := "amazon-linux-ami2"
-		amiId := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
+		amiID := helperBuildAmi(t, "../modules/ami2/nomad-consul-docker-ecr.json", amiName, awsRegion)
 
-		test_structure.SaveString(t, tmpRoot, SAVED_AWS_REGION, awsRegion)
-		test_structure.SaveAmiId(t, tmpRoot, amiId)
+		test_structure.SaveString(t, tmpRoot, savedAWSRegion, awsRegion)
+		test_structure.SaveAmiId(t, tmpRoot, amiID)
 	})
 
 	// Cleanup
@@ -32,9 +31,9 @@ func TestRootExample(t *testing.T) {
 		helperCleanup(t, tmpRoot)
 
 		// Delete the generated AMI
-		amiId := test_structure.LoadAmiId(t, tmpRoot)
-		awsRegion := test_structure.LoadString(t, tmpRoot, SAVED_AWS_REGION)
-		aws.DeleteAmi(t, awsRegion, amiId)
+		amiID := test_structure.LoadAmiId(t, tmpRoot)
+		awsRegion := test_structure.LoadString(t, tmpRoot, savedAWSRegion)
+		aws.DeleteAmi(t, awsRegion, amiID)
 	})
 
 	// Create Infrastructure
@@ -58,22 +57,7 @@ func TestRootExample(t *testing.T) {
 	test_structure.RunTestStage(t, "setup_cluster", func() {
 		terraformOptions := test_structure.LoadTerraformOptions(t, tmpRoot)
 		nomadURI := terraform.Output(t, terraformOptions, "nomad_ui_alb_dns")
-		c := helperCreateNomadClient(t, nomadURI) // connect to the cluster
-		jobs := c.Jobs()                          // get jobs
-
-		// Check if current number of jobs is zero
-		resp, _, err := jobs.List(nil)
-		require.Nil(t, err)                                            // Check no error
-		require.Emptyf(t, resp, "expected 0 jobs, got: %d", len(resp)) // Check empty job listing
-
-		// Create new job - fabio
-		jobFabio, err := nomad_jobspec.ParseFile("../examples/jobs/fabio.nomad")
-		require.NoError(t, err)
-		require.NotNil(t, jobFabio)
-		resp2, _, err := jobs.Register(jobFabio, nil)
-		require.NoError(t, err)
-		require.NotNil(t, resp2)
-		require.NotEmpty(t, resp2.EvalID)
+		helperTestCOSDeployment(t, nomadURI)
 	})
 
 	// TODO Further testing of the cluster.
@@ -84,4 +68,5 @@ func TestRootExample(t *testing.T) {
 	// test service ( + retries )
 	// tf out: ingress_alb_dns
 	// curl -s http://$IG_ALB_DNS/ping -> Status Code: 200
+	logger.Log(t, "############ TestRootExample [SUCCESS] ####################")
 }

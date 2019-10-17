@@ -1,6 +1,7 @@
-// This files contains helper functions to evaluation the functionality
-// of the terraform modules.
 package test
+
+// This file contains helper functions to evaluate the functionality
+// of the terraform modules.
 
 import (
 	"crypto/x509"
@@ -23,20 +24,20 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/knq/pemutil"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 	consul_api "github.com/hashicorp/consul/api"
 	nomad_api "github.com/hashicorp/nomad/api"
+	nomad_jobspec "github.com/hashicorp/nomad/jobspec"
 )
 
 var forbiddenRegions = []string{
 	"ap-northeast-1", // Subnet ap-northeast-1b not supported
+	"sa-east-1",      // Subnet asa-east-1b not supported
 }
 
-const SAVED_AWS_REGION = "AwsRegion"
-
-// FIXME: this seems to be odd - how often is this constant used?
-const CONSUL_AMI_TEMPLATE_VAR_REGION = "aws_region"
+const savedAWSRegion = "AwsRegion"
 
 func initTerraformOptions(path string) *terraform.Options {
 	terraformOptions := &terraform.Options{
@@ -55,33 +56,33 @@ func initTerraformOptions(path string) *terraform.Options {
 	return terraformOptions
 }
 
-func helperSetupInfrastructure(t *testing.T, awsRegion string, tmp_path string, ami bool) {
+func helperSetupInfrastructure(t *testing.T, awsRegion string, tmpPath string, ami bool) {
 	uniqueID := random.UniqueId()
 
 	keyPairName := fmt.Sprintf("terratest-onetime-key-%s", uniqueID)
 	keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
 
-	terraformOptions := initTerraformOptions(tmp_path)
+	terraformOptions := initTerraformOptions(tmpPath)
 	terraformOptions.Vars["aws_region"] = awsRegion
 	terraformOptions.Vars["ssh_key_name"] = keyPairName
 	if ami {
-		amiId := test_structure.LoadAmiId(t, tmp_path)
-		terraformOptions.Vars["ami_id"] = amiId
+		amiID := test_structure.LoadAmiId(t, tmpPath)
+		terraformOptions.Vars["ami_id"] = amiID
 	}
 
 	// Persist options and keypair for later use
-	test_structure.SaveTerraformOptions(t, tmp_path, terraformOptions)
-	test_structure.SaveEc2KeyPair(t, tmp_path, keyPair)
+	test_structure.SaveTerraformOptions(t, tmpPath, terraformOptions)
+	test_structure.SaveEc2KeyPair(t, tmpPath, keyPair)
 
 	// Rollout infrastructure
 	terraform.InitAndApply(t, terraformOptions)
 }
 
-func helperCleanup(t *testing.T, tmp_path string) {
-	terraformOptions := test_structure.LoadTerraformOptions(t, tmp_path)
+func helperCleanup(t *testing.T, tmpPath string) {
+	terraformOptions := test_structure.LoadTerraformOptions(t, tmpPath)
 	terraform.Destroy(t, terraformOptions)
 
-	keyPair := test_structure.LoadEc2KeyPair(t, tmp_path)
+	keyPair := test_structure.LoadEc2KeyPair(t, tmpPath)
 	aws.DeleteEC2KeyPair(t, keyPair)
 }
 
@@ -121,7 +122,7 @@ func helperCheckConsul(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
 
 	// Check basic SSH to the instance
 	retry.DoWithRetry(t, "SSH to public host", 30, 5*time.Second, func() (string, error) {
-		// DEBUG: helperExportSshKey(publicHost.SshKeyPair)
+		// DEBUG: helperExportSSHKey(publicHost.SshKeyPair)
 
 		// Check system service configuration: supervisor started consul service and consul is running
 		expectedService := "RUNNING"
@@ -175,7 +176,7 @@ func helperBuildAmi(t *testing.T, packerTemplatePath string, packerBuildName str
 		Template: packerTemplatePath,
 		Only:     packerBuildName,
 		Vars: map[string]string{
-			CONSUL_AMI_TEMPLATE_VAR_REGION: awsRegion,
+			"aws_region": awsRegion,
 		},
 	}
 
@@ -191,7 +192,7 @@ func helperBuildAmi(t *testing.T, packerTemplatePath string, packerBuildName str
 // Exports the private SSH key as pem file to the disk.
 // This is helpful for debugging sessions when a manual SSH access to the resource is needed.
 // The key will be written into the execution folder, named: 'private_key.pem'.
-func helperExportSshKey(keyPair *ssh.KeyPair) error {
+func helperExportSSHKey(keyPair *ssh.KeyPair) error {
 
 	store, err := pemutil.DecodeBytes([]byte(keyPair.PrivateKey))
 	privateKey, _ := store.RSAPrivateKey()
@@ -210,16 +211,32 @@ func helperExportSshKey(keyPair *ssh.KeyPair) error {
 	return nil
 }
 
-func helperCheckUi(t *testing.T, terraformOptions *terraform.Options, terraformOutput string, expected string) {
-	urlUi := terraform.Output(t, terraformOptions, terraformOutput)
-	// DEBUG: logger.Logf(t, "'%s': '%s'", terraformOutput, urlUi)
+func helperCheckUI(t *testing.T, terraformOptions *terraform.Options, terraformOutput string, expected string) {
+	maxRetries := 60
+	sleepBetweenRetries := 10 * time.Second
 
-	respUi, _ := http.Get(urlUi)
-	bodyBytes, _ := ioutil.ReadAll(respUi.Body)
-	respUiBody := string(bodyBytes)
-	assert.Equal(t, http.StatusOK, respUi.StatusCode)
-	assert.Contains(t, respUiBody, expected)
-	defer respUi.Body.Close()
+	urlUI := terraform.Output(t, terraformOptions, terraformOutput)
+	// DEBUG: logger.Logf(t, "'%s': '%s'", terraformOutput, urlUI)
+
+	retry.DoWithRetry(t, "Check UI access ("+expected+")", maxRetries, sleepBetweenRetries, func() (string, error) {
+		respUI, err := http.Get(urlUI)
+		if err != nil {
+			return "", err
+		}
+
+		defer respUI.Body.Close()
+
+		bodyBytes, err := ioutil.ReadAll(respUI.Body)
+		if err != nil {
+			return "", err
+		}
+		respUIBody := string(bodyBytes)
+		assert.Equal(t, http.StatusOK, respUI.StatusCode)
+		assert.Contains(t, respUIBody, expected)
+
+		return "", nil
+	})
+
 }
 
 // Use a Nomad client to connect to the given node and use it to verify that:
@@ -227,8 +244,8 @@ func helperCheckUi(t *testing.T, terraformOptions *terraform.Options, terraformO
 // 1. The Nomad cluster has deployed
 // 2. The cluster has the expected number of members
 // 3. The cluster has elected a leader
-func helperTestNomadCluster(t *testing.T, nodeIpAddress string, expectedServers int, expectedNodes int) {
-	nomadClient := helperCreateNomadClient(t, fmt.Sprintf("http://%s", nodeIpAddress))
+func helperTestNomadCluster(t *testing.T, nodeIPAddress string, expectedServers int, expectedNodes int) {
+	nomadClient := helperCreateNomadClient(t, fmt.Sprintf("http://%s", nodeIPAddress))
 	maxRetries := 60
 	sleepBetweenRetries := 10 * time.Second
 
@@ -253,7 +270,7 @@ func helperTestNomadCluster(t *testing.T, nodeIpAddress string, expectedServers 
 		}
 
 		if leader == "" {
-			return "", errors.New("Nomad cluster returned an empty leader response, so a leader must not have been elected yet.")
+			return "", errors.New("Nomad cluster returned an empty leader response, so a leader must not have been elected yet")
 		}
 
 		// Check for number of nomad client nodes
@@ -299,8 +316,8 @@ func helperCreateNomadClient(t *testing.T, ipAddress string) *nomad_api.Client {
 // 1. The Consul cluster has deployed
 // 2. The cluster has the expected number of members
 // 3. The cluster has elected a leader
-func helperTestConsulCluster(t *testing.T, nodeIpAddress string, expectedMembers int) {
-	consulClient := helperCreateConsulClient(t, nodeIpAddress)
+func helperTestConsulCluster(t *testing.T, nodeIPAddress string, expectedMembers int) {
+	consulClient := helperCreateConsulClient(t, nodeIPAddress)
 	maxRetries := 60
 	sleepBetweenRetries := 10 * time.Second
 
@@ -320,7 +337,7 @@ func helperTestConsulCluster(t *testing.T, nodeIpAddress string, expectedMembers
 		}
 
 		if leader == "" {
-			return "", errors.New("Consul cluster returned an empty leader response, so a leader must not have been elected yet.")
+			return "", errors.New("Consul cluster returned an empty leader response, so a leader must not have been elected yet")
 		}
 
 		return leader, nil
@@ -342,4 +359,87 @@ func helperCreateConsulClient(t *testing.T, ipAddress string) *consul_api.Client
 	config.HttpClient.Timeout = 5 * time.Second
 
 	return client
+}
+
+func helperCheckNomad(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
+
+	publicHost := ssh.Host{
+		Hostname:    publicIP,
+		SshKeyPair:  keyPair.KeyPair,
+		SshUserName: "ec2-user",
+	}
+
+	// Check basic nomad commands directly on the created instances
+	retry.DoWithRetry(t, "Check nomad on created host/ server", 30, 5*time.Second, func() (string, error) {
+		// DEBUG: helperExportSSHKey(publicHost.SshKeyPair)
+
+		// Check the status of the nomad setup
+		expectedLeader := "No running jobs"
+		commandLeader := "nomad status"
+		actualText, errLeader := ssh.CheckSshCommandE(t, publicHost, commandLeader)
+
+		// .Verify result
+		if errLeader != nil {
+			return "", fmt.Errorf("Msg: %s, Command %s executed with error: %v", actualText, commandLeader, errLeader)
+		}
+		if strings.Contains(actualText, expectedLeader) == false {
+			return "", fmt.Errorf("Expected status report to be '%s' but got '%s'", expectedLeader, actualText)
+		}
+
+		// Check if there is a leader elected
+		expectedMembers := "leader"
+		commandMembers := "nomad operator raft list-peers"
+		actualText, errMembers := ssh.CheckSshCommandE(t, publicHost, commandMembers)
+
+		// .Verify result
+		if errMembers != nil {
+			return "", fmt.Errorf("Msg: %s Command %s executed with error: %v", actualText, commandMembers, errMembers)
+		}
+		if strings.Contains(actualText, expectedMembers) == false {
+			return "", fmt.Errorf("Expected leader report to be '%s' but got '%s'", expectedLeader, actualText)
+		}
+
+		return "", nil
+	})
+}
+
+// Use a Nomad client to connect to the given node and use it to verify that:
+//
+// 1. A deployment of a service (e.g. fabio) is possible
+func helperTestCOSDeployment(t *testing.T, nodeIPAddress string) {
+	nomadClient := helperCreateNomadClient(t, fmt.Sprintf("http://%s", nodeIPAddress))
+	require.NotNil(t, nomadClient, "Failed to create nomad client")
+	maxRetries := 60
+	sleepBetweenRetries := 10 * time.Second
+
+	retry.DoWithRetry(t, "Check nomad job deployment", maxRetries, sleepBetweenRetries, func() (string, error) {
+		jobs := nomadClient.Jobs() // get jobs
+		if jobs == nil {
+			return "", fmt.Errorf("nomadClient.Jobs() is nil")
+		}
+
+		// Check if current number of jobs is zero
+		resp, _, err := jobs.List(nil)
+		if err != nil {
+			return "", err
+		}
+		if len(resp) > 0 {
+			return "", fmt.Errorf("Expected 0 jobs, got: %d", len(resp))
+		}
+
+		// Create new job - fabio
+		jobFabio, err := nomad_jobspec.ParseFile("../examples/jobs/fabio.nomad")
+		if err != nil {
+			return "", err
+		}
+
+		resp2, _, err := jobs.Register(jobFabio, nil)
+		if err != nil {
+			return "", err
+		}
+		if len(resp2.EvalID) == 0 {
+			return "", fmt.Errorf("Expected to get a valid EvalID, but got '%s'", resp2.EvalID)
+		}
+		return "", nil
+	})
 }
