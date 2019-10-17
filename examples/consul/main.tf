@@ -5,7 +5,7 @@ locals {
 
 provider "aws" {
   profile = var.deploy_profile
-  region  = local.aws_region
+  region  = var.aws_region
 }
 
 ### obtaining default vpc, security group and subnet of the env
@@ -23,10 +23,10 @@ module "consul" {
   ## required parameters
   vpc_id     = data.aws_vpc.default.id
   subnet_ids = data.aws_subnet_ids.all.ids
-  ami_id     = var.consul_ami_id
+  ami_id     = var.ami_id
 
   ## optional parameters
-  aws_region              = local.aws_region
+  aws_region              = var.aws_region
   env_name                = local.env_name
   stack_name              = local.stack_name
   cluster_tag_key         = "consul-servers"

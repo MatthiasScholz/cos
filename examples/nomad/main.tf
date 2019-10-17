@@ -9,7 +9,7 @@ locals {
 
 provider "aws" {
   profile = var.deploy_profile
-  region  = local.aws_region
+  region  = var.aws_region
 }
 
 resource "random_pet" "unicorn" {
@@ -35,7 +35,7 @@ module "consul" {
   ami_id     = local.consul_ami_id
 
   ## optional parameters
-  aws_region              = local.aws_region
+  aws_region              = var.aws_region
   env_name                = local.env_name
   stack_name              = local.stack_name
   cluster_tag_key         = local.consul_cluster_tag_key
@@ -55,7 +55,7 @@ module "nomad" {
   consul_cluster_tag_value         = local.consul_cluster_tag_value
 
   ## optional parameters
-  aws_region              = local.aws_region
+  aws_region              = var.aws_region
   env_name                = local.env_name
   stack_name              = local.stack_name
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
