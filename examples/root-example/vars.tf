@@ -3,14 +3,9 @@ variable "deploy_profile" {
   description = "Name of profile in ~/.aws/credentials file which should be used for deploying this infra."
 }
 
-variable "nomad_ami_id_servers" {
-  description = "AMI ID for nomad server"
-  default     = "ami-02d24827dece83bef"
-}
-
-variable "nomad_ami_id_clients" {
-  description = "AMI ID for nomad nodes"
-  default     = "ami-02d24827dece83bef"
+variable "ami_id" {
+  description = "Name of the AMI used to run this example. For nomad servers and clients."
+  default = "ami-02d24827dece83bef"
 }
 
 variable "env_name" {

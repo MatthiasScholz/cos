@@ -1,12 +1,11 @@
 locals {
-  aws_region = "us-east-1"
   stack_name = "COS"
   env_name   = "playground"
 }
 
 provider "aws" {
   profile = "${var.deploy_profile}"
-  region  = "${local.aws_region}"
+  region  = "${var.aws_region}"
 }
 
 resource "random_pet" "unicorn" {
@@ -41,11 +40,11 @@ module "nomad-datacenter" {
   server_sg_id             = "${aws_security_group.sg_nomad_server.id}"
 
   ## optional parameters
-  aws_region              = "${local.aws_region}"
+  aws_region              = "${var.aws_region}"
   env_name                = "${local.env_name}"
   stack_name              = "${local.stack_name}"
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name            = "kp-us-east-1-playground-instancekey"
+  ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "public-services"
   instance_type           = "t2.micro"
   unique_postfix          = "-${random_pet.unicorn.id}"
