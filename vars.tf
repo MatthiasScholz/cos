@@ -13,7 +13,7 @@ variable "vpc_id" {
 
 variable "alb_subnet_ids" {
   description = "Ids of the subnets to deploy the alb's into."
-  type        = "list"
+  type        = list(string)
 }
 
 #### [Nomad] Required Variables ###################################################################
@@ -27,27 +27,27 @@ variable "nomad_ami_id_clients" {
 
 variable "nomad_clients_public_services_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad client nodes providing the data-center public-services into."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "nomad_clients_private_services_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad client nodes providing the data-center private-services into."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "nomad_clients_content_connector_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad client nodes providing the data-center content-connector into."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "nomad_clients_backoffice_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad client nodes providing the data-center backoffice into."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "nomad_server_subnet_ids" {
   description = "Ids of the subnets to deploy the nomad servers into."
-  type        = "list"
+  type        = list(string)
 }
 
 #### [Consul] Required Variables ##################################################################
@@ -57,7 +57,7 @@ variable "consul_ami_id" {
 
 variable "consul_server_subnet_ids" {
   description = "Ids of the subnets to deploy the consul servers into."
-  type        = "list"
+  type        = list(string)
 }
 
 #### [General] Optional Variables ##################################################################
@@ -88,13 +88,13 @@ variable "stack_name" {
 
 variable "allowed_ssh_cidr_blocks" {
   description = "A list of cidr block from which inbound ssh traffic should be allowed."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "allowed_cidr_blocks_for_ui_alb" {
   description = "Map for cidr blocks that should get access over alb. The format is name:cidr-block. I.e. 'my_cidr'='90.250.75.79/32'"
-  type        = "map"
+  type        = map(string)
 
   default = {
     "all" = "0.0.0.0/0"
@@ -124,7 +124,7 @@ variable "attach_backoffice_alb_listener" {
 #### [Nomad] Optional Variables ###################################################################
 variable "nomad_server_scaling_cfg" {
   description = "Scaling configuration for the nomad servers."
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 3
@@ -135,7 +135,7 @@ variable "nomad_server_scaling_cfg" {
 
 variable "nomad_private_services_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the private-services data center."
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 1
@@ -156,7 +156,7 @@ variable "nomad_private_services_dc_node_cfg" {
 #  }]
 variable "ebs_block_devices_private_services_dc" {
   description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances created with the EC2 launch-configurationd. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
-  type        = "list"
+  type        = any
 
   default = []
 }
@@ -168,7 +168,7 @@ variable "ebs_block_devices_private_services_dc" {
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
 variable "device_to_mount_target_map_private_services_dc" {
   description = "List of device to mount target entries."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -184,13 +184,17 @@ variable "device_to_mount_target_map_private_services_dc" {
 #    }]
 variable "additional_instance_tags_private_services_dc" {
   description = "List of tags to add to the private_services datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
-  type        = "list"
-  default     = []
+  type = list(object({
+    key                 = string
+    value               = string
+    propagate_at_launch = bool
+  }))
+  default = []
 }
 
 variable "nomad_public_services_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the public-services data center."
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 1
@@ -211,7 +215,7 @@ variable "nomad_public_services_dc_node_cfg" {
 #  }]
 variable "ebs_block_devices_public_services_dc" {
   description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances of the public-services dc. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
-  type        = "list"
+  type        = any
 
   default = []
 }
@@ -223,7 +227,7 @@ variable "ebs_block_devices_public_services_dc" {
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
 variable "device_to_mount_target_map_public_services_dc" {
   description = "List of device to mount target entries."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -239,13 +243,17 @@ variable "device_to_mount_target_map_public_services_dc" {
 #    }]
 variable "additional_instance_tags_public_services_dc" {
   description = "List of tags to add to the public_services datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
-  type        = "list"
-  default     = []
+  type = list(object({
+    key                 = string
+    value               = string
+    propagate_at_launch = bool
+  }))
+  default = []
 }
 
 variable "nomad_backoffice_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the backoffice data center."
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 1
@@ -266,7 +274,7 @@ variable "nomad_backoffice_dc_node_cfg" {
 #  }]
 variable "ebs_block_devices_backoffice_dc" {
   description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances of the backoffice dc. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
-  type        = "list"
+  type        = any
 
   default = []
 }
@@ -278,7 +286,7 @@ variable "ebs_block_devices_backoffice_dc" {
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
 variable "device_to_mount_target_map_backoffice_dc" {
   description = "List of device to mount target entries."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -294,13 +302,17 @@ variable "device_to_mount_target_map_backoffice_dc" {
 #    }]
 variable "additional_instance_tags_backoffice_dc" {
   description = "List of tags to add to the backoffice datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
-  type        = "list"
-  default     = []
+  type = list(object({
+    key                 = string
+    value               = string
+    propagate_at_launch = bool
+  }))
+  default = []
 }
 
 variable "nomad_content_connector_dc_node_cfg" {
   description = "Node configuration for the nomad nodes of the content-connetor data center."
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 1
@@ -321,7 +333,7 @@ variable "nomad_content_connector_dc_node_cfg" {
 #  }]
 variable "ebs_block_devices_content_connector_dc" {
   description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances of the content-connector dc. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
-  type        = "list"
+  type        = any
 
   default = []
 }
@@ -333,7 +345,7 @@ variable "ebs_block_devices_content_connector_dc" {
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
 variable "device_to_mount_target_map_content_connector_dc" {
   description = "List of device to mount target entries."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -349,8 +361,12 @@ variable "device_to_mount_target_map_content_connector_dc" {
 #    }]
 variable "additional_instance_tags_content_connector_dc" {
   description = "List of tags to add to the content_connector datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
-  type        = "list"
-  default     = []
+  type = list(object({
+    key                 = string
+    value               = string
+    propagate_at_launch = bool
+  }))
+  default = []
 }
 
 variable "efs_dns_name" {
@@ -376,6 +392,7 @@ variable "consul_instance_type" {
 
 variable "ecr_repositories" {
   description = "List of names for the ECR repositories to be created. Nomad will use them to get docker images from it in the job files."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
+

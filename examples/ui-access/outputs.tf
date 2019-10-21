@@ -1,5 +1,5 @@
 output "nomad_ui_alb_dns" {
-  value = "${module.ui-access.nomad_ui_alb_dns_name}"
+  value = module.ui-access.nomad_ui_alb_dns_name
 }
 
 output "curl_nomad_ui" {
@@ -11,7 +11,7 @@ output "url_nomad_ui" {
 }
 
 output "consul_ui_alb_dns" {
-  value = "${module.ui-access.consul_ui_alb_dns_name}"
+  value = module.ui-access.consul_ui_alb_dns_name
 }
 
 output "curl_consul_ui" {
@@ -23,7 +23,7 @@ output "url_consul_ui" {
 }
 
 output "fabio_ui_alb_dns" {
-  value = "${module.ui-access.fabio_ui_alb_dns_name}"
+  value = module.ui-access.fabio_ui_alb_dns_name
 }
 
 output "curl_fabio_ui" {

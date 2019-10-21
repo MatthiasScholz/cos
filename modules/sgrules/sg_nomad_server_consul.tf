@@ -16,8 +16,8 @@ resource "aws_security_group_rule" "sgr_consul_to_nomad_server_tcp" {
   from_port                = 8300
   to_port                  = 8302
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_consul}"
-  security_group_id        = "${var.sg_id_nomad_server}"
+  source_security_group_id = var.sg_id_consul
+  security_group_id        = var.sg_id_nomad_server
 }
 
 # rule granting access from consul to nomad server on ports
@@ -29,6 +29,7 @@ resource "aws_security_group_rule" "sgr_consul_to_nomad_server_udp" {
   from_port                = 8301
   to_port                  = 8302
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_consul}"
-  security_group_id        = "${var.sg_id_nomad_server}"
+  source_security_group_id = var.sg_id_consul
+  security_group_id        = var.sg_id_nomad_server
 }
+

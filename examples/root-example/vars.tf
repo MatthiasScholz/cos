@@ -30,7 +30,7 @@ variable "stack_name" {
 
 variable "server_scaling_cfg" {
   description = "Number of nomad server"
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 3
@@ -41,7 +41,7 @@ variable "server_scaling_cfg" {
 
 variable "nomad_dc_node_cfg" {
   description = "Configuration for the private data-center nodes"
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 1
@@ -52,12 +52,13 @@ variable "nomad_dc_node_cfg" {
 }
 
 variable "ebs_block_devices_sample" {
-  type = "list"
+  type = any
 
-  default = [{
-    "device_name" = "/dev/xvde"
-    "volume_size" = "50"
-  },
+  default = [
+    {
+      "device_name" = "/dev/xvde"
+      "volume_size" = "50"
+    },
     {
       "device_name" = "/dev/xvdf"
       "volume_size" = "80"
@@ -66,13 +67,17 @@ variable "ebs_block_devices_sample" {
 }
 
 variable "device_to_mount_target_map_sample" {
-  type = "list"
+  type = list(string)
 
   default = ["/dev/xvde:/mnt/map1", "/dev/xvdf:/mnt/map2"]
 }
 
 variable "additional_instance_tags_sample" {
-  type = "list"
+  type = list(object({
+    key                 = string
+    value               = string
+    propagate_at_launch = bool
+  }))
 
   default = [
     {
@@ -82,3 +87,4 @@ variable "additional_instance_tags_sample" {
     },
   ]
 }
+

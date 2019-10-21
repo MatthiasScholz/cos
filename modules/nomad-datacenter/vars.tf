@@ -21,7 +21,7 @@ variable "consul_cluster_tag_value" {
 
 variable "subnet_ids" {
   description = "Subnet id's for nomad client nodes providing this data-center."
-  type        = "list"
+  type        = list(string)
 }
 
 #### Optional Variables ############################################
@@ -62,7 +62,7 @@ variable "datacenter_name" {
 
 variable "node_scaling_cfg" {
   description = "Scaling configuration for the nomad nodes to deploy for this datacenter. You can deploy as many as you need to run your jobs."
-  type        = "map"
+  type        = map(string)
 
   default = {
     "min"              = 1
@@ -83,7 +83,7 @@ variable "ssh_key_name" {
 
 variable "allowed_ssh_cidr_blocks" {
   description = "A list of cidr block from which inbound ssh traffic should be allowed for this datacenter."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -113,8 +113,7 @@ variable "map_bucket_name" {
 #  }]
 variable "ebs_block_devices" {
   description = "List of ebs volume definitions for those ebs_volumes that should be added to the instances created with the EC2 launch-configurationd. Each element in the list is a map containing keys defined for ebs_block_device (see: https://www.terraform.io/docs/providers/aws/r/launch_configuration.html#ebs_block_device."
-  type        = "list"
-
+  type        = any
   default = []
 }
 
@@ -125,7 +124,7 @@ variable "ebs_block_devices" {
 # Example: ["/dev/xvde:/mnt/map1","/dev/xvdf:/mnt/map2"]
 variable "device_to_mount_target_map" {
   description = "List of device to mount target entries."
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
@@ -152,6 +151,11 @@ variable "fs_type" {
 #    }]
 variable "additional_instance_tags" {
   description = "List of tags to add to the datacenter instances. The entries of the list are maps consiting of key, value and propagate at launch."
-  type        = "list"
+  type        = list(object({
+    key                 = string
+    value               = string
+    propagate_at_launch = bool
+  }))
   default     = []
 }
+

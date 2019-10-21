@@ -6,6 +6,7 @@ resource "aws_security_group_rule" "sgr_ui_alb_to_consul_tcp" {
   from_port                = 8500
   to_port                  = 8500
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_ui_alb_nomad}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_ui_alb_nomad
+  security_group_id        = var.sg_id_consul
 }
+

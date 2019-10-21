@@ -43,7 +43,7 @@ variable "unique_postfix" {
 
 variable "allowed_ssh_cidr_blocks" {
   description = "Map for cidr blocks that should get access to the bastion. The format is name:cidr-block. I.e. 'my_cidr'='90.250.75.79/32'"
-  type        = "map"
+  type        = map(string)
 
   default = {
     "all" = "0.0.0.0/0"
