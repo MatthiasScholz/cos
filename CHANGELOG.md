@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.0 (2019-??-??)
+## v0.2.0 (2019-10-21)
 
 - **major (incompatible)**, Refactor: With [#70](https://github.com/MatthiasScholz/cos/issues/70) the cos module was upgraded to be compatible to terraform 0.12.0.
   - Furthermore the depending modules where upgraded as well:
