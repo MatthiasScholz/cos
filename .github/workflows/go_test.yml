@@ -18,6 +18,7 @@ jobs:
 
     - name: Get dependencies
       run: |
+        mkdir -p "${GOBIN}"
         go get -v -t -d ./...
         if [ -f test/Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
