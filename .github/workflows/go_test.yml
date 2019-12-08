@@ -21,6 +21,9 @@ jobs:
         export GOBIN=$(go env GOPATH)/bin
         mkdir -p "${GOBIN}"
         export PATH=$PATH:$GOBIN
+        mkdir -p $GOPATH/src/github.com/$GITHUB_REPOSITORY
+        mv $(pwd)/* $GOPATH/src/github.com/$GITHUB_REPOSITORY
+        cd $GOPATH/src/github.com/$GITHUB_REPOSITORY
         go get -v -t -d ./...
         if [ -f test/Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
