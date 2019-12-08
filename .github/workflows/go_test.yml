@@ -18,6 +18,7 @@ jobs:
 
     - name: Get dependencies
       run: |
+        export GOPATH=$HOME/go
         export GOBIN=$(go env GOPATH)/bin
         mkdir -p "${GOBIN}"
         export PATH=$PATH:$GOBIN
