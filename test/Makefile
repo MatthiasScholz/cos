@@ -63,7 +63,8 @@ cleanup:
 
 # ALL: Execute all tests
 test_all: cleanup
-	GOCACHE=off go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT)
+	go clean -testcache
+	go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT)
 	$(out_parsing)
 
 # SPECIFIC: Matching the name of the Makefile target with the name in of the test to be executed.
