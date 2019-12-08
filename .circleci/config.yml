@@ -5,4 +5,4 @@
        - image: circleci/golang:1.13.5
      steps:
        - checkout
-       - run: go version
+       - run: make -f test/Makefile
