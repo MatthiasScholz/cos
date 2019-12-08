@@ -63,6 +63,8 @@ cleanup:
 
 # ALL: Execute all tests
 test_all: cleanup
+	go clean -testcache
+	go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
 	GOCACHE=off go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT)
 	$(out_parsing)
 
