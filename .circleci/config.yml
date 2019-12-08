@@ -1,6 +1,8 @@
  version: 2
  jobs:
    build:
+     working_directory:
+       - /go/src/github.com/MatthiasScholz/cos
      docker:
        - image: circleci/golang:1.13.5
      steps:
