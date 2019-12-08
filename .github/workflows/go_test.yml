@@ -20,6 +20,7 @@ jobs:
       run: |
         export GOBIN=$(go env GOPATH)/bin
         mkdir -p "${GOBIN}"
+        export PATH=$PATH:$GOBIN
         go get -v -t -d ./...
         if [ -f test/Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
