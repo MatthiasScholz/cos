@@ -3,7 +3,7 @@
    build:
      working_directory: /go/src/github.com/MatthiasScholz/cos
      docker:
-       - image: circleci/golang:1.13.3
+       - image: circleci/golang:1.13.2
      steps:
        - checkout
        - run: cd test && make all
