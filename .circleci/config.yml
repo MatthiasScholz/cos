@@ -1,0 +1,9 @@
+ version: 2
+ jobs:
+   build:
+     working_directory: /go/src/github.com/MatthiasScholz/cos
+     docker:
+       - image: circleci/golang:1.13.0
+     steps:
+       - checkout
+       - run: cd test && make all
