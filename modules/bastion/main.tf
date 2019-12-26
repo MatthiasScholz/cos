@@ -48,7 +48,7 @@ resource "aws_security_group_rule" "sgr_bastion_ig_ssh" {
   from_port   = 22
   to_port     = 22
   protocol    = "tcp"
-  
+
   cidr_blocks = [lookup(
     var.allowed_ssh_cidr_blocks,
     element(local.keys, count.index),
