@@ -25,22 +25,35 @@ else
 	OS_VERSION:="windows_amd64.exe"
 endif
 
+# Define some output formatting helpers
+define echoinfo
+      @tput setaf 4
+      @echo $1
+      @tput sgr0
+endef
+
+define echowarn
+      @tput setaf 1
+      @echo $1
+      @tput sgr0
+endef
+
 # Define: Terratest output formatting
 # - Stripping logout of one test into a separate file in the test output directory.
 # - Creating a Junit XML formatted report which is supported by many CI systems.
 # - Creation of a summary
 define out_parsing
-@echo "--- Tests finished parsing output ---"
-@$(TT_INSTALL_PATH)/terratest_log_parser -testlog $(TEST_OUTPUT) -outputdir $(TEST_OUTPUT_DIR) --log-level "warning"
-@echo "--- Output parsing finished ---"
+      $(call echoinfo, "--- Tests finished parsing output ---")
+      @$(TT_INSTALL_PATH)/terratest_log_parser -testlog $(TEST_OUTPUT) -outputdir $(TEST_OUTPUT_DIR) --log-level "warning"
+      $(call echoinfo, "--- Output parsing finished ---")
 endef
 
 # Define: Generic test execution
 define run_test
-@go version
-go clean -testcache
-go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
-$(out_parsing)
+      @go version
+      go clean -testcache
+      go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
+      $(out_parsing)
 endef
 
 all: setup test_all
@@ -62,6 +75,24 @@ cleanup:
 	@rm -f $(TEST_OUTPUT)
 	@rm -f -r $(TEST_OUTPUT_DIR)
 
+# Only internally used variable
+INFRA_PLAN = infrastructure.plan
+TF_PATH_BASE = "../"
+validate:
+	$(call echoinfo, "[INFO] Validating terraform")
+	$(call echoinfo, "[INFO] .Validating main")
+	@terraform validate
+	@terraform fmt -write=false
+	$(call echoinfo, "[INFO] .Validating modules")
+	cd "$(PATH_MODULES)" && terraform fmt -write=false -recursive
+	$(call echoinfo, "[INFO] .Linting")
+	@tflint $(TF_PATH_BASE)
+	@tflint --module $(TF_PATH_BASE)
+
+validate_deep:
+	$(call echoinfo, "[INFO] .Linting - deep scan")
+	@tflint --deep $(TF_PATH_BASE)
+	@tflint --deep --module $(TF_PATH_BASE)
 
 # ALL: Execute all tests
 test_all: cleanup
