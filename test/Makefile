@@ -37,6 +37,7 @@ endef
 
 # Define: Generic test execution
 define run_test
+@go version
 go clean -testcache
 go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
 $(out_parsing)
@@ -45,6 +46,7 @@ endef
 all: setup test_all
 
 setup: install_terratest_log_parser
+	@go version
 	dep ensure -vendor-only -v
 
 os:
@@ -63,7 +65,9 @@ cleanup:
 
 # ALL: Execute all tests
 test_all: cleanup
-	GOCACHE=off go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT)
+	@go version
+	go clean -testcache
+	go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT)
 	$(out_parsing)
 
 # SPECIFIC: Matching the name of the Makefile target with the name in of the test to be executed.
