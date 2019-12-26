@@ -25,3 +25,5 @@ out/
 /test/test_output.log
 /test/tmp_test_output/
 **/.test-data
+
+**/.DS_Store
