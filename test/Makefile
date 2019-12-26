@@ -4,8 +4,9 @@
 # You can add your specific test cases at the end of the file following the pattern shown for "TestAMI2".
 
 # Version of terratest tools to be used
+dependency_terratest:=github.com/gruntwork-io/terratest
 # - IMPORTANT: Check Gopkg.toml to align with the used go package version!
-TT_VERSION="v0.17.4"
+TT_VERSION=v0.23.0
 # Installation path for terratest helper tools
 TT_INSTALL_PATH=$(HOME)/bin/
 
@@ -60,7 +61,7 @@ all: setup test_all
 
 setup: install_terratest_log_parser
 	@go version
-	dep ensure -vendor-only -v
+	$(TT_INSTALL_PATH)/terratest_log_parser -h
 
 os:
 	@echo $(OS_VERSION)
@@ -70,6 +71,15 @@ install_terratest_log_parser:
 	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(TT_VERSION)/terratest_log_parser_$(OS_VERSION)
 	@chmod +x terratest_log_parser
 	mv terratest_log_parser $(TT_INSTALL_PATH)
+
+dependencies_list:
+	go list -m all
+
+dependencies_upgrade:
+	go get ${dependency_terratest}@${TT_VERSION}
+
+dependencies_cleanup:
+	go mod tidy
 
 cleanup:
 	@rm -f $(TEST_OUTPUT)
