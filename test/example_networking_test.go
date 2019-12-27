@@ -16,7 +16,7 @@ func TestNetworkingExample(t *testing.T) {
 
 	// Cleanup infrastructure
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpNetworking)
+		helperCleanup(t, tmpNetworking, "unused", false, false)
 	})
 
 	// Prepare infrastructure and create it

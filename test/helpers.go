@@ -81,12 +81,22 @@ func helperSetupInfrastructure(t *testing.T, awsRegion string, tmpPath string, a
 	terraform.InitAndApply(t, terraformOptions)
 }
 
-func helperCleanup(t *testing.T, tmpPath string) {
+func helperCleanup(t *testing.T, tmpPath string, region string, ami bool, ssh bool) {
 	terraformOptions := test_structure.LoadTerraformOptions(t, tmpPath)
 	terraform.Destroy(t, terraformOptions)
 
-	keyPair := test_structure.LoadEc2KeyPair(t, tmpPath)
-	aws.DeleteEC2KeyPair(t, keyPair)
+	// Delete the generated AMI
+	if ami {
+		amiID := test_structure.LoadAmiId(t, tmpPath)
+		awsRegion := test_structure.LoadString(t, tmpPath, region)
+		aws.DeleteAmi(t, awsRegion, amiID)
+	}
+
+	// Delete the generated SSH key
+	if ssh {
+		keyPair := test_structure.LoadEc2KeyPair(t, tmpPath)
+		aws.DeleteEC2KeyPair(t, keyPair)
+	}
 }
 
 func helperCheckSSH(t *testing.T, publicIP string, keyPair *ssh.KeyPair) {

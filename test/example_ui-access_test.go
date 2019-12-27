@@ -15,7 +15,7 @@ func TestUIAccessExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpUIAccess)
+		helperCleanup(t, tmpUIAccess, awsRegion, false, true)
 	})
 
 	// Create Infrastructure

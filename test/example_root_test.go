@@ -5,7 +5,6 @@ package test
 import (
 	"testing"
 
-	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 
@@ -28,12 +27,7 @@ func TestRootExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpRoot)
-
-		// Delete the generated AMI
-		amiID := test_structure.LoadAmiId(t, tmpRoot)
-		awsRegion := test_structure.LoadString(t, tmpRoot, savedAWSRegion)
-		aws.DeleteAmi(t, awsRegion, amiID)
+		helperCleanup(t, tmpRoot, savedAWSRegion, true, true)
 	})
 
 	// Create Infrastructure

@@ -32,12 +32,7 @@ func TestConsulExample(t *testing.T) {
 
 	// Cleanup infrastructure
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpConsul)
-
-		// Delete the generated AMI
-		amiID := test_structure.LoadAmiId(t, tmpConsul)
-		awsRegion := test_structure.LoadString(t, tmpConsul, savedAWSRegion)
-		aws.DeleteAmi(t, awsRegion, amiID)
+		helperCleanup(t, tmpConsul, savedAWSRegion, true, true)
 	})
 
 	// Prepare infrastructure and create it

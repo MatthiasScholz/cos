@@ -29,12 +29,7 @@ func TestNomadExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpNomad)
-
-		// Delete the generated AMI
-		amiID := test_structure.LoadAmiId(t, tmpNomad)
-		awsRegion := test_structure.LoadString(t, tmpNomad, savedAWSRegion)
-		aws.DeleteAmi(t, awsRegion, amiID)
+		helperCleanup(t, tmpNomad, savedAWSRegion, true, true)
 	})
 
 	// Create Infrastructure
