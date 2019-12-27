@@ -137,9 +137,10 @@ func helperCheckConsul(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
 	retry.DoWithRetry(t, "SSH to public host", 30, 5*time.Second, func() (string, error) {
 		// DEBUG: helperExportSSHKey(publicHost.SshKeyPair)
 
-		// Check system service configuration: supervisor started consul service and consul is running
-		expectedService := "RUNNING"
-		commandService := "sudo supervisorctl status consul"
+		// Check system service configuration: started consul service and consul is running
+		expectedService := "running"
+		// FIXME: Refactor to use: systemctl is-active consul.service + return value evaluation
+		commandService := "sudo systemctl status consul"
 		actualText, errService := ssh.CheckSshCommandE(t, publicHost, commandService)
 
 		// .Verify result
