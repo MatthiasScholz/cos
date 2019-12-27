@@ -4,9 +4,12 @@
 # You can add your specific test cases at the end of the file following the pattern shown for "TestAMI2".
 
 # Version of terratest tools to be used
+dependency_nomad_version:=v0.10.2
+dependency_nomad:=github.com/hashicorp/nomad
+
 dependency_terratest:=github.com/gruntwork-io/terratest
-# - IMPORTANT: Check Gopkg.toml to align with the used go package version!
-TT_VERSION=v0.23.0
+dependency_terratest_version=v0.23.0
+
 # Installation path for terratest helper tools
 TT_INSTALL_PATH=$(HOME)/bin/
 
@@ -68,15 +71,20 @@ os:
 
 install_terratest_log_parser:
 	@mkdir -p $(TT_INSTALL_PATH)
-	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(TT_VERSION)/terratest_log_parser_$(OS_VERSION)
+	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(dependency_terratest_version)/terratest_log_parser_$(OS_VERSION)
 	@chmod +x terratest_log_parser
 	mv terratest_log_parser $(TT_INSTALL_PATH)
 
 dependencies_list:
-	go list -m all
+	$(call echoinfo, "--- List all dependencies ---")
+	@go list -m all
+	$(call echoinfo, "--- List available versions of major dependencies ---")
+	@go list -m -versions ${dependency_terratest}
+	@go list -m -versions ${dependency_nomad}
 
 dependencies_upgrade:
-	go get ${dependency_terratest}@${TT_VERSION}
+	go get ${dependency_terratest}@${dependency_terratest_version}
+	go get ${dependency_nomad}@${dependency_nomad_version}
 
 dependencies_cleanup:
 	go mod tidy
