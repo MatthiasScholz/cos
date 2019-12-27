@@ -10,11 +10,11 @@ job "fabio" {
     task "fabio" {
       driver = "exec" # Linux only!
       config {
-        command = "fabio-1.5.10-go1.11.1-linux_amd64"
+        command = "fabio-1.5.13-go1.13.4-linux_amd64"
       }
 
       artifact {
-        source = "https://github.com/fabiolb/fabio/releases/download/v1.5.10/fabio-1.5.10-go1.11.1-linux_amd64"
+        source = "https://github.com/fabiolb/fabio/releases/download/v1.5.13/fabio-1.5.13-go1.13.4-linux_amd64"
       }
 
       resources {
