@@ -57,23 +57,25 @@ func initTerraformOptions(path string) *terraform.Options {
 	return terraformOptions
 }
 
-func helperSetupInfrastructure(t *testing.T, awsRegion string, tmpPath string, ami bool) {
+func helperSetupInfrastructure(t *testing.T, awsRegion string, tmpPath string, ami bool, ssh bool) {
 	uniqueID := random.UniqueId()
-
-	keyPairName := fmt.Sprintf("terratest-onetime-key-%s", uniqueID)
-	keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
 
 	terraformOptions := initTerraformOptions(tmpPath)
 	terraformOptions.Vars["aws_region"] = awsRegion
-	terraformOptions.Vars["ssh_key_name"] = keyPairName
+
+	if ssh {
+		keyPairName := fmt.Sprintf("terratest-onetime-key-%s", uniqueID)
+		keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
+		terraformOptions.Vars["ssh_key_name"] = keyPairName
+		test_structure.SaveEc2KeyPair(t, tmpPath, keyPair)
+	}
 	if ami {
 		amiID := test_structure.LoadAmiId(t, tmpPath)
 		terraformOptions.Vars["ami_id"] = amiID
 	}
 
-	// Persist options and keypair for later use
+	// Persist options for later use
 	test_structure.SaveTerraformOptions(t, tmpPath, terraformOptions)
-	test_structure.SaveEc2KeyPair(t, tmpPath, keyPair)
 
 	// Rollout infrastructure
 	terraform.InitAndApply(t, terraformOptions)

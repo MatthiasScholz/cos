@@ -36,7 +36,7 @@ func TestNomadDataCenterExample(t *testing.T) {
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpNomadDataCenter, true)
+		helperSetupInfrastructure(t, awsRegion, tmpNomadDataCenter, true, true)
 	})
 
 	// Validate Example

@@ -39,7 +39,7 @@ func TestNomadExample(t *testing.T) {
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpNomad, true)
+		helperSetupInfrastructure(t, awsRegion, tmpNomad, true, true)
 	})
 
 	// Validate Example

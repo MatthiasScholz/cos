@@ -24,10 +24,7 @@ func TestBastionExample(t *testing.T) {
 
 	// Prepare infrastructure and create it
 	test_structure.RunTestStage(t, "setup", func() {
-		// Fixing the region is a flaw - but since this is only testing the examples it is acceptable.
-		// HINT: terratest provides a more flexible approach using: aws.GetRandomStableRegion()
-		awsRegion := "us-east-1"
-		helperSetupInfrastructure(t, awsRegion, tmpBastion, false)
+		helperSetupInfrastructure(t, awsRegion, tmpBastion, false, true)
 	})
 
 	// Check SSH access into the Bastion

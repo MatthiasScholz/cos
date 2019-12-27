@@ -20,7 +20,7 @@ func TestUIAccessExample(t *testing.T) {
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpUIAccess, false)
+		helperSetupInfrastructure(t, awsRegion, tmpUIAccess, false, true)
 	})
 
 	// Validate Example

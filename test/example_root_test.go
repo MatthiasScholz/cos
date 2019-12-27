@@ -38,7 +38,7 @@ func TestRootExample(t *testing.T) {
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpRoot, true)
+		helperSetupInfrastructure(t, awsRegion, tmpRoot, true, true)
 	})
 
 	// Validate Infrastructure and general cluster health

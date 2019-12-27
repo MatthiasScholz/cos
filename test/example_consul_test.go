@@ -42,7 +42,7 @@ func TestConsulExample(t *testing.T) {
 
 	// Prepare infrastructure and create it
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpConsul, true)
+		helperSetupInfrastructure(t, awsRegion, tmpConsul, true, true)
 	})
 
 	// This module uses a sub module inside. It is tested itself.
