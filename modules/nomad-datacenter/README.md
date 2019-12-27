@@ -1,4 +1,4 @@
-# Nomad module
+# Nomad Datacenter module
 
 This module contains terrafrom code for setting up a nomad cluster.
 The module creates:
@@ -7,13 +7,11 @@ The module creates:
 
 ## How to use this module
 
-* [ ] TODO: adjust this documentation
-
-At [examples/parking](../../examples/parking/) there is a full running example (incl. minimal needed environment).
+At [examples/nomad-datacenter](../../examples/nomad-datacenter/) there is a full running example (incl. minimal needed environment).
 
 ```bash
-module "parking" {
-  source = "git::ssh://git@git.mib3.technisat-digital/mib3-navigation/tsd.nav.cloud.infrastructure.modules.git?ref=snapshot//services/poi/modules/parking"
+module "nomad-datacenter" {
+    source = "git::https://github.com/MatthiasScholz/cos.git/modules/nomad-datacenter?ref=v0.2.0.
 
   # for parameters see vars.tf and the inputs section
 }
