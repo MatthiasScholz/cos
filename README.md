@@ -73,6 +73,11 @@ The picture shows the dependencies within the modules of the cos-stack and the d
 
 ## Troubleshooting
 
+### Monitoring Server and Nodes
+
+- `nomad monitor -log-level error|warn|info|debug|trace -node-id <node_id> | -server-id <server_id>`
+- supported since [nomad 0.10.2](https://www.nomadproject.io/docs/commands/monitor.html)
+
 ### Nomad CLI complains about invalid Certificate
 
 If you have deployed the cluster with https endpoints for the ui-albs and have created a selfsigned certificate you might get errors from the nomad cli complanig about an invalid certificate (`x509: certificate is..`). To fix this you have to integrate your custom root-CA you used for signing your certificate apropriately into your system.
