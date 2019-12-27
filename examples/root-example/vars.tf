@@ -5,7 +5,6 @@ variable "deploy_profile" {
 
 variable "ami_id" {
   description = "Name of the AMI used to run this example. For nomad servers and clients."
-  default = "ami-02d24827dece83bef"
 }
 
 variable "env_name" {
