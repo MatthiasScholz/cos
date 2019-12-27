@@ -5,14 +5,14 @@
 
 # Define autoscaling attachments to connect the ingress-controller target group with the autoscaling group having the ingress-contoller instances.
 resource "aws_autoscaling_attachment" "asga_ingress_controller" {
-  count                  = var.attach_ingress_alb_listener ? 1 : 0 
+  count                  = var.attach_ingress_alb_listener ? 1 : 0
   autoscaling_group_name = module.data_center.asg_name
   alb_target_group_arn   = aws_alb_target_group.tgr_ingress_controller[0].arn
 }
 
 # Targetgroup that points to the ingress-controller (i.e. fabio) port
 resource "aws_alb_target_group" "tgr_ingress_controller" {
-  count    = var.attach_ingress_alb_listener ? 1 : 0 
+  count    = var.attach_ingress_alb_listener ? 1 : 0
   name     = "${var.datacenter_name}-inctl${var.unique_postfix}"
   port     = var.ingress_controller_port
   protocol = "HTTP"
@@ -35,7 +35,7 @@ resource "aws_alb_target_group" "tgr_ingress_controller" {
 
 # listener rule for HTTPS
 resource "aws_alb_listener_rule" "alr_ingress_https" {
-  count        = var.attach_ingress_alb_listener ? 1 : 0 
+  count        = var.attach_ingress_alb_listener ? 1 : 0
   listener_arn = var.alb_ingress_https_listener_arn
 
   action {
@@ -44,8 +44,9 @@ resource "aws_alb_listener_rule" "alr_ingress_https" {
   }
 
   condition {
-    field  = "path-pattern"
-    values = ["/*"]
+    path_pattern {
+      values = ["/*"]
+    }
   }
 }
 
