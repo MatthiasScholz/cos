@@ -13,6 +13,7 @@ aws_region:=us-east-1
 .PHONY: ami
 .PHONY: nomad-consul-docker-ecr.json
 .PHONY: nomad-consul-docker.json
+.PHONY: nomad-consul-docker-ecr-cni.json
 
 ami: nomad-consul-docker-ecr.json
 
@@ -21,3 +22,6 @@ nomad-consul-docker-ecr.json:
 
 nomad-consul-docker.json:
 	packer build -var aws_region=$(aws_region) nomad-consul-docker.json
+
+nomad-consul-docker-ecr-cni.json:
+	packer build -var aws_region=$(aws_region) nomad-consul-docker-ecr-cni.json
