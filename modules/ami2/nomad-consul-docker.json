@@ -1,5 +1,5 @@
 {
-  "min_packer_version": "0.12.0",
+  "min_packer_version": "1.5.1",
   "variables": {
     "nomad_version": "0.8.6",
     "consul_module_version": "v0.4.4",
@@ -10,7 +10,7 @@
   },
   "builders": [
     {
-      "ami_name": "nomad-consul-docker-amazon-linux2-{{isotime | clean_ami_name}}",
+      "ami_name": "nomad-consul-docker-amazon-linux2-{{isotime | clean_resource_name}}",
       "ami_description": "An Amazon Linux 2 AMI that has Nomad ({{user `nomad_version`}}), Consul ({{user `consul_version`}}) and Docker installed.",
       "instance_type": "t2.micro",
       "name": "amazon-linux-ami2",
