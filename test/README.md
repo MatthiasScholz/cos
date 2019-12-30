@@ -4,6 +4,8 @@ This folder contains automated tests for this all modules provided in this repos
 using a helper library called [Terratest](https://github.com/gruntwork-io/terratest).
 The tests are written in [Go](https://golang.org/).
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/MatthiasScholz/cos)](https://goreportcard.com/report/github.com/MatthiasScholz/cos)
+
 ## Dependencies
 
 - `go mod`
