@@ -11,7 +11,7 @@ dependency_terratest:=github.com/gruntwork-io/terratest
 dependency_terratest_version=v0.23.0
 
 # Installation path for terratest helper tools
-TT_INSTALL_PATH=$(HOME)/bin/
+TT_INSTALL_PATH=$(HOME)/bin
 
 # Check: test/README.md for further details
 TIMEOUT="60m"
@@ -103,14 +103,6 @@ validate:
 	@terraform fmt -write=false
 	$(call echoinfo, "[INFO] .Validating modules")
 	cd "$(PATH_MODULES)" && terraform fmt -write=false -recursive
-	$(call echoinfo, "[INFO] .Linting")
-	@tflint $(TF_PATH_BASE)
-	@tflint --module $(TF_PATH_BASE)
-
-validate_deep:
-	$(call echoinfo, "[INFO] .Linting - deep scan")
-	@tflint --deep $(TF_PATH_BASE)
-	@tflint --deep --module $(TF_PATH_BASE)
 
 # ALL: Execute all tests
 test_all: cleanup
