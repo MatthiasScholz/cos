@@ -9,8 +9,8 @@
   },
   "builders": [
     {
-      "ami_name": "nomad-consul-docker-ecr-amazon-linux2-{{isotime | clean_ami_name}}",
-      "ami_description": "An Amazon Linux 2 AMI that has Nomad ({{user `nomad_version`}}), Consul ({{user `consul_version`}}) and Docker, ECR Helper installed.",
+      "ami_name": "nomad-consul-docker-ecr-cni-amazon-linux2-{{isotime | clean_ami_name}}",
+      "ami_description": "An Amazon Linux 2 AMI that has Nomad ({{user `nomad_version`}}), Consul ({{user `consul_version`}}), CNI-Plugins ({{user `cni_version`}}) and Docker, ECR Helper installed.",
       "instance_type": "t2.micro",
       "name": "amazon-linux-ami2",
       "region": "{{user `aws_region`}}",
