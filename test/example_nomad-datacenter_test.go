@@ -5,7 +5,6 @@ package test
 import (
 	"testing"
 
-	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
@@ -26,17 +25,12 @@ func TestNomadDataCenterExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpNomadDataCenter)
-
-		// Delete the generated AMI
-		amiID := test_structure.LoadAmiId(t, tmpNomadDataCenter)
-		awsRegion := test_structure.LoadString(t, tmpNomadDataCenter, savedAWSRegion)
-		aws.DeleteAmi(t, awsRegion, amiID)
+		helperCleanup(t, tmpNomadDataCenter, savedAWSRegion, true, true)
 	})
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpNomadDataCenter, true)
+		helperSetupInfrastructure(t, awsRegion, tmpNomadDataCenter, true, true)
 	})
 
 	// Validate Example

@@ -15,12 +15,12 @@ func TestUIAccessExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpUIAccess)
+		helperCleanup(t, tmpUIAccess, awsRegion, false, true)
 	})
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpUIAccess, false)
+		helperSetupInfrastructure(t, awsRegion, tmpUIAccess, false, true)
 	})
 
 	// Validate Example

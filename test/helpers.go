@@ -57,34 +57,46 @@ func initTerraformOptions(path string) *terraform.Options {
 	return terraformOptions
 }
 
-func helperSetupInfrastructure(t *testing.T, awsRegion string, tmpPath string, ami bool) {
+func helperSetupInfrastructure(t *testing.T, awsRegion string, tmpPath string, ami bool, ssh bool) {
 	uniqueID := random.UniqueId()
-
-	keyPairName := fmt.Sprintf("terratest-onetime-key-%s", uniqueID)
-	keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
 
 	terraformOptions := initTerraformOptions(tmpPath)
 	terraformOptions.Vars["aws_region"] = awsRegion
-	terraformOptions.Vars["ssh_key_name"] = keyPairName
+
+	if ssh {
+		keyPairName := fmt.Sprintf("terratest-onetime-key-%s", uniqueID)
+		keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
+		terraformOptions.Vars["ssh_key_name"] = keyPairName
+		test_structure.SaveEc2KeyPair(t, tmpPath, keyPair)
+	}
 	if ami {
 		amiID := test_structure.LoadAmiId(t, tmpPath)
 		terraformOptions.Vars["ami_id"] = amiID
 	}
 
-	// Persist options and keypair for later use
+	// Persist options for later use
 	test_structure.SaveTerraformOptions(t, tmpPath, terraformOptions)
-	test_structure.SaveEc2KeyPair(t, tmpPath, keyPair)
 
 	// Rollout infrastructure
 	terraform.InitAndApply(t, terraformOptions)
 }
 
-func helperCleanup(t *testing.T, tmpPath string) {
+func helperCleanup(t *testing.T, tmpPath string, region string, ami bool, ssh bool) {
 	terraformOptions := test_structure.LoadTerraformOptions(t, tmpPath)
 	terraform.Destroy(t, terraformOptions)
 
-	keyPair := test_structure.LoadEc2KeyPair(t, tmpPath)
-	aws.DeleteEC2KeyPair(t, keyPair)
+	// Delete the generated AMI
+	if ami {
+		amiID := test_structure.LoadAmiId(t, tmpPath)
+		awsRegion := test_structure.LoadString(t, tmpPath, region)
+		aws.DeleteAmi(t, awsRegion, amiID)
+	}
+
+	// Delete the generated SSH key
+	if ssh {
+		keyPair := test_structure.LoadEc2KeyPair(t, tmpPath)
+		aws.DeleteEC2KeyPair(t, keyPair)
+	}
 }
 
 func helperCheckSSH(t *testing.T, publicIP string, keyPair *ssh.KeyPair) {
@@ -125,9 +137,10 @@ func helperCheckConsul(t *testing.T, publicIP string, keyPair *aws.Ec2Keypair) {
 	retry.DoWithRetry(t, "SSH to public host", 30, 5*time.Second, func() (string, error) {
 		// DEBUG: helperExportSSHKey(publicHost.SshKeyPair)
 
-		// Check system service configuration: supervisor started consul service and consul is running
-		expectedService := "RUNNING"
-		commandService := "sudo supervisorctl status consul"
+		// Check system service configuration: started consul service and consul is running
+		expectedService := "running"
+		// FIXME: Refactor to use: systemctl is-active consul.service + return value evaluation
+		commandService := "sudo systemctl status consul"
 		actualText, errService := ssh.CheckSshCommandE(t, publicHost, commandService)
 
 		// .Verify result

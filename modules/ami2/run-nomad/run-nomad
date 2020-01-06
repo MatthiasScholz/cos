@@ -4,7 +4,6 @@
 set -e
 
 readonly NOMAD_CONFIG_FILE="default.hcl"
-readonly SUPERVISOR_CONFIG_PATH="/etc/supervisor/conf.d/run-nomad.conf"
 
 readonly EC2_INSTANCE_METADATA_URL="http://169.254.169.254/latest/meta-data"
 readonly EC2_INSTANCE_DYNAMIC_DATA_URL="http://169.254.169.254/latest/dynamic"
@@ -200,35 +199,6 @@ EOF
   chown "$user:$user" "$config_path"
 }
 
-# OUTDATED
-function generate_supervisor_config {
-  local readonly supervisor_config_path="$1"
-  local readonly nomad_config_dir="$2"
-  local readonly nomad_data_dir="$3"
-  local readonly nomad_bin_dir="$4"
-  local readonly nomad_log_dir="$5"
-  local readonly nomad_user="$6"
-  local readonly use_sudo="$7"
-
-  if [[ "$use_sudo" == "true" ]]; then
-    log_info "The --use-sudo flag is set, so running Nomad as the root user"
-    nomad_user="root"
-  fi
-
-  log_info "Creating Supervisor config file to run Nomad in $supervisor_config_path"
-  cat > "$supervisor_config_path" <<EOF
-[program:nomad]
-command=$nomad_bin_dir/nomad agent -config $nomad_config_dir -data-dir $nomad_data_dir
-stdout_logfile=$nomad_log_dir/nomad-stdout.log
-stderr_logfile=$nomad_log_dir/nomad-error.log
-numprocs=1
-autostart=true
-autorestart=true
-stopsignal=INT
-user=$nomad_user
-EOF
-}
-
 # Cleaning up temporary data created by nomad, which should be unique.
 # Using snapshots will break this assumption.
 function cleanup {
@@ -241,13 +211,6 @@ function cleanup {
 function start_nomad {
    log_info "Starting Nomad as systemd service"
    sudo systemctl start nomad.service
-}
-
-# OUTDATED - nomad is started using systemctl of Amazon Linux 2
-function start_nomad_supervisorctl {
-  log_info "Reloading Supervisor config and starting Nomad"
-  supervisorctl reread
-  supervisorctl update
 }
 
 # Based on: http://unix.stackexchange.com/a/7732/215969
@@ -360,14 +323,13 @@ function run {
       use_sudo="false"
     fi
   fi
-  
+
   # Starting cleanup of the data on the instance ( snapshot )
   # Info: This is not recommened currently since this would remove
   # data you might be interested in in a post mortem analysis.
   # Thus for now the cleanup function is not called here any more.
   # cleanup
 
-  assert_is_installed "supervisorctl"
   assert_is_installed "aws"
   assert_is_installed "curl"
   assert_is_installed "jq"
@@ -398,8 +360,6 @@ function run {
     generate_nomad_config "$server" "$client" "$num_servers" "$config_dir" "$user" "$datacenter"
   fi
 
-  # OUTDATED: generate_supervisor_config "$SUPERVISOR_CONFIG_PATH" "$config_dir" "$data_dir" "$bin_dir" "$log_dir" "$user" "$use_sudo"
-  # OUTDATED: start_nomad_supervisorctl
   start_nomad
 }
 

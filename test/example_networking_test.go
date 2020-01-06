@@ -16,7 +16,7 @@ func TestNetworkingExample(t *testing.T) {
 
 	// Cleanup infrastructure
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpNetworking)
+		helperCleanup(t, tmpNetworking, "unused", false, false)
 	})
 
 	// Prepare infrastructure and create it
@@ -24,7 +24,7 @@ func TestNetworkingExample(t *testing.T) {
 		// TODO Not sure it is a good pattern in regards to have reproducible runs.
 		//      It might be better to run the test in all regions which should be supported.
 		awsRegion := aws.GetRandomStableRegion(t, nil, forbiddenRegions)
-		helperSetupInfrastructure(t, awsRegion, tmpNetworking, false)
+		helperSetupInfrastructure(t, awsRegion, tmpNetworking, false, false)
 	})
 
 	// Check infrastructure

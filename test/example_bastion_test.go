@@ -17,17 +17,18 @@ func TestBastionExample(t *testing.T) {
 	// HINT: In combination with a more flexible AWS region choice this can be used to run tests in parallel.
 	tmpBastion := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/bastion")
 
+	// Fixing the region is a flaw - but since this is only testing the examples it is acceptable.
+	// HINT: terratest provides a more flexible approach using: aws.GetRandomStableRegion()
+	awsRegion := "us-east-1"
+
 	// Cleanup infrastructure and ssh key
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpBastion)
+		helperCleanup(t, tmpBastion, awsRegion, false, true)
 	})
 
 	// Prepare infrastructure and create it
 	test_structure.RunTestStage(t, "setup", func() {
-		// Fixing the region is a flaw - but since this is only testing the examples it is acceptable.
-		// HINT: terratest provides a more flexible approach using: aws.GetRandomStableRegion()
-		awsRegion := "us-east-1"
-		helperSetupInfrastructure(t, awsRegion, tmpBastion, false)
+		helperSetupInfrastructure(t, awsRegion, tmpBastion, false, true)
 	})
 
 	// Check SSH access into the Bastion
