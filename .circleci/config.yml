@@ -1,4 +1,6 @@
- version: 2
+ version: 2.1
+ orbs:
+   packer: salaxander/packer@0.0.3
  jobs:
    build:
      working_directory: /go/src/github.com/MatthiasScholz/cos/
