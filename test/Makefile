@@ -39,7 +39,7 @@ endef
 define run_test
 @go version
 go clean -testcache
-go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
+go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT) ; exit "$${PIPESTATUS[0]}"
 $(out_parsing)
 endef
 
@@ -67,8 +67,9 @@ cleanup:
 test_all: cleanup
 	@go version
 	go clean -testcache
-	go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
-	GOCACHE=off go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT)
+	go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT) ; exit "$${PIPESTATUS[0]}"
+	go clean -testcache
+	go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT) ; exit "$${PIPESTATUS[0]}"
 	$(out_parsing)
 
 # SPECIFIC: Matching the name of the Makefile target with the name in of the test to be executed.
