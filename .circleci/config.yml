@@ -1,9 +1,9 @@
  version: 2
  jobs:
    build:
-     working_directory: /go/src/github.com/MatthiasScholz/cos
+     working_directory: /go/src/github.com/MatthiasScholz/cos/test
      docker:
        - image: circleci/golang:1.14.2
      steps:
        - checkout
-       - run: make -f test/Makefile
+       - run: make
