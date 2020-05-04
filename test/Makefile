@@ -2,6 +2,8 @@
 #
 # This Makefile provides the basic setup to use terratest as convenient as possible.
 # You can add your specific test cases at the end of the file following the pattern shown for "TestAMI2".
+SHELL = /bin/bash
+.SHELLFLAGS = -o pipefail -c
 
 # Version of terratest tools to be used
 # - IMPORTANT: Check Gopkg.toml to align with the used go package version!
@@ -39,7 +41,7 @@ endef
 define run_test
 @go version
 go clean -testcache
-go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT) ; exit "$${PIPESTATUS[0]}"
+go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
 $(out_parsing)
 endef
 
@@ -67,9 +69,9 @@ cleanup:
 test_all: cleanup
 	@go version
 	go clean -testcache
-	go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT) ; exit "$${PIPESTATUS[0]}"
+	go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
 	go clean -testcache
-	go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT) ; exit "$${PIPESTATUS[0]}"
+	go test -v -timeout $(TIMEOUT) -p 1 | tee $(TEST_OUTPUT)
 	$(out_parsing)
 
 # SPECIFIC: Matching the name of the Makefile target with the name in of the test to be executed.
