@@ -7,5 +7,5 @@
      steps:
        - checkout
        - run:
-           - working_directory: /go/src/github.com/MatthiasScholz/cos/test
-           - command: make all
+           working_directory: /go/src/github.com/MatthiasScholz/cos/test
+           command: make all
