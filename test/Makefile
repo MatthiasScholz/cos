@@ -2,6 +2,8 @@
 #
 # This Makefile provides the basic setup to use terratest as convenient as possible.
 # You can add your specific test cases at the end of the file following the pattern shown for "TestAMI2".
+SHELL = /bin/bash
+.SHELLFLAGS = -o pipefail -c
 
 # Version of terratest tools to be used
 # - IMPORTANT: Check Gopkg.toml to align with the used go package version!
