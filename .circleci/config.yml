@@ -6,4 +6,4 @@
        - image: circleci/golang:1.14.2
      steps:
        - checkout
-       - run: make all
+       - run: pwd && make all
