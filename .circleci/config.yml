@@ -1,6 +1,7 @@
  version: 2.1
  orbs:
    packer: salaxander/packer@0.0.3
+   terraform: ovotech/terraform@1.6.6
  jobs:
    build:
      working_directory: /go/src/github.com/MatthiasScholz/cos/
