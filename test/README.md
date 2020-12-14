@@ -4,6 +4,15 @@ This folder contains automated tests for this all modules provided in this repos
 using a helper library called [Terratest](https://github.com/gruntwork-io/terratest).
 The tests are written in [Go](https://golang.org/).
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/MatthiasScholz/cos)](https://goreportcard.com/report/github.com/MatthiasScholz/cos)
+
+## Dependencies
+
+- `go mod`
+- `terraform`
+- `tflint`
+- `terratest`
+
 ## WARNING WARNING WARNING
 
 * [Source of the Disclaimer: terraform-aws-nomad](https://raw.githubusercontent.com/hashicorp/terraform-aws-nomad/master/test/README.md)
@@ -109,3 +118,5 @@ a folder-structure like this `<some-folder>/src`.
 * The best solution would be to just check out this repository
 into your GOPATH structure: `cd %GOPATH/src && clone https://github.com/MatthiasScholz/cos.git`
 which then would result in `<some-folder>/src/cos` containing all the code.
+
+

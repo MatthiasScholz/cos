@@ -1,15 +1,16 @@
 {
-  "min_packer_version": "1.5.1",
+  "min_packer_version": "0.12.0",
   "variables": {
     "nomad_version": "0.10.2",
+    "cni_version": "0.8.2",
     "consul_module_version": "v0.7.3",
     "consul_version": "1.6.2",
     "aws_account_ids": ""
   },
   "builders": [
     {
-      "ami_name": "nomad-consul-docker-ecr-amazon-linux2-{{isotime | clean_resource_name}}",
-      "ami_description": "An Amazon Linux 2 AMI that has Nomad ({{user `nomad_version`}}), Consul ({{user `consul_version`}}) and Docker, ECR Helper installed.",
+      "ami_name": "nomad-consul-docker-ecr-cni-amazon-linux2-{{isotime | clean_ami_name}}",
+      "ami_description": "An Amazon Linux 2 AMI that has Nomad ({{user `nomad_version`}}), Consul ({{user `consul_version`}}), CNI-Plugins ({{user `cni_version`}}) and Docker, ECR Helper installed.",
       "instance_type": "t2.micro",
       "name": "amazon-linux-ami2",
       "region": "{{user `aws_region`}}",
@@ -70,6 +71,14 @@
     },
     {
       "type": "shell",
+      "environment_vars": [
+        "CNI_VERSION={{user `cni_version`}}"
+      ],
+      "script": "{{template_dir}}/setup_cni.sh"
+    },
+
+    {
+      "type": "shell",
       "inline": ["mkdir -p ~/.docker"]
     },
     {
@@ -120,6 +129,10 @@
         "sudo mv /tmp/copy_map_efs.sh /usr/bin",
         "sudo chmod u+x /usr/bin/copy_map_efs.sh"
       ]
+    },
+    {
+      "type": "shell",
+      "script": "{{template_dir}}/test.sh"
     }
   ]
 }
