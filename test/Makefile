@@ -66,7 +66,6 @@ all: setup test_all
 
 setup: install_terratest_log_parser
 	@go version
-	dep ensure -vendor-only -v
 	$(TT_INSTALL_PATH)/terratest_log_parser -h
 
 os:
