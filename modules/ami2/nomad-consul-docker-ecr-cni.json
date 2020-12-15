@@ -1,10 +1,10 @@
 {
   "min_packer_version": "0.12.0",
   "variables": {
-    "nomad_version": "0.10.2",
-    "cni_version": "0.8.2",
-    "consul_module_version": "v0.7.3",
-    "consul_version": "1.6.2",
+    "nomad_version": "1.0.0",
+    "consul_module_version": "v0.8.0",
+    "consul_version": "1.9.0",
+    "cni_version": "0.8.7",
     "aws_account_ids": ""
   },
   "builders": [

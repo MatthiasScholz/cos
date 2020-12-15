@@ -10,7 +10,7 @@ locals {
 # DEPLOY THE NOMAD SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "nomad_servers" {
-  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.5.0"
+  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.7.0"
 
   cluster_name                = local.cluster_name
   cluster_tag_value           = local.cluster_name
@@ -56,7 +56,7 @@ module "nomad_servers" {
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_iam_policies_servers" {
-  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.7.0"
+  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.0"
   iam_role_id = module.nomad_servers.iam_role_id
 }
 
@@ -76,4 +76,3 @@ data "template_file" "user_data_server" {
     aws_region        = var.aws_region
   }
 }
-
