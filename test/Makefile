@@ -2,6 +2,8 @@
 #
 # This Makefile provides the basic setup to use terratest as convenient as possible.
 # You can add your specific test cases at the end of the file following the pattern shown for "TestAMI2".
+SHELL = /bin/bash
+.SHELLFLAGS = -o pipefail -c
 
 # Version of terratest tools to be used
 dependency_nomad_version:=v0.10.2
@@ -11,7 +13,7 @@ dependency_terratest:=github.com/gruntwork-io/terratest
 dependency_terratest_version=v0.23.0
 
 # Installation path for terratest helper tools
-TT_INSTALL_PATH=$(HOME)/bin
+TT_INSTALL_PATH=../bin
 
 # Check: test/README.md for further details
 TIMEOUT="60m"
@@ -31,15 +33,15 @@ endif
 
 # Define some output formatting helpers
 define echoinfo
-      @tput setaf 4
+      # FIXME Colors not support by github actions terminal: @tput setaf 4
       @echo $1
-      @tput sgr0
+      # FIXME Colors not support by github actions terminal: @tput sgr0
 endef
 
 define echowarn
-      @tput setaf 1
+      # FIXME Colors not support by github actions terminal: @tput setaf 1
       @echo $1
-      @tput sgr0
+      # FIXME Colors not support by github actions terminal: @tput sgr0
 endef
 
 # Define: Terratest output formatting
@@ -55,7 +57,7 @@ endef
 # Define: Generic test execution
 define run_test
       @go version
-      go clean -testcache
+      @go clean -testcache
       go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
       $(out_parsing)
 endef
@@ -73,7 +75,7 @@ install_terratest_log_parser:
 	@mkdir -p $(TT_INSTALL_PATH)
 	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(dependency_terratest_version)/terratest_log_parser_$(OS_VERSION)
 	@chmod +x terratest_log_parser
-	mv terratest_log_parser $(TT_INSTALL_PATH)
+	@mv terratest_log_parser $(TT_INSTALL_PATH)
 
 dependencies_list:
 	$(call echoinfo, "--- List all dependencies ---")
