@@ -26,10 +26,7 @@ jobs:
         mv $(pwd)/* $GOPATH/src/github.com/$GITHUB_REPOSITORY
         cd $GOPATH/src/github.com/$GITHUB_REPOSITORY
         go get -v -t -d ./...
-        if [ -f test/Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            cd test && dep ensure
-        fi
+        cd test && make setup
 
     - name: Build
       env:

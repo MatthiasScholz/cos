@@ -13,7 +13,7 @@ dependency_terratest:=github.com/gruntwork-io/terratest
 dependency_terratest_version=v0.23.0
 
 # Installation path for terratest helper tools
-TT_INSTALL_PATH=$(HOME)/bin
+TT_INSTALL_PATH=../bin
 
 # Check: test/README.md for further details
 TIMEOUT="60m"
@@ -57,7 +57,7 @@ endef
 # Define: Generic test execution
 define run_test
       @go version
-      go clean -testcache
+      @go clean -testcache
       go test -v -timeout $(TIMEOUT) -p 1 -run $@ | tee $(TEST_OUTPUT)
       $(out_parsing)
 endef
@@ -75,7 +75,7 @@ install_terratest_log_parser:
 	@mkdir -p $(TT_INSTALL_PATH)
 	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(dependency_terratest_version)/terratest_log_parser_$(OS_VERSION)
 	@chmod +x terratest_log_parser
-	mv terratest_log_parser $(TT_INSTALL_PATH)
+	@mv terratest_log_parser $(TT_INSTALL_PATH)
 
 dependencies_list:
 	$(call echoinfo, "--- List all dependencies ---")
