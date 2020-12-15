@@ -33,15 +33,15 @@ endif
 
 # Define some output formatting helpers
 define echoinfo
-      @tput setaf 4
+      # FIXME Colors not support by github actions terminal: @tput setaf 4
       @echo $1
-      @tput sgr0
+      # FIXME Colors not support by github actions terminal: @tput sgr0
 endef
 
 define echowarn
-      @tput setaf 1
+      # FIXME Colors not support by github actions terminal: @tput setaf 1
       @echo $1
-      @tput sgr0
+      # FIXME Colors not support by github actions terminal: @tput sgr0
 endef
 
 # Define: Terratest output formatting
