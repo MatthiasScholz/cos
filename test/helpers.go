@@ -22,7 +22,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/retry"
 	"github.com/gruntwork-io/terratest/modules/ssh"
 	"github.com/gruntwork-io/terratest/modules/terraform"
-	"github.com/knq/pemutil"
+	"github.com/kenshaw/pemutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
