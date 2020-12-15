@@ -10,7 +10,7 @@ dependency_nomad_version:=v0.10.2
 dependency_nomad:=github.com/hashicorp/nomad
 
 dependency_terratest:=github.com/gruntwork-io/terratest
-dependency_terratest_version=v0.23.0
+dependency_terratest_version=v0.31.1
 
 # Installation path for terratest helper tools
 TT_INSTALL_PATH=../bin
