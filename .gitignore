@@ -27,3 +27,4 @@ out/
 **/.test-data
 
 **/.DS_Store
+/bin/
