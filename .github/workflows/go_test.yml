@@ -8,20 +8,17 @@ jobs:
     steps:
 
     - name: Set up Go 1.15
-      uses: actions/setup-go@v1
+      uses: actions/setup-go@v2
       with:
         go-version: 1.15
       id: go
 
     - name: Check out code into the Go module directory
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     - name: Get dependencies
       run: |
         export GOPATH=$HOME/go
-        export GOBIN=$(go env GOPATH)/bin
-        mkdir -p "${GOBIN}"
-        export PATH=$PATH:$GOBIN
         mkdir -p $GOPATH/src/github.com/$GITHUB_REPOSITORY
         mv $(pwd)/* $GOPATH/src/github.com/$GITHUB_REPOSITORY
         cd $GOPATH/src/github.com/$GITHUB_REPOSITORY
@@ -34,8 +31,5 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: |
         export GOPATH=$HOME/go
-        export GOBIN=$(go env GOPATH)/bin
-        mkdir -p "${GOBIN}"
-        export PATH=$PATH:$GOBIN
         cd $GOPATH/src/github.com/$GITHUB_REPOSITORY
         cd test && make TestBastionExample
