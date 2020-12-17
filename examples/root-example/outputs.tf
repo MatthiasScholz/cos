@@ -54,14 +54,6 @@ output "ingress_alb_dns" {
   value = module.networking.alb_public_services_dns
 }
 
-output "bastion_ip" {
-  value = module.bastion.bastion_ip
-}
-
-output "ssh_login" {
-  value = "ssh ec2-user@${module.bastion.bastion_ip} -i ~/.ssh/${module.nomad-infra.ssh_key_name}.pem"
-}
-
 output "ssh_key_name" {
   value = module.nomad-infra.ssh_key_name
 }
@@ -133,4 +125,3 @@ output "dc-private-services_alb_https_targetgroup_arn" {
 output "dc-backoffice_alb_https_targetgroup_arn" {
   value = module.nomad-infra.dc-backoffice_alb_https_targetgroup_arn
 }
-
