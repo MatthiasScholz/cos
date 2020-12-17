@@ -1,7 +1,7 @@
 {
   "min_packer_version": "1.5.1",
   "variables": {
-    "nomad_version": "1.0.0",
+    "nomad_version": "1.0.1",
     "consul_module_version": "v0.8.0",
     "consul_version": "1.9.0",
     "aws_account_ids": "",
