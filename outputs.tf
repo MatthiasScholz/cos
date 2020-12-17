@@ -79,7 +79,7 @@ output "cluster_prefix" {
 }
 
 output "dc-public-services_asg_name" {
-  value = "${module.dc-public-services.asg_name}"
+  value = module.dc-public-services.asg_name
 }
 
 output "dc-public-services_sg_id" {
@@ -117,4 +117,3 @@ output "consul_servers_cluster_tag_key" {
 output "consul_servers_cluster_tag_value" {
   value = module.consul.consul_servers_cluster_tag_value
 }
-
