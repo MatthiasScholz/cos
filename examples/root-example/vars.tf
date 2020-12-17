@@ -86,4 +86,3 @@ variable "additional_instance_tags_sample" {
     },
   ]
 }
-
