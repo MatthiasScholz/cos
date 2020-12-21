@@ -64,14 +64,10 @@ func TestConsulExample(t *testing.T) {
 		}
 		nodeIP := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
 
-		// Check SSH connection
-		keyPair := test_structure.LoadEc2KeyPair(t, tmpConsul)
-		helperCheckSSH(t, nodeIP, keyPair.KeyPair)
-
 		// Check if consul service is running
 		// - Connections from outside are not allowed!
 		// -> Test from inside the cluster needed ( SSH + Commands )
-		helperCheckConsul(t, nodeIP, keyPair)
+		helperCheckConsulInstance(t, awsRegion, nodeIP)
 	})
 	logger.Log(t, "############ TestConsulExample [SUCCESS] ####################")
 }

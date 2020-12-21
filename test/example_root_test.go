@@ -51,7 +51,7 @@ func TestRootExample(t *testing.T) {
 	test_structure.RunTestStage(t, "setup_cluster", func() {
 		terraformOptions := test_structure.LoadTerraformOptions(t, tmpRoot)
 		nomadURI := terraform.Output(t, terraformOptions, "nomad_ui_alb_dns")
-		helperTestCOSDeployment(t, nomadURI)
+		helperTestNomadDeployment(t, nomadURI)
 	})
 
 	// TODO Further testing of the cluster.
