@@ -69,6 +69,12 @@
         "CONSUL_MODULE_VERSION={{user `consul_module_version`}}"
       ],
       "script": "{{template_dir}}/setup_nomad_consul.sh"
+    },
+    {
+        "type": "goss",
+        "tests": [
+            "{{template_dir}}/goss.yaml"
+        ]
     }
   ]
 }

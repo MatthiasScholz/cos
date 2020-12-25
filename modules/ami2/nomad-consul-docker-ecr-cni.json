@@ -133,6 +133,12 @@
     {
       "type": "shell",
       "script": "{{template_dir}}/test.sh"
+    },
+    {
+        "type": "goss",
+        "tests": [
+            "{{template_dir}}/goss.yaml"
+        ]
     }
   ]
 }

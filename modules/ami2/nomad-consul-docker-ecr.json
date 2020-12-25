@@ -120,6 +120,12 @@
         "sudo mv /tmp/copy_map_efs.sh /usr/bin",
         "sudo chmod u+x /usr/bin/copy_map_efs.sh"
       ]
+    },
+    {
+        "type": "goss",
+        "tests": [
+            "{{template_dir}}/goss.yaml"
+        ]
     }
   ]
 }
