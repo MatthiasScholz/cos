@@ -17,11 +17,10 @@ aws_region:=us-east-1
 
 ami: nomad-consul-docker-ecr.json
 
-nomad-consul-docker-ecr.json:
-	packer build -var aws_region=$(aws_region) nomad-consul-docker-ecr.json
+nomad-consul-docker*.json:
+	packer validate -var aws_region=$(aws_region) $@
+	packer build -var aws_region=$(aws_region) $@
 
-nomad-consul-docker.json:
-	packer build -var aws_region=$(aws_region) nomad-consul-docker.json
 # NOTE AMIs are validated using goss, which needs to be supported with an additional plugin:
 # -> https://github.com/YaleUniversity/packer-provisioner-goss
 goss_provisioner_version := 2.0.0
@@ -37,7 +36,5 @@ prepare:
 	@chmod +x $(goos_provisioner_binary)
 	mv $(goos_provisioner_binary) $(goos_provisioner_install_path)
 
-nomad-consul-docker-ecr-cni.json:
-	packer build -var aws_region=$(aws_region) nomad-consul-docker-ecr-cni.json
 uninstall:
 	rm -f $(goos_provisioner_install_path)
