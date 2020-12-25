@@ -9,7 +9,7 @@ variable "ssh_key_name" {
 
 variable "ami_id" {
   description = "Name of the AMI used to run this example."
-  default = "ami-a23feadf"
+  default = "ami-0c2d89864d854f92c" # 2020-12-25
 }
 
 variable "aws_region" {

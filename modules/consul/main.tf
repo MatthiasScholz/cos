@@ -23,6 +23,10 @@ module "consul_servers" {
   allowed_inbound_cidr_blocks          = []
   allowed_inbound_security_group_count = 0
   ssh_key_name                         = var.ssh_key_name
+
+  # Inject own instance profile with AWS SSM support
+  enable_iam_setup = false
+  iam_instance_profile_name = aws_iam_instance_profile.instance_profile.name
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
