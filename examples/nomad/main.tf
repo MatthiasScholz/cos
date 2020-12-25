@@ -41,7 +41,7 @@ module "consul" {
   cluster_tag_key         = local.consul_cluster_tag_key
   cluster_tag_value       = local.consul_cluster_tag_value
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name            = "${var.ssh_key_name}"
+  ssh_key_name            = var.ssh_key_name
 }
 
 module "nomad" {
@@ -59,7 +59,7 @@ module "nomad" {
   env_name                = local.env_name
   stack_name              = local.stack_name
   allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name            = "${var.ssh_key_name}"
+  ssh_key_name            = var.ssh_key_name
   instance_type           = "t2.micro"
   unique_postfix          = "-${random_pet.unicorn.id}"
   datacenter_name         = "leader"
