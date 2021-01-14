@@ -23,19 +23,26 @@ func helperCheckConsulInstance(t *testing.T, awsRegion string, publicIP string) 
 	timeout := 3 * time.Minute
 	aws.WaitForSsmInstance(t, awsRegion, instanceID, timeout)
 
+	// Wait for cloud-init to be finished, since it configures the Consul service
+	logger.Log(t, "Waiting for cloud-init to be finished.")
+	wait_init := 3 * time.Minute
+	time.Sleep(wait_init)
 
 	// Check systemd service
+	logger.Log(t, "Checking SystemD configuration")
 	expectedService := "running"
 	commandService := "sudo systemctl status consul"
 	verifyCommand(t, awsRegion, instanceID, commandService, expectedService, timeout)
 
 
 	// Check for leader
+	logger.Log(t, "Checking Consul Leader configuration")
 	expectedLeader := "leader"
 	commandLeader := "consul operator raft list-peers"
 	verifyCommand(t, awsRegion, instanceID, commandLeader, expectedLeader, timeout)
 
 	// Check members
+	logger.Log(t, "Checking Consul Member configuration")
 	expectedMembers := "alive"
 	commandMembers := "consul members"
 	verifyCommand(t, awsRegion, instanceID, commandMembers, expectedMembers, timeout)

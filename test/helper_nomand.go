@@ -26,18 +26,25 @@ func helperCheckNomadInstance(t *testing.T, awsRegion string, publicIP string) {
 	timeout := 3 * time.Minute
 	aws.WaitForSsmInstance(t, awsRegion, instanceID, timeout)
 
+	// Wait for cloud-init to be finished, since it configures the Nomad service
+	logger.Log(t, "Waiting for cloud-init to be finished.")
+	wait_init := 3 * time.Minute
+	time.Sleep(wait_init)
 
 	// Check systemd service
+	logger.Log(t, "Checking SystemD configuration")
 	expectedService := "running"
 	commandService := "sudo systemctl status nomad"
 	verifyCommand(t, awsRegion, instanceID, commandService, expectedService, timeout)
 
 	// Check for clean status
+	logger.Log(t, "Checking for clean nomad after bootstrapping")
 	expectedStatus := "No running jobs"
 	commandStatus := "nomad status"
 	verifyCommand(t, awsRegion, instanceID, commandStatus, expectedStatus, timeout)
 
 	// Check for leader
+	logger.Log(t, "Checking Nomad Leader configuration")
 	expectedLeader := "leader"
 	commandLeader := "nomad operator raft list-peers"
 	verifyCommand(t, awsRegion, instanceID, commandLeader, expectedLeader, timeout)
