@@ -116,6 +116,7 @@ func helperCheckSSH(t *testing.T, publicIP string, keyPair *ssh.KeyPair) {
 		return "", nil
 	})
 }
+
 func verifyCommand(t *testing.T, awsRegion string, instanceID string, command string, expected string, timeout time.Duration) {
 	result := aws.CheckSsmCommand(t, awsRegion, instanceID, command, timeout)
 	require.Contains(t, result.Stdout, expected)
