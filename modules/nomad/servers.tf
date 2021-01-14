@@ -56,7 +56,7 @@ module "nomad_servers" {
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_iam_policies_servers" {
-  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.0"
+  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.2"
   iam_role_id = module.nomad_servers.iam_role_id
 }
 

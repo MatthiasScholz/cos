@@ -61,7 +61,7 @@ module "data_center" {
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_iam_policies_datacenter" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.0"
+  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.2"
 
   iam_role_id = module.data_center.iam_role_id
 }

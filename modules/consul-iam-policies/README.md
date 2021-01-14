@@ -14,7 +14,7 @@ cluster of servers that have both Nomad and Consul on each node:
 
 ```hcl
 module "nomad_servers" {
-  source = "git::git@github.com:hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.0.1"
+  source = "git::git@github.com:hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.7.0"
   
   # This AMI has both Nomad and Consul installed
   ami_id = "ami-1234abcd"
@@ -26,7 +26,7 @@ have the necessary IAM permissions to run Consul, you can use this module as fol
 
 ```hcl
 module "iam_policies" {
-  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.0.2"
+  source = "git::git@github.com:hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.2"
 
   iam_role_id = "${module.nomad_servers.iam_role_id}"
   
