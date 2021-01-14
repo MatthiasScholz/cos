@@ -5,6 +5,7 @@
     "consul_module_version": "v0.8.0",
     "consul_version": "1.9.1",
     "cni_version": "0.9.0",
+    "envoy_version": "1.16.2",
     "aws_account_ids": ""
   },
   "builders": [
@@ -133,6 +134,18 @@
       "inline": [
         "sudo mv /tmp/copy_map_efs.sh /usr/bin",
         "sudo chmod u+x /usr/bin/copy_map_efs.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "ENVOY_VERSION={{user `envoy_version`}}"
+      ],
+      "inline": [
+        "sudo curl -L https://getenvoy.io/cli | sudo bash -s -- -b /usr/local/bin",
+        "getenvoy run standard:{{user `envoy_version`}} -- --version",
+        "sudo cp ~/.getenvoy/builds/standard/{{user `envoy_version`}}/linux_glibc/bin/envoy /usr/local/bin/",
+        "envoy --version"
       ]
     },
     {
