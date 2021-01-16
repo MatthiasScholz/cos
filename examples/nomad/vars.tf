@@ -7,9 +7,6 @@ variable "ami_id" {
   default     = "ami-09118e4b58586b75d"
 }
 
-variable "ssh_key_name" {
-  description = "Name of the SSH instance key to be used."
-  default = "kp-us-east-1-playground-instancekey"
 }
 
 variable "aws_region" {
