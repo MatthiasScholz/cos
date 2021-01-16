@@ -57,8 +57,6 @@ module "nomad-infra" {
   env_name                = var.env_name
   unique_postfix          = "-${random_pet.unicorn.id}"
   instance_type_server    = "t2.micro"
-  ssh_key_name            = aws_key_pair.dummy.id
-  allowed_ssh_cidr_blocks = values(local.allowed_cidr_blocks)
 
   allowed_cidr_blocks_for_ui_alb = local.allowed_cidr_blocks
 

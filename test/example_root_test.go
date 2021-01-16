@@ -27,12 +27,12 @@ func TestRootExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpRoot, savedAWSRegion, true, true)
+		helperCleanup(t, tmpRoot, savedAWSRegion, true, false)
 	})
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpRoot, true, true)
+		helperSetupInfrastructure(t, awsRegion, tmpRoot, true, false)
 	})
 
 	// Validate Infrastructure and general cluster health

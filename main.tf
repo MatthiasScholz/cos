@@ -37,10 +37,8 @@ module "consul" {
   stack_name              = var.stack_name
   cluster_tag_key         = local.consul_cluster_tag_key
   cluster_tag_value       = local.consul_cluster_tag_value
-  allowed_ssh_cidr_blocks = var.allowed_ssh_cidr_blocks
   num_servers             = var.consul_num_servers
   instance_type           = var.consul_instance_type
-  ssh_key_name            = var.ssh_key_name
 }
 
 #### DC: PUBLIC-SERVICES ###################################################
@@ -64,8 +62,6 @@ module "dc-public-services" {
     "instance_type",
     "INVALID",
   )
-  allowed_ssh_cidr_blocks        = var.allowed_ssh_cidr_blocks
-  ssh_key_name                   = var.ssh_key_name
   datacenter_name                = "public-services"
   unique_postfix                 = var.unique_postfix
   alb_ingress_https_listener_arn = var.alb_ingress_https_listener_arn
@@ -97,8 +93,6 @@ module "dc-private-services" {
     "instance_type",
     "INVALID",
   )
-  allowed_ssh_cidr_blocks    = var.allowed_ssh_cidr_blocks
-  ssh_key_name               = var.ssh_key_name
   datacenter_name            = "private-services"
   unique_postfix             = var.unique_postfix
   node_scaling_cfg           = var.nomad_private_services_dc_node_cfg
@@ -126,8 +120,6 @@ module "dc-backoffice" {
   stack_name                     = var.stack_name
   aws_region                     = var.aws_region
   instance_type                  = lookup(var.nomad_backoffice_dc_node_cfg, "instance_type", "INVALID")
-  allowed_ssh_cidr_blocks        = var.allowed_ssh_cidr_blocks
-  ssh_key_name                   = var.ssh_key_name
   datacenter_name                = "backoffice"
   unique_postfix                 = var.unique_postfix
   alb_ingress_https_listener_arn = var.alb_backoffice_https_listener_arn
@@ -159,8 +151,6 @@ module "dc-content-connector" {
     "instance_type",
     "INVALID",
   )
-  allowed_ssh_cidr_blocks    = var.allowed_ssh_cidr_blocks
-  ssh_key_name               = var.ssh_key_name
   datacenter_name            = "content-connector"
   unique_postfix             = var.unique_postfix
   node_scaling_cfg           = var.nomad_content_connector_dc_node_cfg
@@ -184,8 +174,6 @@ module "nomad" {
   stack_name              = var.stack_name
   aws_region              = var.aws_region
   instance_type           = var.instance_type_server
-  allowed_ssh_cidr_blocks = var.allowed_ssh_cidr_blocks
-  ssh_key_name            = var.ssh_key_name
   node_scaling_cfg        = var.nomad_server_scaling_cfg
   unique_postfix          = var.unique_postfix
 }

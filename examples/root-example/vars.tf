@@ -17,11 +17,6 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "ssh_key_name" {
-  description = "AWS instance key to use for SSH login"
-  default     = "kp-us-east-1-playground-instancekey"
-}
-
 variable "stack_name" {
   description = "Name of the cluster, used as prefix to identify the AWS resources belonging to the cluster."
   default     = "COS"

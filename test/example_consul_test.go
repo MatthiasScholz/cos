@@ -32,12 +32,12 @@ func TestConsulExample(t *testing.T) {
 
 	// Cleanup infrastructure
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpConsul, savedAWSRegion, true, true)
+		helperCleanup(t, tmpConsul, savedAWSRegion, true, false)
 	})
 
 	// Prepare infrastructure and create it
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpConsul, true, true)
+		helperSetupInfrastructure(t, awsRegion, tmpConsul, true, false)
 	})
 
 	// This module uses a sub module inside. It is tested itself.

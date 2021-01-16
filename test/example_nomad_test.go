@@ -29,12 +29,12 @@ func TestNomadExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpNomad, savedAWSRegion, true, true)
+		helperCleanup(t, tmpNomad, savedAWSRegion, true, false)
 	})
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpNomad, true, true)
+		helperSetupInfrastructure(t, awsRegion, tmpNomad, true, false)
 	})
 
 	// Validate Example
