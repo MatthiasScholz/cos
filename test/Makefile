@@ -6,11 +6,11 @@ SHELL = /bin/bash
 .SHELLFLAGS = -o pipefail -c
 
 # Version of terratest tools to be used
-dependency_nomad_version:=v1.0.1
+dependency_nomad_version:=v1.0.2
 dependency_nomad:=github.com/hashicorp/nomad
 
 dependency_terratest:=github.com/gruntwork-io/terratest
-dependency_terratest_version=v0.31.2
+dependency_terratest_version=v0.31.3
 
 # Installation path for terratest helper tools
 TT_INSTALL_PATH=../bin
