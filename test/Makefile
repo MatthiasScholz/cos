@@ -73,8 +73,9 @@ os:
 	@echo $(OS_VERSION)
 
 install_terratest_log_parser:
+	@echo "INFO :: Installing terratest_log_parser locally: $(TT_INSTALL_PATH)"
 	@mkdir -p $(TT_INSTALL_PATH)
-	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(dependency_terratest_version)/terratest_log_parser_$(OS_VERSION)
+	curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(dependency_terratest_version)/terratest_log_parser_$(OS_VERSION)
 	@chmod +x terratest_log_parser
 	@mv terratest_log_parser $(TT_INSTALL_PATH)
 
