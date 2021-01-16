@@ -32,17 +32,17 @@ else
 endif
 
 # Define some output formatting helpers
+# FIXME Colors not support by github actions terminal: @tput setaf 4
+# NOTE Error "tput: No value for $TERM and no -T specified"
+# FIXME Colors not support by github actions terminal: @tput sgr0
 define echoinfo
-      # FIXME Colors not support by github actions terminal: @tput setaf 4
-			# NOTE Error "tput: No value for $TERM and no -T specified"
       @echo $1
-      # FIXME Colors not support by github actions terminal: @tput sgr0
 endef
 
+# FIXME Colors not support by github actions terminal: @tput setaf 1
+# FIXME Colors not support by github actions terminal: @tput sgr0
 define echowarn
-      # FIXME Colors not support by github actions terminal: @tput setaf 1
       @echo $1
-      # FIXME Colors not support by github actions terminal: @tput sgr0
 endef
 
 # Define: Terratest output formatting

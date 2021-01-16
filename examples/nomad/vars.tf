@@ -8,6 +8,5 @@ variable "ami_id" {
 
 variable "aws_region" {
   description = "Dummy to make use of generic terraform configuration in tests."
-  default = "us-east-1"
+  default     = "us-east-1"
 }
-

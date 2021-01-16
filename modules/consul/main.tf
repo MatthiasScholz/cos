@@ -25,7 +25,7 @@ module "consul_servers" {
   ssh_key_name                         = var.ssh_key_name
 
   # Inject own instance profile with AWS SSM support
-  enable_iam_setup = false
+  enable_iam_setup          = false
   iam_instance_profile_name = aws_iam_instance_profile.instance_profile.name
 }
 
