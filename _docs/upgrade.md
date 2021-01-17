@@ -22,6 +22,7 @@ Contains information on how to update the versions used in this repository.
 ### Ingress
 
 Since Fabio is used as a job within the cluster the job description needs to be updated:
+
 - [fabio job](../examples/jobs/fabio.nomad)
 
 ### Terraform
@@ -44,4 +45,3 @@ Since Fabio is used as a job within the cluster the job description needs to be 
 
 - [nomad](../test/Makefile)
 - [terratest](../test/Makefile)
-
