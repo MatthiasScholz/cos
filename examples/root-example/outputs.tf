@@ -54,10 +54,6 @@ output "ingress_alb_dns" {
   value = module.networking.alb_public_services_dns
 }
 
-output "ssh_key_name" {
-  value = module.nomad-infra.ssh_key_name
-}
-
 output "vpc_id" {
   value = module.nomad-infra.vpc_id
 }
