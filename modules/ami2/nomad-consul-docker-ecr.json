@@ -23,7 +23,9 @@
           "block-device-mapping.volume-type": "gp2",
           "root-device-type": "ebs"
         },
-        "owners": ["amazon"],
+        "owners": [
+          "amazon"
+        ],
         "most_recent": true
       },
       "ssh_username": "ec2-user",
@@ -40,7 +42,9 @@
     {
       "type": "shell",
       "script": "{{template_dir}}/setup_amazon-linux.sh",
-      "only": ["amazon-linux-ami2"]
+      "only": [
+        "amazon-linux-ami2"
+      ]
     },
     {
       "type": "file",
@@ -70,7 +74,9 @@
     },
     {
       "type": "shell",
-      "inline": ["mkdir -p ~/.docker"]
+      "inline": [
+        "mkdir -p ~/.docker"
+      ]
     },
     {
       "type": "file",
@@ -122,10 +128,10 @@
       ]
     },
     {
-        "type": "goss",
-        "tests": [
-            "{{template_dir}}/goss.yaml"
-        ]
+      "type": "goss",
+      "tests": [
+        "{{template_dir}}/goss.yaml"
+      ]
     }
   ]
 }
