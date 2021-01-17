@@ -31,7 +31,7 @@ module "bastion" {
   vpc_id       = data.aws_vpc.default.id
   subnet_id    = element(tolist(data.aws_subnet_ids.all.ids), 0)
   ami_id       = local.ami_id
-  ssh_key_name = "${var.ssh_key_name}"
+  ssh_key_name = var.ssh_key_name
 
   ## optional parameters
   aws_region = local.aws_region

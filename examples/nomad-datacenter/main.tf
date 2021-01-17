@@ -43,8 +43,6 @@ module "nomad-datacenter" {
   aws_region              = var.aws_region
   env_name                = local.env_name
   stack_name              = local.stack_name
-  allowed_ssh_cidr_blocks = ["0.0.0.0/0"]
-  ssh_key_name            = "${var.ssh_key_name}"
   datacenter_name         = "public-services"
   instance_type           = "t2.micro"
   unique_postfix          = "-${random_pet.unicorn.id}"

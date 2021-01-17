@@ -8,7 +8,7 @@ export PATH=$PATH:$script_dir
 export AWS_PROFILE=playground
 
 echo "[INFO] [${SCRIPT}] Confiugure NOMAD_ADDR"
-nomad_dns=$(terraform output nomad_ui_alb_dns)
+nomad_dns=$(terraform output -raw nomad_ui_alb_dns)
 export NOMAD_ADDR=http://$nomad_dns
 echo ${NOMAD_ADDR}
 
@@ -25,7 +25,7 @@ echo "\n[INFO] [${SCRIPT}] ############# Nomad clients: ########################
 nomad node status
 
 echo "[INFO] [${SCRIPT}] Confiugure CONSUL_HTTP_ADDR"
-consul_dns=$(terraform output consul_ui_alb_dns)
+consul_dns=$(terraform output -raw consul_ui_alb_dns)
 export CONSUL_HTTP_ADDR=http://$consul_dns
 echo ${CONSUL_HTTP_ADDR}
 

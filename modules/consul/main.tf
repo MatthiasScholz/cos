@@ -2,7 +2,7 @@
 # DEPLOY THE CONSUL SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_servers" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.7.3"
+  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-cluster?ref=v0.8.2"
 
   cluster_name  = var.cluster_tag_value
   cluster_size  = var.num_servers
@@ -23,6 +23,10 @@ module "consul_servers" {
   allowed_inbound_cidr_blocks          = []
   allowed_inbound_security_group_count = 0
   ssh_key_name                         = var.ssh_key_name
+
+  # Inject own instance profile with AWS SSM support
+  enable_iam_setup          = false
+  iam_instance_profile_name = aws_iam_instance_profile.instance_profile.name
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -30,7 +34,7 @@ module "consul_servers" {
 # This script will configure and start Consul
 # ---------------------------------------------------------------------------------------------------------------------
 data "template_file" "user_data_consul_server" {
-  template = "${file("${path.module}/user-data-consul-server.sh")}"
+  template = file("${path.module}/user-data-consul-server.sh")
 
   vars = {
     cluster_tag_key   = var.cluster_tag_key

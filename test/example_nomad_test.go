@@ -29,12 +29,12 @@ func TestNomadExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpNomad, savedAWSRegion, true, true)
+		helperCleanup(t, tmpNomad, savedAWSRegion, true, false)
 	})
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpNomad, true, true)
+		helperSetupInfrastructure(t, awsRegion, tmpNomad, true, false)
 	})
 
 	// Validate Example
@@ -50,18 +50,8 @@ func TestNomadExample(t *testing.T) {
 		// -> This is more a dull check, because this would just indicate that terraform itself is not working properly.
 		assert.Equal(t, nomadServerCount, len(instanceIds))
 
-		// Check Access to nomad cluster from the outside
-		nomadServerIP := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
-		logger.Logf(t, "Nomad Service IP: '%s'", nomadServerIP)
-
-		// Check SSH connection
-		keyPair := test_structure.LoadEc2KeyPair(t, tmpNomad)
-		helperCheckSSH(t, nomadServerIP, keyPair.KeyPair)
-
 		// Check if nomad is running
-		// - Connections from outside are not allowed!
-		// -> Test from inside the cluster needed ( SSH + Commands )
-		helperCheckNomad(t, nomadServerIP, keyPair)
+		helperCheckNomadInstance(t, awsRegion, instanceIds[0])
 	})
 
 	logger.Log(t, "############ TestNomadExample [SUCCESS] ####################")

@@ -28,3 +28,5 @@ out/
 
 **/.DS_Store
 /bin/
+**/.terraform.lock.hcl
+/modules/ami2/manifest.json

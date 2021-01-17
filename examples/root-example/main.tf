@@ -1,6 +1,4 @@
 locals {
-  ami_id_bastion = "ami-1853ac65" # Amazon Linux AMI 2017.09.1 (HVM)
-
   # cidr blocks allowed for ssh and alb access
   allowed_cidr_blocks = {
     "all"    = "0.0.0.0/0"
@@ -26,24 +24,6 @@ module "networking" {
   az_postfixes   = ["a", "b"]
 }
 
-module "bastion" {
-  source = "../../modules/bastion"
-
-  ## required parameters
-  vpc_id       = module.networking.vpc_id
-  subnet_id    = element(module.networking.public_subnet_ids, 0)
-  ami_id       = local.ami_id_bastion
-  ssh_key_name = var.ssh_key_name
-
-  ## optional parameters
-  aws_region              = var.aws_region
-  env_name                = var.env_name
-  stack_name              = var.stack_name
-  allowed_ssh_cidr_blocks = local.allowed_cidr_blocks
-  instance_type           = "t2.micro"
-  unique_postfix          = "-${random_pet.unicorn.id}"
-}
-
 module "nomad-infra" {
   source = "../../"
 
@@ -60,8 +40,8 @@ module "nomad-infra" {
   attach_backoffice_alb_listener    = true
 
   # [Nomad] Required variables
-  nomad_ami_id_servers                       = "${var.ami_id}"
-  nomad_ami_id_clients                       = "${var.ami_id}"
+  nomad_ami_id_servers                       = var.ami_id
+  nomad_ami_id_clients                       = var.ami_id
   nomad_server_subnet_ids                    = module.networking.backoffice_subnet_ids
   nomad_clients_public_services_subnet_ids   = module.networking.services_subnet_ids
   nomad_clients_private_services_subnet_ids  = module.networking.services_subnet_ids
@@ -70,23 +50,21 @@ module "nomad-infra" {
 
   # [Consul] Required variables
   consul_server_subnet_ids = module.networking.backoffice_subnet_ids
-  consul_ami_id            = "${var.ami_id}"
+  consul_ami_id            = var.ami_id
 
   # [General] Optional variables
   stack_name              = var.stack_name
   env_name                = var.env_name
   unique_postfix          = "-${random_pet.unicorn.id}"
   instance_type_server    = "t2.micro"
-  ssh_key_name            = var.ssh_key_name
-  allowed_ssh_cidr_blocks = values(local.allowed_cidr_blocks)
 
   allowed_cidr_blocks_for_ui_alb = local.allowed_cidr_blocks
 
-  # INFO: uncomment the following two lines if you want to deploy the cluster having https endpoints 
+  # INFO: uncomment the following two lines if you want to deploy the cluster having https endpoints
   # for the ui-albs (nomad-ui, consul-ui and fabio-ui).
   # Keep in mind that you have to configure the nomad CLI to skip certificate verification in this case
   # because the sample certificate that is used here is just a self signed one which even does not fit the
-  # domain by the nomad alb. Short said it is invalid and only in place for testing/ demonstration purposes. 
+  # domain by the nomad alb. Short said it is invalid and only in place for testing/ demonstration purposes.
   #ui_alb_https_listener_cert_arn = "${aws_iam_server_certificate.certificate_alb.arn}"
   #ui_alb_use_https_listener      = true
 
@@ -113,4 +91,3 @@ module "nomad-infra" {
   consul_num_servers   = 3
   consul_instance_type = "t2.micro"
 }
-

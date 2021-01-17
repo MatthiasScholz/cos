@@ -20,7 +20,8 @@ locals {
 }
 
 module "data_center" {
-  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.5.0"
+  # FIXME waiting for #85 to be merged: source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.7.0"
+  source = "git::https://github.com/MatthiasScholz/terraform-aws-nomad.git//modules/nomad-cluster"
 
   cluster_name                = local.cluster_name
   cluster_tag_value           = local.cluster_name
@@ -49,7 +50,7 @@ module "data_center" {
   allowed_inbound_cidr_blocks = ["0.0.0.0/32"]
 
   # propagate tags to the instances
-  tags = concat(local.default_tags,var.additional_instance_tags)
+  tags = concat(local.default_tags, var.additional_instance_tags)
 
   # Configuration for additional ebs_block devices
   ebs_block_devices = var.ebs_block_devices
@@ -61,7 +62,7 @@ module "data_center" {
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_iam_policies_datacenter" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.7.0"
+  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.2"
 
   iam_role_id = module.data_center.iam_role_id
 }
@@ -85,4 +86,3 @@ data "template_file" "user_data_data_center" {
     aws_region                 = var.aws_region
   }
 }
-

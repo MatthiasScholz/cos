@@ -1,9 +1,9 @@
 {
   "min_packer_version": "1.5.1",
   "variables": {
-    "nomad_version": "0.10.2",
-    "consul_module_version": "v0.7.3",
-    "consul_version": "1.6.2",
+    "nomad_version": "1.0.2",
+    "consul_module_version": "v0.8.0",
+    "consul_version": "1.9.1",
     "aws_account_ids": ""
   },
   "builders": [
@@ -23,7 +23,9 @@
           "block-device-mapping.volume-type": "gp2",
           "root-device-type": "ebs"
         },
-        "owners": ["amazon"],
+        "owners": [
+          "amazon"
+        ],
         "most_recent": true
       },
       "ssh_username": "ec2-user",
@@ -40,7 +42,9 @@
     {
       "type": "shell",
       "script": "{{template_dir}}/setup_amazon-linux.sh",
-      "only": ["amazon-linux-ami2"]
+      "only": [
+        "amazon-linux-ami2"
+      ]
     },
     {
       "type": "file",
@@ -70,7 +74,9 @@
     },
     {
       "type": "shell",
-      "inline": ["mkdir -p ~/.docker"]
+      "inline": [
+        "mkdir -p ~/.docker"
+      ]
     },
     {
       "type": "file",
@@ -120,6 +126,21 @@
         "sudo mv /tmp/copy_map_efs.sh /usr/bin",
         "sudo chmod u+x /usr/bin/copy_map_efs.sh"
       ]
+    },
+    {
+      "type": "goss",
+      "tests": [
+        "{{template_dir}}/goss.yaml"
+      ]
     }
+  ],
+  "post-processors": [
+    [
+      {
+        "output": "manifest.json",
+        "strip_path": true,
+        "type": "manifest"
+      }
+    ]
   ]
 }
