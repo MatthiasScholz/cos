@@ -49,7 +49,7 @@ module "data_center" {
   allowed_inbound_cidr_blocks = ["0.0.0.0/32"]
 
   # propagate tags to the instances
-  tags = concat(local.default_tags,var.additional_instance_tags)
+  tags = concat(local.default_tags, var.additional_instance_tags)
 
   # Configuration for additional ebs_block devices
   ebs_block_devices = var.ebs_block_devices

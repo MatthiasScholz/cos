@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 resource "random_pet" "unicorn" {
-  # NOTE: Length 1 used to avoid problems with the different delimiter requierements in AWS. Nevertheless 1 should be enough.
+  # NOTE: Length 1 used to avoid problems with the different delimiter requirements in AWS. Nevertheless 1 should be enough.
   length = 1
 }
 
@@ -53,15 +53,15 @@ module "nomad-infra" {
   alb_subnet_ids = module.networking.public_subnet_ids
 
   # HACK: Use an http listener here to avoid the need to create a certificate.
-  # In a production environmant you should pass in a https listener instead.
+  # In a production environment you should pass in a https listener instead.
   alb_ingress_https_listener_arn = module.networking.alb_ingress_http_listener_arn
 
   alb_backoffice_https_listener_arn = module.networking.alb_backoffice_https_listener_arn
   attach_backoffice_alb_listener    = true
 
   # [Nomad] Required variables
-  nomad_ami_id_servers                       = "${var.ami_id}"
-  nomad_ami_id_clients                       = "${var.ami_id}"
+  nomad_ami_id_servers                       = var.ami_id
+  nomad_ami_id_clients                       = var.ami_id
   nomad_server_subnet_ids                    = module.networking.backoffice_subnet_ids
   nomad_clients_public_services_subnet_ids   = module.networking.services_subnet_ids
   nomad_clients_private_services_subnet_ids  = module.networking.services_subnet_ids
@@ -70,7 +70,7 @@ module "nomad-infra" {
 
   # [Consul] Required variables
   consul_server_subnet_ids = module.networking.backoffice_subnet_ids
-  consul_ami_id            = "${var.ami_id}"
+  consul_ami_id            = var.ami_id
 
   # [General] Optional variables
   stack_name              = var.stack_name
