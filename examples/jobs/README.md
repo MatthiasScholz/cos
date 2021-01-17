@@ -1,5 +1,7 @@
-# Overview
-Collection of nomad sample jobs.
+# Nomad Jobs Examples
+
+## Overview
+Collection of nomad extended sample jobs which help to build up a full feature cluster.
 
 NOTE:
 All jobs are connected to an AWS ECR. This setup is needed since the AMI is only configured to access AWS ECR.
@@ -7,16 +9,16 @@ Docker Hub will currently not work!
 
 **In order to use the jobs the AWS Account ID, AWS region and the correct registry URL has to be configured.**
 
-# Nomad
+## Nomad
 
-## Troubleshooting
+### Troubleshooting
 When the web ui or the remote query might not show any error logs try ssh into the instance and use the command line tool to examine log messages:
 * `nomad logs -stderr <alloc-id>`
 
-## References
+### References
 * [Microservices Cluster Demo](https://github.com/microservices-demo/microservices-demo/tree/master/deploy/nomad)
 
-# Fabio
+## Fabio
 The examples uses fabio as the cluster internal load balances. This has implications on the security group configuration and the ALB configuration.
 
 * Job Type: system
@@ -24,15 +26,15 @@ The examples uses fabio as the cluster internal load balances. This has implicat
 ## References
 * [Fabio Stip Prefix Feature](https://github.com/fabiolb/fabio/issues/44)
 
-# Ping-Server
+## Ping-Server
 Simple golang application to run in the cluster and to check service discovery.
 
 * Job Type: service
 
-# Monitoring
+## Monitoring
 * [Reference](https://www.nomadproject.io/guides/nomad-metrics.html)
 
-## Prometheus
+### Prometheus
 Collect metrics from the COS.
 
 * Job Type: service
@@ -67,7 +69,7 @@ There seems to be a problem how prometheus is handling the request.
 * [ ] [Consul metrics in prometheus](https://github.com/prometheus/consul_exporter)
 * [ ] [Fluentd metrics in promtheus](https://docs.fluentd.org/v0.12/articles/monitoring-prometheus)
 
-## Grafana
+### Grafana
 Grafana Dashboarding service for metrics as Docker container. Shall visualise COS metrics.
 
 * Job Type: service
@@ -89,7 +91,7 @@ Automatic dashboard import not workig.
 * [Manual](http://docs.grafana.org/administration/provisioning/#dashboards) -> NOT WORKING ( 2018-03-22 )
 * [PR: Feature Implementation](https://github.com/grafana/grafana/pull/10052)
 
-# Logging
+## Logging
 Make use of ElasticSearch, Fluentd and Kibana ( EFK ).
 * [Nomad Reference](https://www.nomadproject.io/docs/drivers/docker.html#logging)
 * [Fluentd EFK](https://docs.fluentd.org/v0.12/articles/docker-logging-efk-compose)
@@ -112,10 +114,10 @@ Example of running a service with fluentd logging: `logtestapp.nomad`
 ### Elasticsearch
 "We recommend to use debian version for production because it uses jemalloc to mitigate memory fragmentation issue."
 
-# CI/CD
+## CI/CD
 Giving [Concourse](https://concourse-ci.org/concourse-vs.html) a try.
 
-## References
+### References
 * [Setup](https://concourse-ci.org/docker-repository.html)
 * [Nomad privileged](https://www.nomadproject.io/docs/drivers/docker.html#privileged)
 * [Testing](https://concourse-ci.org/hello-world.html)
@@ -144,7 +146,7 @@ Giving [Concourse](https://concourse-ci.org/concourse-vs.html) a try.
 * [Hashicorp Release Checker](https://github.com/starkandwayne/hashicorp-release-resource)
   * It could be fun to combine this with Slack and get an automated update notifier.
 
-# Issue: Getting around all the different IP-Adress Handling
+## Issue: Getting around all the different IP-Adress Handling
 Everywhere IP addresses are needed, but in a cluster they are not fixed and can change.
 
 ## Ideas

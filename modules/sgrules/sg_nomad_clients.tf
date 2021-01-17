@@ -9,8 +9,8 @@ resource "aws_security_group_rule" "sgr_private_to_public_services_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_public_services_dc}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_public_services_dc
 }
 
 # rule granting access from content-connector to public services data-center on ports
@@ -22,8 +22,8 @@ resource "aws_security_group_rule" "sgr_content_connector_to_public_services_htt
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_public_services_dc}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_public_services_dc
 }
 
 # rule granting access from backoffice to public services data-center on ports
@@ -35,8 +35,8 @@ resource "aws_security_group_rule" "sgr_backoffice_to_public_services_http_rcp" 
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_public_services_dc}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_public_services_dc
 }
 
 # rule granting access from public to private services data-center on ports
@@ -48,8 +48,8 @@ resource "aws_security_group_rule" "sgr_public_to_private_services_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_private_services_dc}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_private_services_dc
 }
 
 # rule granting access from content-connector to private services data-center on ports
@@ -61,8 +61,8 @@ resource "aws_security_group_rule" "sgr_content_connector_to_private_services_ht
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_private_services_dc}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_private_services_dc
 }
 
 # rule granting access from backoffice to private services data-center on ports
@@ -74,8 +74,8 @@ resource "aws_security_group_rule" "sgr_backoffice_to_private_services_http_rcp"
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_private_services_dc}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_private_services_dc
 }
 
 # rule granting access from public to content-connector data-center on ports
@@ -87,8 +87,8 @@ resource "aws_security_group_rule" "sgr_public_to_content_connector_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_content_connector_dc}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_content_connector_dc
 }
 
 # rule granting access from private-services to content-connector data-center on ports
@@ -100,8 +100,8 @@ resource "aws_security_group_rule" "sgr_private_to_content_connector_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_content_connector_dc}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_content_connector_dc
 }
 
 # rule granting access from backoffice to content-connector data-center on ports
@@ -113,8 +113,8 @@ resource "aws_security_group_rule" "sgr_backoffice_to_content_connector_http_rcp
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_content_connector_dc}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_content_connector_dc
 }
 
 # rule granting access from public to backoffice data-center on ports
@@ -126,8 +126,8 @@ resource "aws_security_group_rule" "sgr_public_to_backoffice_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_backoffice_dc}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_backoffice_dc
 }
 
 # rule granting access from content-connector to backoffice data-center on ports
@@ -139,8 +139,8 @@ resource "aws_security_group_rule" "sgr_content_connector_to_backoffice_http_rcp
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_backoffice_dc}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_backoffice_dc
 }
 
 # rule granting access from private to backoffice data-center on ports
@@ -152,8 +152,8 @@ resource "aws_security_group_rule" "sgr_private_to_backoffice_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_backoffice_dc}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_backoffice_dc
 }
 
 # rule granting self-access to backoffice data-center on ports
@@ -165,8 +165,8 @@ resource "aws_security_group_rule" "sgr_backoffice_to_backoffice_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_backoffice_dc}"
-  security_group_id        = "${var.sg_id_backoffice_dc}"
+  source_security_group_id = var.sg_id_backoffice_dc
+  security_group_id        = var.sg_id_backoffice_dc
 }
 
 # rule granting self-access to private_services data-center on ports
@@ -178,8 +178,8 @@ resource "aws_security_group_rule" "sgr_private_to_private_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_private_services_dc}"
-  security_group_id        = "${var.sg_id_private_services_dc}"
+  source_security_group_id = var.sg_id_private_services_dc
+  security_group_id        = var.sg_id_private_services_dc
 }
 
 # rule granting self-access to public_services data-center on ports
@@ -191,8 +191,8 @@ resource "aws_security_group_rule" "sgr_public_to_public_http_rcp" {
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_public_services_dc}"
-  security_group_id        = "${var.sg_id_public_services_dc}"
+  source_security_group_id = var.sg_id_public_services_dc
+  security_group_id        = var.sg_id_public_services_dc
 }
 
 # rule granting self-access to content-connector data-center on ports
@@ -204,6 +204,7 @@ resource "aws_security_group_rule" "sgr_content_connector_to_content_connector_h
   from_port                = 4646
   to_port                  = 4647
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_content_connector_dc}"
-  security_group_id        = "${var.sg_id_content_connector_dc}"
+  source_security_group_id = var.sg_id_content_connector_dc
+  security_group_id        = var.sg_id_content_connector_dc
 }
+

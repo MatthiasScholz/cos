@@ -19,8 +19,12 @@ bst.plan
 # folder with generated files
 out/
 /examples/jobs/grafana/dashboard_navcloud_poi_parking.json
-/examples/jobs/prometheus/version
 
-examples/jobs/grafana/haproxy/version
+**/version
+/test/vendor/
+/test/test_output.log
+/test/tmp_test_output/
+**/.test-data
 
-examples/jobs/envoy/version
+**/.DS_Store
+/bin/

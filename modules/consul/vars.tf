@@ -9,7 +9,7 @@ variable "vpc_id" {
 
 variable "subnet_ids" {
   description = "Ids of the subnets to deploy the consul servers into."
-  type        = "list"
+  type        = list
 }
 
 #### Optional Variables ############################################
@@ -40,7 +40,7 @@ variable "cluster_tag_value" {
 
 variable "allowed_ssh_cidr_blocks" {
   description = "A list of cidr block from which inbound ssh traffic should be allowed."
-  type        = "list"
+  type        = list
   default     = []
 }
 

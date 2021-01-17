@@ -13,9 +13,6 @@ readonly DEFAULT_NOMAD_USER="nomad"
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly SYSTEM_BIN_DIR="/usr/local/bin"
 
-readonly SUPERVISOR_DIR="/etc/supervisor"
-readonly SUPERVISOR_CONF_DIR="$SUPERVISOR_DIR/conf.d"
-
 readonly SCRIPT_NAME="$(basename "$0")"
 
 function print_usage {
@@ -68,71 +65,16 @@ function assert_not_empty {
   fi
 }
 
-# Install steps are based on: http://unix.stackexchange.com/a/291098/215969
-function install_supervisord_debian {
-  sudo apt-get install -y supervisor
-  sudo update-rc.d supervisor defaults
-
-  create_supervisor_config
-  sudo systemctl enable supervisor
-}
-
 function install_systemd_nomad_amazon_linux2 {
   log_info "Installing systemd nomad.service"
   # TODO: Add check for systemd?
 
   # Moving service description script to the system
   sudo cp "$SCRIPT_DIR/nomad.service" "/etc/systemd/system/"
-  # NOTE: Nomad is not yet configured - hence it makes no sense to try to start it!
   sudo systemctl enable nomad.service
-  #sudo systemctl start nomad.service
-  #sudo systemctl status nomad.service
-
-  # FIXME: Adapt run-nomad script to reflect the configuration change
-  #        Remove supervisord configration and adjust configuration file loaded in nomad.service
-}
-
-
-# Install steps are based on: http://stackoverflow.com/a/31576473/483528
-function install_supervisord_amazon_linux2 {
-  echo "[DEBUG] [install-nomad] - supervisor - installing supervisor"
-  sudo pip install supervisor
-
-  echo "[DEBUG] [install-nomad] - supervisor - setup path"
-
-  sudo pip install supervisor
-  # On Amazon Linux, /usr/local/bin is not in PATH for the root user, so we add symlinks to /usr/bin, which is in PATH
-  if [[ ! -f "/usr/bin/supervisorctl" ]]; then
-    sudo ln -s /usr/local/bin/supervisorctl /usr/bin/supervisorctl
-  fi
-  if [[ ! -f "/usr/bin/supervisord" ]]; then
-    sudo ln -s /usr/local/bin/supervisord /usr/bin/supervisord
-  fi
-
-  echo "[DEBUG] [install-nomad] - supervisor - setup systemctl"
-  ls -l "/etc/systemd/"
-  sudo cp "$SCRIPT_DIR/supervisor.service" "/etc/systemd/system/"
-  echo "[DEBUG] [install-nomad] - supervisor - setup systemctl - enable"
-  sudo systemctl enable supervisor.service
-
-
-  echo "[DEBUG] [install-nomad] - supervisor - create supervisor config"
-  create_supervisor_config
-  #sudo chkconfig --add supervisor
-  #sudo chkconfig supervisor on
-
-  #echo "[DEBUG] [install-nomad] - supervisor - systemctl"
-  sudo systemctl start supervisor.service
-  # FIXME: DEBUG information
-  sudo systemctl status supervisor.service
-
-  #echo "[DEBUG] [install-nomad] - supervisor - journald"
-  #sudo journalctrl -xe
-}
-
-function create_supervisor_config {
-  sudo mkdir -p "$SUPERVISOR_CONF_DIR"
-  sudo cp "$SCRIPT_DIR/supervisord.conf" "$SUPERVISOR_DIR/supervisord.conf"
+  # NOTE: Nomad is not yet configured - hence it makes no sense to try to start it!
+  # DEBUG: sudo systemctl start nomad.service
+  # DEBUG: sudo systemctl status nomad.service
 }
 
 function has_yum {
@@ -149,11 +91,9 @@ function install_dependencies {
   if $(has_apt_get); then
     sudo apt-get update -y
     sudo apt-get install -y awscli curl unzip jq
-    install_supervisord_debian
   elif $(has_yum); then
     # Amazon Linux 2 comes without pip
     sudo yum install -y aws curl unzip jq python2-pip
-    install_supervisord_amazon_linux2
     install_systemd_nomad_amazon_linux2
   else
     log_error "Could not find apt-get or yum. Cannot install dependencies on this OS."

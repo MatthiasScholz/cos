@@ -1,3 +1,3 @@
 {
-    "credsStore": "ecr-login"
+  "info": "This file will be written using the user-data of the nomad instances. See modules/nomad/user-data-nomad-server.sh and modules/nomad-datacenter/user-data-nomad-client.sh"
 }

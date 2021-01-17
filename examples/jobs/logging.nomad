@@ -1,3 +1,4 @@
+# FIXME: Not sure if this setup is working. Currently the COS does not provide support for Consul DNS. DNS should be avoided as much as possible. Hence it is not going to be added as a "feature".
 job "logging" {
   datacenters = ["backoffice"]
   type = "service"
@@ -120,7 +121,6 @@ EOH
       template {
         data = <<EOH
 server.name: logging-cluster-ui
-server.host: "0"
 
 elasticsearch.url: "http://elasticsearch.service.consul:{{ env "NOMAD_PORT_elasticsearch_http" }}/"
 

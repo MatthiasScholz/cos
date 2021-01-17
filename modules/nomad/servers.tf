@@ -1,8 +1,8 @@
 # reading values from the node_scaling_cfg
 locals {
-  min              = "${lookup(var.node_scaling_cfg,"min","INVALID")}"
-  max              = "${lookup(var.node_scaling_cfg,"max","INVALID")}"
-  desired_capacity = "${lookup(var.node_scaling_cfg,"desired_capacity","INVALID")}"
+  min              = lookup(var.node_scaling_cfg, "min", "INVALID")
+  max              = lookup(var.node_scaling_cfg, "max", "INVALID")
+  desired_capacity = lookup(var.node_scaling_cfg, "desired_capacity", "INVALID")
   cluster_name     = "${local.base_cluster_name}${var.unique_postfix}"
 }
 
@@ -10,25 +10,25 @@ locals {
 # DEPLOY THE NOMAD SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "nomad_servers" {
-  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.4.5"
+  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.5.0"
 
-  cluster_name                = "${local.cluster_name}"
-  cluster_tag_value           = "${local.cluster_name}"
-  instance_type               = "${var.instance_type}"
-  ami_id                      = "${var.ami_id}"
-  vpc_id                      = "${var.vpc_id}"
-  subnet_ids                  = "${var.subnet_ids}"
-  allowed_ssh_cidr_blocks     = "${var.allowed_ssh_cidr_blocks}"
-  user_data                   = "${data.template_file.user_data_server.rendered}"
-  ssh_key_name                = "${var.ssh_key_name}"
+  cluster_name                = local.cluster_name
+  cluster_tag_value           = local.cluster_name
+  instance_type               = var.instance_type
+  ami_id                      = var.ami_id
+  vpc_id                      = var.vpc_id
+  subnet_ids                  = var.subnet_ids
+  allowed_ssh_cidr_blocks     = var.allowed_ssh_cidr_blocks
+  user_data                   = data.template_file.user_data_server.rendered
+  ssh_key_name                = var.ssh_key_name
   associate_public_ip_address = false
 
   # You should typically use a fixed size of 3 or 5 for your Nomad server cluster
-  min_size         = "${local.min}"
-  max_size         = "${local.max}"
-  desired_capacity = "${local.desired_capacity}"
+  min_size         = local.min
+  max_size         = local.max
+  desired_capacity = local.desired_capacity
 
-  security_groups = ["${aws_security_group.sg_server.id}"]
+  security_groups = [aws_security_group.sg_server.id]
 
   # Access over cidr blocks is disabled here.
   # The need access for the nomad-server is granted over the
@@ -39,7 +39,7 @@ module "nomad_servers" {
   tags = [
     {
       "key"                 = "datacenter"
-      "value"               = "${var.datacenter_name}"
+      "value"               = var.datacenter_name
       "propagate_at_launch" = "true"
     },
     {
@@ -56,18 +56,24 @@ module "nomad_servers" {
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_iam_policies_servers" {
-  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.3.1"
-  iam_role_id = "${module.nomad_servers.iam_role_id}"
+  source      = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.7.0"
+  iam_role_id = module.nomad_servers.iam_role_id
+}
+
+data "aws_caller_identity" "aws_account_id" {
 }
 
 # This script will configure and start Consul and Nomad
 data "template_file" "user_data_server" {
-  template = "${file("${path.module}/user-data-nomad-server.sh")}"
+  template = file("${path.module}/user-data-nomad-server.sh")
 
-  vars {
-    num_servers       = "${local.desired_capacity}"
-    cluster_tag_key   = "${var.consul_cluster_tag_key}"
-    cluster_tag_value = "${var.consul_cluster_tag_value}"
-    datacenter        = "${var.datacenter_name}"
+  vars = {
+    num_servers       = local.desired_capacity
+    cluster_tag_key   = var.consul_cluster_tag_key
+    cluster_tag_value = var.consul_cluster_tag_value
+    datacenter        = var.datacenter_name
+    aws_account_id    = data.aws_caller_identity.aws_account_id.account_id
+    aws_region        = var.aws_region
   }
 }
+

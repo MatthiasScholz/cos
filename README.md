@@ -6,6 +6,7 @@ This respository will provide an extended example from the main [nomad terraform
 ## Architecture
 
 ![deps](_docs/Cluster_Orchestration_System_Stack.png)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMatthiasScholz%2Fcos.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FMatthiasScholz%2Fcos?ref=badge_shield)
 
 The COS (Cluster Orchestration System) consists of three core components.
 
@@ -28,6 +29,12 @@ The data-centers of the COS are organized/ live in three different subnets.
 1. **Backoffice**: This is the most important one, since it contains the most important instances, like the nomad servers. Thus it's restricted the most and has no access to the internet (either ingress nor egress).
 2. **Services**: This subnet contains the services that need no egress access to the internet. Ingress access is only granted for some of them over an ALB, but not directly.
 3. **Content-Connector**: This subnet contains services that need egress access to the internet in order to obtain data from conent-providers.
+
+### Docker Registry
+
+This Cluster Orchestration System allows to pull docker images from public docker registries like Docker Hub and from AWS ECR.
+
+Regarding AWS ECR, **it is only possible to pull from the registry of the AWS account and region where this COS is deployed to**. Thus you have to create an ECR in the same region on the same account and push your docker images there.
 
 ### HA-Setup
 
@@ -66,6 +73,11 @@ The picture shows the dependencies within the modules of the cos-stack and the d
 
 ## Troubleshooting
 
+### Monitoring Server and Nodes
+
+- `nomad monitor -log-level error|warn|info|debug|trace -node-id <node_id> | -server-id <server_id>`
+- supported since [nomad 0.10.2](https://www.nomadproject.io/docs/commands/monitor.html)
+
 ### Nomad CLI complains about invalid Certificate
 
 If you have deployed the cluster with https endpoints for the ui-albs and have created a selfsigned certificate you might get errors from the nomad cli complanig about an invalid certificate (`x509: certificate is..`). To fix this you have to integrate your custom root-CA you used for signing your certificate apropriately into your system.
@@ -94,3 +106,7 @@ To overcome certificate verification issues you can also (not recommended) tempo
 
 * [Nomad Terraform Module](https://github.com/hashicorp/terraform-aws-nomad)
 * [Consul Terraform Module](https://github.com/hashicorp/terraform-aws-consul)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FMatthiasScholz%2Fcos.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FMatthiasScholz%2Fcos?ref=badge_large)

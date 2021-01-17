@@ -16,8 +16,8 @@ resource "aws_security_group_rule" "sgr_nomad_server_to_consul_tcp" {
   from_port                = 8300
   to_port                  = 8302
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_nomad_server}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_nomad_server
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from nomad server to consul on ports
@@ -29,8 +29,8 @@ resource "aws_security_group_rule" "sgr_nomad_server_to_consul_udp" {
   from_port                = 8301
   to_port                  = 8302
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_nomad_server}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_nomad_server
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from nomad server to consul on ports
@@ -42,8 +42,8 @@ resource "aws_security_group_rule" "sgr_nomad_server_to_consul_http" {
   from_port                = 8500
   to_port                  = 8500
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_nomad_server}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_nomad_server
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from nomad server to consul on ports
@@ -55,8 +55,8 @@ resource "aws_security_group_rule" "sgr_nomad_server_to_consul_dns_tcp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "tcp"
-  source_security_group_id = "${var.sg_id_nomad_server}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_nomad_server
+  security_group_id        = var.sg_id_consul
 }
 
 # rule granting access from nomad server to consul on ports
@@ -68,6 +68,7 @@ resource "aws_security_group_rule" "sgr_nomad_server_to_consul_dns_udp" {
   from_port                = 8600
   to_port                  = 8600
   protocol                 = "udp"
-  source_security_group_id = "${var.sg_id_nomad_server}"
-  security_group_id        = "${var.sg_id_consul}"
+  source_security_group_id = var.sg_id_nomad_server
+  security_group_id        = var.sg_id_consul
 }
+

@@ -1,5 +1,5 @@
 output "bastion_ip" {
-  value = "${module.bastion.bastion_ip}"
+  value = module.bastion.bastion_ip
 }
 
 output "ssh_login" {
