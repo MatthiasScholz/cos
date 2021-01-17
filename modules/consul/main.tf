@@ -30,7 +30,7 @@ module "consul_servers" {
 # This script will configure and start Consul
 # ---------------------------------------------------------------------------------------------------------------------
 data "template_file" "user_data_consul_server" {
-  template = "${file("${path.module}/user-data-consul-server.sh")}"
+  template = file("${path.module}/user-data-consul-server.sh")
 
   vars = {
     cluster_tag_key   = var.cluster_tag_key

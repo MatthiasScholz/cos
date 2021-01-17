@@ -79,7 +79,7 @@ output "cluster_prefix" {
 }
 
 output "dc-public-services_asg_name" {
-  value = "${module.dc-public-services.asg_name}"
+  value = module.dc-public-services.asg_name
 }
 
 output "dc-public-services_sg_id" {
