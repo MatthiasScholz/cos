@@ -10,7 +10,8 @@ locals {
 # DEPLOY THE NOMAD SERVER NODES
 # ---------------------------------------------------------------------------------------------------------------------
 module "nomad_servers" {
-  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.7.0"
+  # FIXME waiting for #85 to be merged: source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.7.0"
+  source = "git::https://github.com/MatthiasScholz/terraform-aws-nomad.git//modules/nomad-cluster"
 
   cluster_name                = local.cluster_name
   cluster_tag_value           = local.cluster_name
