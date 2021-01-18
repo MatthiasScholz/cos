@@ -16,7 +16,7 @@ resource "aws_autoscaling_attachment" "asg_attachment_public_services" {
 }
 
 resource "aws_alb_target_group" "tgr_public_services" {
-  name     = "${var.stack_name}-ingress-${var.unique_postfix}"
+  name     = "${var.stack_name}-ingress-${var.unique_postfix}-${substr(uuid(),0 ,4)}"
   port     = 9998
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_main.id
@@ -27,6 +27,11 @@ resource "aws_alb_target_group" "tgr_public_services" {
     timeout = 2
     interval = 10
     matcher = "200-299"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes = [name]
   }
 
   tags = {

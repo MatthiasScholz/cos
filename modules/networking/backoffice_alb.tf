@@ -16,7 +16,7 @@ resource "aws_autoscaling_attachment" "asg_attachment_backoffice" {
 }
 
 resource "aws_alb_target_group" "tgr_backoffice" {
-  name     = "${var.stack_name}-backoffice-${var.unique_postfix}"
+  name     = "${var.stack_name}-backoffice-${var.unique_postfix}-${substr(uuid(),0 ,4)}"
   port     = 9998
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_main.id
@@ -27,6 +27,11 @@ resource "aws_alb_target_group" "tgr_backoffice" {
     timeout = 2
     interval = 10
     matcher = "200"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes = [name]
   }
 
   tags = {
