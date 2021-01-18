@@ -12,7 +12,7 @@ resource "aws_alb" "alb_backoffice" {
 
 resource "aws_autoscaling_attachment" "asg_attachment_backoffice" {
   autoscaling_group_name = var.asg_name_backoffice
-  alb_target_group_arn   = aws_alb_target_group.tgr_backoffice
+  alb_target_group_arn   = aws_alb_target_group.tgr_backoffice.arn
 }
 
 resource "aws_alb_target_group" "tgr_backoffice" {

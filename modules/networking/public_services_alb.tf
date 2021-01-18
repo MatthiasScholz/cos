@@ -12,7 +12,7 @@ resource "aws_alb" "alb_public_services" {
 
 resource "aws_autoscaling_attachment" "asg_attachment_public_services" {
   autoscaling_group_name = var.asg_name_public_services
-  alb_target_group_arn   = aws_alb_target_group.tgr_public_services
+  alb_target_group_arn   = aws_alb_target_group.tgr_public_services.arn
 }
 
 resource "aws_alb_target_group" "tgr_public_services" {
