@@ -3,7 +3,7 @@
 
 # Git: Since version 0.3.0 of the nomad terraform module attachments have to be used.
 
-# Define autoscaling attachments to connect the ingress-controller target group with the autoscaling group having the ingress-contoller instances.
+# Define autoscaling attachments to connect the ingress-controller target group with the autoscaling group having the ingress-controller instances.
 resource "aws_autoscaling_attachment" "asga_ingress_controller" {
   count                  = var.attach_ingress_alb_listener ? 1 : 0
   autoscaling_group_name = module.data_center.asg_name

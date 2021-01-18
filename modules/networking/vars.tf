@@ -8,6 +8,14 @@ variable "stack_name" {
   default     = "COS"
 }
 
+variable "asg_name_backoffice" {
+  description = "Name of the autoscaling group for dc-backoffice."
+}
+
+variable "asg_name_public_services" {
+  description = "Name of the autoscaling group for dc-public-services."
+}
+
 variable "az_postfixes" {
   description = "list of AZ postfixes"
   type        = list(string)

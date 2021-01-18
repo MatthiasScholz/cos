@@ -122,7 +122,7 @@ module "dc-backoffice" {
   instance_type                  = lookup(var.nomad_backoffice_dc_node_cfg, "instance_type", "INVALID")
   datacenter_name                = "backoffice"
   unique_postfix                 = var.unique_postfix
-  alb_ingress_https_listener_arn = var.alb_backoffice_https_listener_arn
+  alb_ingress_https_listener_arn = var.alb_backoffice_http_listener_arn
   attach_ingress_alb_listener    = var.attach_backoffice_alb_listener
   node_scaling_cfg               = var.nomad_backoffice_dc_node_cfg
   ebs_block_devices              = var.ebs_block_devices_backoffice_dc

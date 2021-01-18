@@ -94,6 +94,10 @@ output "dc-private-services_alb_https_targetgroup_arn" {
   value = module.dc-private-services.alb_https_targetgroup_arn
 }
 
+output "dc-backoffice_asg_name" {
+  value = module.dc-backoffice.asg_name
+}
+
 output "dc-backoffice_sg_id" {
   value = module.dc-backoffice.sg_datacenter_id
 }

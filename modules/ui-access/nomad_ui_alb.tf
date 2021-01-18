@@ -38,7 +38,7 @@ resource "aws_alb_target_group" "tgr_nomad_ui" {
 }
 
 # HTTP listener, used when no https certificate is provided.
-resource "aws_alb_listener" "albl_http_nomad_ui" {
+resource "aws_alb_listener" "alb_http_nomad_ui" {
   count             = var.ui_alb_use_https_listener ? 0 : 1
   load_balancer_arn = aws_alb.alb_nomad_ui.arn
   protocol          = "HTTP"

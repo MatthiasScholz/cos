@@ -1,4 +1,3 @@
-# the application loadbalancer
 resource "aws_alb" "alb_backoffice" {
   name            = "${var.stack_name}-backoffice${var.unique_postfix}"
   internal        = false
@@ -11,28 +10,43 @@ resource "aws_alb" "alb_backoffice" {
   }
 }
 
-# Listener with empty dummy target group
-resource "aws_alb_target_group" "tgr_dummy_backoffice" {
-  name     = "${var.stack_name}-backoffice-dummy${var.unique_postfix}"
-  port     = 5000
+resource "aws_autoscaling_attachment" "asg_attachment_backoffice" {
+  autoscaling_group_name = var.asg_name_backoffice
+  alb_target_group_arn   = aws_alb_target_group.tgr_backoffice.arn
+}
+
+resource "aws_alb_target_group" "tgr_backoffice" {
+  name     = "${var.stack_name}-backoffice-${var.unique_postfix}-${substr(uuid(),0 ,4)}"
+  port     = 9998
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_main.id
 
+  health_check {
+    path = "/health"
+    port = 9998
+    timeout = 2
+    interval = 10
+    matcher = "200"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes = [name]
+  }
+
   tags = {
-    Name = "${var.stack_name}-backoffice-dummy${var.unique_postfix}"
+    Name = "${var.stack_name}-backoffice-${var.unique_postfix}"
   }
 }
 
-# listener for https with one default action to a dummy target group
-resource "aws_alb_listener" "alb_backoffice_https" {
+resource "aws_alb_listener" "alb_backoffice_http" {
   load_balancer_arn = aws_alb.alb_backoffice.arn
 
-  # HACK: currently protocol is https although this is the https listener.
   protocol = "HTTP"
-  port     = "443"
+  port     = "80"
 
   default_action {
-    target_group_arn = aws_alb_target_group.tgr_dummy_backoffice.arn
+    target_group_arn = aws_alb_target_group.tgr_backoffice.arn
     type             = "forward"
   }
 }
