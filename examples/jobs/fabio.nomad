@@ -1,5 +1,5 @@
 job "fabio" {
-  datacenters = ["public-services"]
+  datacenters = ["public-services", "backoffice"]
 
   type = "system"
   update {
