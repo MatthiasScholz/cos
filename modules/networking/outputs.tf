@@ -26,7 +26,7 @@ output "alb_ingress_https_listener_arn" {
   value = aws_alb_listener.alb_ingress_https.arn
 }
 
-output "alb_backoffice_https_listener_arn" {
+output "alb_backoffice_http_listener_arn" {
   value = aws_alb_listener.alb_backoffice_http.arn
 }
 
