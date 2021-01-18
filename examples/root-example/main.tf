@@ -38,7 +38,7 @@ module "nomad-infra" {
   # In a production environment you should pass in a https listener instead.
   alb_ingress_https_listener_arn = module.networking.alb_ingress_http_listener_arn
 
-  alb_backoffice_https_listener_arn = module.networking.alb_backoffice_https_listener_arn
+  alb_backoffice_http_listener_arn = module.networking.alb_backoffice_http_listener_arn
   attach_backoffice_alb_listener    = true
 
   # [Nomad] Required variables
