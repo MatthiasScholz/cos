@@ -90,6 +90,6 @@ module "nomad-infra" {
   additional_instance_tags_content_connector_dc   = var.additional_instance_tags_sample
 
   # [Consul] Optional variables
-  consul_num_servers   = 1
+  consul_num_servers   = 3
   consul_instance_type = "t2.micro"
 }
