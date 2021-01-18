@@ -70,10 +70,6 @@ output "vpc_id" {
   value = var.vpc_id
 }
 
-output "ssh_key_name" {
-  value = var.ssh_key_name
-}
-
 output "cluster_prefix" {
   value = module.dc-public-services.cluster_prefix
 }
@@ -117,4 +113,3 @@ output "consul_servers_cluster_tag_key" {
 output "consul_servers_cluster_tag_value" {
   value = module.consul.consul_servers_cluster_tag_value
 }
-

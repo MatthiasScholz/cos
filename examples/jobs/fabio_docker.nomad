@@ -9,15 +9,23 @@ job "fabio" {
   }
 
   group "fabio" {
+    network {
+      port "http" {
+        static = 9999
+        to = 9999
+      }
+      port "ui" {
+        static = 9998
+        to = 9998
+      }
+    }
+
     task "fabio" {
       driver = "docker"
       config {
         image = "fabiolb/fabio:latest"
 
-        port_map = {
-          http = 9999
-          ui   = 9998
-        }
+        ports = [ "http", "ui", "lb" ]
 
         volumes = [
           "local/fabio.properties:/etc/fabio/fabio.properties"
@@ -27,16 +35,6 @@ job "fabio" {
       resources {
         cpu = 500
         memory = 128
-        network {
-          mbits = 1
-
-          port "http" {
-            static = 9999
-          }
-          port "ui" {
-            static = 9998
-          }
-        }
       }
 
       template {

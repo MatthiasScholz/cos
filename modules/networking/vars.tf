@@ -28,6 +28,7 @@ variable "unique_postfix" {
   default     = ""
 }
 
+# NOTE: Only for the listed ip ranges outbound traffic is routed - no other outbound traffic is allowed.
 variable "aws_ip_address_ranges" {
   description = "List of ip-ranges for accessing aws services (S3, EC2, ElastiCache, ..) in us-east-1 see: http://docs.aws.amazon.com/general/latest/gr/aws-ip-ranges.html"
   type        = list(string)
@@ -53,6 +54,6 @@ variable "aws_ip_address_ranges" {
     "205.0.0.0/8",
     "207.0.0.0/8",
     "192.30.253.0/24",
-  ] # HACK: "192.30.253.0/24" is for github
+    "140.82.112.0/24",
+  ] # HACK: "192.30.253.0/24" and 140.82.112.0/24 is for github
 }
-

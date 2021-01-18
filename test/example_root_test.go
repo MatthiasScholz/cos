@@ -27,12 +27,12 @@ func TestRootExample(t *testing.T) {
 
 	// Cleanup
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpRoot, savedAWSRegion, true, true)
+		helperCleanup(t, tmpRoot, savedAWSRegion, true, false)
 	})
 
 	// Create Infrastructure
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpRoot, true, true)
+		helperSetupInfrastructure(t, awsRegion, tmpRoot, true, false)
 	})
 
 	// Validate Infrastructure and general cluster health
@@ -51,7 +51,7 @@ func TestRootExample(t *testing.T) {
 	test_structure.RunTestStage(t, "setup_cluster", func() {
 		terraformOptions := test_structure.LoadTerraformOptions(t, tmpRoot)
 		nomadURI := terraform.Output(t, terraformOptions, "nomad_ui_alb_dns")
-		helperTestCOSDeployment(t, nomadURI)
+		helperTestNomadDeployment(t, nomadURI)
 	})
 
 	// TODO Further testing of the cluster.

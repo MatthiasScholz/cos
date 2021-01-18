@@ -21,6 +21,10 @@ job "ping_service" {
       migrate = false
       size    = "50"
       sticky  = false
+     }
+
+    network {
+      port "http" { to = 8080 }
     }
 
     # The task stanza creates an individual unit of work, such as a Docker container, web application, or batch processing.
@@ -29,6 +33,8 @@ job "ping_service" {
       config {
         # Docker Hub:
         image = "thobe/ping_service:0.0.9"
+
+        ports = [ "http" ]
       }
 
       logs {
@@ -36,20 +42,9 @@ job "ping_service" {
         max_file_size = 10
       }
 
-      config {
-        port_map = {
-          http = 8080
-        }
-      }
-
       resources {
         cpu    = 100 # MHz
         memory = 20 # MB
-        network {
-          mbits = 10
-          port "http" {
-          }
-        }
       }
 
       # The service stanza instructs Nomad to register the task as a service using the service discovery integration
@@ -69,8 +64,8 @@ job "ping_service" {
        }
 
       env {
-        SERVICE_NAME        = "${NOMAD_DC}",
-        PROVIDER            = "ping-service",
+        SERVICE_NAME        = "${NOMAD_DC}"
+        PROVIDER            = "ping-service"
         # uncomment to enable sd over consul
         CONSUL_SERVER_ADDR  = "172.17.0.1:8500"
         #PROVIDER_ADDR = "ping-service:25000"

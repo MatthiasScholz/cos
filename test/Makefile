@@ -6,11 +6,11 @@ SHELL = /bin/bash
 .SHELLFLAGS = -o pipefail -c
 
 # Version of terratest tools to be used
-dependency_nomad_version:=v0.10.2
+dependency_nomad_version:=v1.0.2
 dependency_nomad:=github.com/hashicorp/nomad
 
 dependency_terratest:=github.com/gruntwork-io/terratest
-dependency_terratest_version=v0.23.0
+dependency_terratest_version=v0.31.3
 
 # Installation path for terratest helper tools
 TT_INSTALL_PATH=../bin
@@ -32,17 +32,17 @@ else
 endif
 
 # Define some output formatting helpers
+# FIXME Colors not support by github actions terminal: @tput setaf 4
+# NOTE Error "tput: No value for $TERM and no -T specified"
+# FIXME Colors not support by github actions terminal: @tput sgr0
 define echoinfo
-      # FIXME Colors not support by github actions terminal: @tput setaf 4
-			# NOTE Error "tput: No value for $TERM and no -T specified"
       @echo $1
-      # FIXME Colors not support by github actions terminal: @tput sgr0
 endef
 
+# FIXME Colors not support by github actions terminal: @tput setaf 1
+# FIXME Colors not support by github actions terminal: @tput sgr0
 define echowarn
-      # FIXME Colors not support by github actions terminal: @tput setaf 1
       @echo $1
-      # FIXME Colors not support by github actions terminal: @tput sgr0
 endef
 
 # Define: Terratest output formatting
@@ -73,8 +73,9 @@ os:
 	@echo $(OS_VERSION)
 
 install_terratest_log_parser:
+	@echo "INFO :: Installing terratest_log_parser locally: $(TT_INSTALL_PATH)"
 	@mkdir -p $(TT_INSTALL_PATH)
-	@curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(dependency_terratest_version)/terratest_log_parser_$(OS_VERSION)
+	curl --location --silent --fail --show-error -o terratest_log_parser https://github.com/gruntwork-io/terratest/releases/download/$(dependency_terratest_version)/terratest_log_parser_$(OS_VERSION)
 	@chmod +x terratest_log_parser
 	@mv terratest_log_parser $(TT_INSTALL_PATH)
 

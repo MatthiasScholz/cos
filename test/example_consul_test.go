@@ -32,12 +32,12 @@ func TestConsulExample(t *testing.T) {
 
 	// Cleanup infrastructure
 	defer test_structure.RunTestStage(t, "teardown", func() {
-		helperCleanup(t, tmpConsul, savedAWSRegion, true, true)
+		helperCleanup(t, tmpConsul, savedAWSRegion, true, false)
 	})
 
 	// Prepare infrastructure and create it
 	test_structure.RunTestStage(t, "setup", func() {
-		helperSetupInfrastructure(t, awsRegion, tmpConsul, true, true)
+		helperSetupInfrastructure(t, awsRegion, tmpConsul, true, false)
 	})
 
 	// This module uses a sub module inside. It is tested itself.
@@ -64,14 +64,10 @@ func TestConsulExample(t *testing.T) {
 		}
 		nodeIP := aws.GetPublicIpOfEc2Instance(t, instanceIds[0], awsRegion)
 
-		// Check SSH connection
-		keyPair := test_structure.LoadEc2KeyPair(t, tmpConsul)
-		helperCheckSSH(t, nodeIP, keyPair.KeyPair)
-
 		// Check if consul service is running
 		// - Connections from outside are not allowed!
 		// -> Test from inside the cluster needed ( SSH + Commands )
-		helperCheckConsul(t, nodeIP, keyPair)
+		helperCheckConsulInstance(t, awsRegion, nodeIP)
 	})
 	logger.Log(t, "############ TestConsulExample [SUCCESS] ####################")
 }

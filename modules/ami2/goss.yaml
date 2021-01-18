@@ -1,0 +1,15 @@
+package:
+  amazon-ssm-agent:
+    installed: true
+service:
+  sshd:
+    enabled: true
+    running: true
+  amazon-ssm-agent:
+    enabled: true
+    running: true
+port:
+  tcp:22:
+    listening: true
+    ip:
+    - 0.0.0.0
