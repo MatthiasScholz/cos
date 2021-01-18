@@ -26,7 +26,7 @@ resource "aws_alb_target_group" "tgr_public_services" {
     port = 9998
     timeout = 2
     interval = 10
-    matcher = "200-299"
+    matcher = "200"
   }
 
   lifecycle {
