@@ -27,7 +27,7 @@ output "alb_ingress_https_listener_arn" {
 }
 
 output "alb_backoffice_https_listener_arn" {
-  value = aws_alb_listener.alb_backoffice_https.arn
+  value = aws_alb_listener.alb_backoffice_http.arn
 }
 
 output "alb_public_services_dns" {

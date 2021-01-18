@@ -1,8 +1,3 @@
-locals {
-  dummy_port = 6000
-}
-
-# the application loadbalancer
 resource "aws_alb" "alb_public_services" {
   name            = "${var.stack_name}-ingress${var.unique_postfix}"
   internal        = false
@@ -15,23 +10,33 @@ resource "aws_alb" "alb_public_services" {
   }
 }
 
-# Listener with empty dummy target group
-resource "aws_alb_target_group" "tgr_dummy_public_services" {
-  name     = "${var.stack_name}-igress-dummy${var.unique_postfix}"
-  port     = local.dummy_port
+resource "aws_autoscaling_attachment" "asg_attachment_public_services" {
+  autoscaling_group_name = var.asg_name_public_services
+  alb_target_group_arn   = aws_alb_target_group.tgr_public_services
+}
+
+resource "aws_alb_target_group" "tgr_public_services" {
+  name     = "${var.stack_name}-ingress-${var.unique_postfix}"
+  port     = 9998
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc_main.id
 
+  health_check {
+    path = "/health"
+    port = 9998
+    timeout = 2
+    interval = 10
+    matcher = "200-299"
+  }
+
   tags = {
-    Name = "${var.stack_name}-igress-dummy${var.unique_postfix}"
+    Name = "${var.stack_name}-ingress-${var.unique_postfix}"
   }
 }
 
-# listener for https with one default action to a dummy target group
 resource "aws_alb_listener" "alb_ingress_https" {
   load_balancer_arn = aws_alb.alb_public_services.arn
 
-  # HACK: currently protocol is https although this is the https listener.
   protocol = "HTTP"
   port     = "443"
 
@@ -40,19 +45,18 @@ resource "aws_alb_listener" "alb_ingress_https" {
   #certificate_arn = "${var.dummy_listener_certificate_arn}"
 
   default_action {
-    target_group_arn = aws_alb_target_group.tgr_dummy_public_services.arn
+    target_group_arn = aws_alb_target_group.tgr_public_services.arn
     type             = "forward"
   }
 }
 
-# listener for http with one default action to a dummy target group
 resource "aws_alb_listener" "alb_ingress_http" {
   load_balancer_arn = aws_alb.alb_public_services.arn
   protocol          = "HTTP"
   port              = "80"
 
   default_action {
-    target_group_arn = aws_alb_target_group.tgr_dummy_public_services.arn
+    target_group_arn = aws_alb_target_group.tgr_public_services.arn
     type             = "forward"
   }
 }

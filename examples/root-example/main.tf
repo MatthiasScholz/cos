@@ -22,6 +22,8 @@ module "networking" {
   env_name       = var.env_name
   unique_postfix = "-${random_pet.unicorn.id}"
   az_postfixes   = ["a", "b"]
+  asg_name_backoffice = module.nomad-infra.dc-backoffice_asg_name
+  asg_name_public_services = module.nomad-infra.dc-public-services_asg_name
 }
 
 module "nomad-infra" {
@@ -88,6 +90,6 @@ module "nomad-infra" {
   additional_instance_tags_content_connector_dc   = var.additional_instance_tags_sample
 
   # [Consul] Optional variables
-  consul_num_servers   = 3
+  consul_num_servers   = 1
   consul_instance_type = "t2.micro"
 }
