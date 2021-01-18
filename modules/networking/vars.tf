@@ -9,11 +9,11 @@ variable "stack_name" {
 }
 
 variable "asg_name_backoffice" {
-  description = "ID of the autoscaling group for dc-backoffice."
+  description = "Name of the autoscaling group for dc-backoffice."
 }
 
 variable "asg_name_public_services" {
-  description = "ID of the autoscaling group for dc-backoffice."
+  description = "Name of the autoscaling group for dc-public-services."
 }
 
 variable "az_postfixes" {
