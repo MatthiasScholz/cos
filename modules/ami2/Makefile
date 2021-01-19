@@ -7,19 +7,20 @@
 #
 # TODO: Export generated AMI-ID and make the usable in terraform.
 
-# TODO: make this configurable, with default: AWS_DEFAULT_REGION
-aws_region:=us-east-1
+aws_region ?= ${AWS_DEFAULT_REGION}
+additional_aws_regions := $(aws_region)
 
 .PHONY: ami
-.PHONY: nomad-consul-docker-ecr.json
 .PHONY: nomad-consul-docker.json
+.PHONY: nomad-consul-docker-ecr.json
 .PHONY: nomad-consul-docker-ecr-cni.json
 
 ami: nomad-consul-docker-ecr.json
 
 nomad-consul-docker*.json:
-	packer validate -var aws_region=$(aws_region) $@
-	packer build -var aws_region=$(aws_region) $@
+	@echo "INFO :: Buiding AMI in region $(aws_region) using $@"
+	packer validate -var aws_region=$(aws_region) -var 'ami_regions=$(additional_aws_regions)' $@
+	packer build -var aws_region=$(aws_region) -var 'ami_regions=$(additional_aws_regions)' $@
 
 # NOTE AMIs are validated using goss, which needs to be supported with an additional plugin:
 # -> https://github.com/YaleUniversity/packer-provisioner-goss
