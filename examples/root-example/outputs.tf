@@ -30,6 +30,10 @@ output "export_nomad_cmd" {
   value = "export NOMAD_ADDR=http://${module.nomad-infra.nomad_ui_alb_dns_name}"
 }
 
+output "export_consul_cmd" {
+  value = "export CONSUL_HTTP_ADDR=http://${module.nomad-infra.consul_ui_alb_dns_name}"
+}
+
 output "consul_ui_alb_dns" {
   value = module.nomad-infra.consul_ui_alb_dns_name
 }
@@ -52,6 +56,10 @@ output "curl_ping_service" {
 
 output "ingress_alb_dns" {
   value = module.networking.alb_public_services_dns
+}
+
+output "backoffic_alb_dns" {
+  value = module.networking.alb_backoffice_dns
 }
 
 output "vpc_id" {
