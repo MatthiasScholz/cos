@@ -20,8 +20,7 @@ locals {
 }
 
 module "data_center" {
-  # FIXME waiting for #85 to be merged: source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.7.0"
-  source = "git::https://github.com/MatthiasScholz/terraform-aws-nomad.git//modules/nomad-cluster"
+  source = "git::https://github.com/hashicorp/terraform-aws-nomad.git//modules/nomad-cluster?ref=v0.7.2"
 
   cluster_name                = local.cluster_name
   cluster_tag_value           = local.cluster_name
@@ -62,7 +61,7 @@ module "data_center" {
 # the Consul AWS Module's consul-iam-policies module.
 # ---------------------------------------------------------------------------------------------------------------------
 module "consul_iam_policies_datacenter" {
-  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.2"
+  source = "git::https://github.com/hashicorp/terraform-aws-consul.git//modules/consul-iam-policies?ref=v0.8.4"
 
   iam_role_id = module.data_center.iam_role_id
 }
